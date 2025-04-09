@@ -17,8 +17,20 @@ class MyApp extends StatelessWidget {
       title: 'eGrocery',
       theme: AppTheme.defaultTheme,
       onGenerateRoute: RouteGenerator.onGenerate,
+<<<<<<< HEAD
       // initialRoute: AppRoutes.onboarding,
       initialRoute: AppRoutes.login,
+=======
+<<<<<<< HEAD
+      initialRoute: AppRoutes.onboarding,
+=======
+<<<<<<< HEAD
+      initialRoute: AppRoutes.introLogin,
+=======
+      initialRoute: AppRoutes.login,
+>>>>>>> main
+>>>>>>> a180e10 (로그인화면)
+>>>>>>> 37628b6 (0411_1034_은우 login커밋 cherrypick)
     );
   }
 }

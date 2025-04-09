@@ -21,7 +21,6 @@ class LoginPage extends StatelessWidget {
                 LoginPageHeader(),
                 LoginPageForm(),
                 SizedBox(height: AppDefaults.padding),
-                SocialLogins(),
                 DontHaveAccountRow(),
               ],
             ),
