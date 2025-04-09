@@ -1,3 +1,5 @@
-# realproject
+# 사랑방
 
-A new Flutter project.
+# 종합 프로젝트: 인지기능향상과 우울증 완화를 돕는 대화형 AI 앱
+
+## 프로젝트 개요
