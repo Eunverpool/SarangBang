@@ -1,20 +1,23 @@
 import 'package:flutter/material.dart';
 
+import 'core/routes/app_routes.dart';
+import 'core/routes/on_generate_route.dart';
+import 'core/themes/app_themes.dart';
+
 void main() {
-  runApp(const MainApp());
+  runApp(const MyApp());
 }
 
-class MainApp extends StatelessWidget {
-  const MainApp({super.key});
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
-      home: Scaffold(
-        body: Center(
-          child: Text('Hello World!'),
-        ),
-      ),
+    return MaterialApp(
+      title: 'eGrocery',
+      theme: AppTheme.defaultTheme,
+      onGenerateRoute: RouteGenerator.onGenerate,
+      initialRoute: AppRoutes.onboarding,
     );
   }
 }
