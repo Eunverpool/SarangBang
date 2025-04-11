@@ -17,7 +17,8 @@ class MyApp extends StatelessWidget {
       title: 'eGrocery',
       theme: AppTheme.defaultTheme,
       onGenerateRoute: RouteGenerator.onGenerate,
-      initialRoute: AppRoutes.onboarding,
+      // initialRoute: AppRoutes.onboarding,
+      initialRoute: AppRoutes.login,
     );
   }
 }

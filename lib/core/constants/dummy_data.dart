@@ -33,7 +33,7 @@ class Dummy {
   /// List Of Dummy Bundles
   static List<BundleModel> bundles = [
     BundleModel(
-      name: 'Bundle Pack',
+      name: '박찬희',
       cover: 'https://i.imgur.com/Y0IFT2g.png',
       itemNames: ['Onion, Oil, Salt'],
       price: 35,
