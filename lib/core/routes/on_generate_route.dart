@@ -49,6 +49,10 @@ import '../../views/save/save_page.dart';
 import 'app_routes.dart';
 import 'unknown_page.dart';
 
+// 우리가 작업한거
+import '../../views/chat/chat_page.dart';
+
+
 class RouteGenerator {
   static Route? onGenerate(RouteSettings settings) {
     final route = settings.name;
@@ -196,6 +200,11 @@ class RouteGenerator {
 
       case AppRoutes.paymentCardAdd:
         return CupertinoPageRoute(builder: (_) => const AddNewCardPage());
+
+      // 우리가 따로 작성한거 여기 밑에 쓰셈
+      case AppRoutes.chat_page:
+        return CupertinoPageRoute(builder: (_) => const ChatPage());
+
 
       default:
         return errorRoute();

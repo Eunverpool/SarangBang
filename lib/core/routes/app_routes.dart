@@ -73,4 +73,8 @@ class AppRoutes {
   /* <---- Payment Method -----> */
   static const paymentMethod = '/paymentMethod';
   static const paymentCardAdd = '/paymentCardAdd';
+
+
+  /* <---- personal settings -----> */
+  static const chat_page = '/chat_page';
 }
