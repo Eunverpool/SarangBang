@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:grocery/views/report/components/report_Header.dart';
-import 'package:grocery/views/report/components/report_content.dart';
 import 'package:grocery/views/report/components/report_button.dart';
 import 'package:grocery/views/report/components/report_summary.dart';
 import 'package:grocery/views/report/components/report_emotion.dart';
