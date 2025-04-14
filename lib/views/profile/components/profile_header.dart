@@ -20,7 +20,7 @@ class ProfileHeader extends StatelessWidget {
         Column(
           children: [
             AppBar(
-              title: const Text('Profile'),
+              title: const Text('내 정보'),
               elevation: 0,
               backgroundColor: Colors.transparent,
               titleTextStyle: Theme.of(context).textTheme.titleLarge?.copyWith(

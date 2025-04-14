@@ -46,6 +46,9 @@ import '../../views/profile/settings/settings_page.dart';
 import '../../views/review/review_page.dart';
 import '../../views/review/submit_review_page.dart';
 import '../../views/save/save_page.dart';
+
+import '../../views/diary/diary_page.dart';
+
 import 'app_routes.dart';
 import 'unknown_page.dart';
 
@@ -54,6 +57,9 @@ class RouteGenerator {
     final route = settings.name;
 
     switch (route) {
+      case AppRoutes.diaryPage:
+        return CupertinoPageRoute(builder: (_) => const DiaryPage());
+
       case AppRoutes.introLogin:
         return CupertinoPageRoute(builder: (_) => const IntroLoginPage());
 
