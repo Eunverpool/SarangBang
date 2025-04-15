@@ -73,4 +73,7 @@ class AppRoutes {
   /* <---- Payment Method -----> */
   static const paymentMethod = '/paymentMethod';
   static const paymentCardAdd = '/paymentCardAdd';
+
+/* <---- 상점 페이지 -----> */
+  static const store2 = '/store2';
 }
