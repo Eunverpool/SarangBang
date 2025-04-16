@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:grocery/views/report/components/report_Header.dart';
+import 'package:grocery/views/report/components/report_header.dart';
 import 'package:grocery/views/report/components/report_button.dart';
 import 'package:grocery/views/report/components/report_summary.dart';
 import 'package:grocery/views/report/components/report_emotion.dart';
@@ -18,12 +18,20 @@ class ReportPage extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            ReportSummary(),
-            SizedBox(height: 20),
-            ReportEmotion(),
-            SizedBox(height: 20),
-            reportCognitive(),
-            Spacer(),
+            Expanded(
+              flex: 2,
+              child: Column(
+                children: [
+                  ReportSummary(),
+                  SizedBox(height: 50),
+                  ReportEmotion(),
+                ],
+              ),
+            ),
+            Expanded(
+              flex: 1,
+              child: ReportCognitive(),
+            ),
             ReprotButton(),
           ],
         ),

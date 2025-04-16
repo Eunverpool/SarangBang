@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class reportCognitive extends StatelessWidget {
-  const reportCognitive({super.key});
+class ReportCognitive extends StatelessWidget {
+  const ReportCognitive({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -23,9 +23,51 @@ class reportCognitive extends StatelessWidget {
           child: const Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text('• 날짜 인식: 정확함', style: TextStyle(color: Colors.black)),
-              Text('• 최근 식사 회상: 정확함', style: TextStyle(color: Colors.black)),
-              Text('• 기억력 회상: 정확함', style: TextStyle(color: Colors.black)),
+              Text.rich(
+                TextSpan(
+                  style: TextStyle(fontSize: 21),
+                  children: [
+                    const TextSpan(
+                      text: '• 날짜 인식: ',
+                      style: TextStyle(color: Colors.black),
+                    ),
+                    const TextSpan(
+                      text: '정확',
+                      style: TextStyle(color: Colors.green),
+                    ),
+                  ],
+                ),
+              ),
+              Text.rich(
+                TextSpan(
+                  style: TextStyle(fontSize: 21),
+                  children: [
+                    const TextSpan(
+                      text: '• 최근 식사 회상: ',
+                      style: TextStyle(color: Colors.black),
+                    ),
+                    const TextSpan(
+                      text: '정확',
+                      style: TextStyle(color: Colors.green),
+                    ),
+                  ],
+                ),
+              ),
+              Text.rich(
+                TextSpan(
+                  style: TextStyle(fontSize: 21),
+                  children: [
+                    const TextSpan(
+                      text: '• 기억력 회상: ',
+                      style: TextStyle(color: Colors.black),
+                    ),
+                    const TextSpan(
+                      text: '부정확',
+                      style: TextStyle(color: Colors.red),
+                    ),
+                  ],
+                ),
+              ),
             ],
           ),
         ),
