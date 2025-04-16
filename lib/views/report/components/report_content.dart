@@ -8,7 +8,7 @@ class ReportContent extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text('📝 대화 내용 요약',
+        const Text(' 대화 내용 요약',
             style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
         const SizedBox(height: 8),
         const Text(
@@ -16,7 +16,7 @@ class ReportContent extends StatelessWidget {
           style: TextStyle(fontSize: 14),
         ),
         const SizedBox(height: 20),
-        const Text('💗 감정 분석',
+        const Text(' 감정 분석',
             style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
         const SizedBox(height: 8),
         Row(
@@ -31,7 +31,7 @@ class ReportContent extends StatelessWidget {
         const SizedBox(height: 4),
         const Text('행복: 60%   평온: 25%   슬픔: 15%'),
         const SizedBox(height: 20),
-        const Text('🧠 인지 테스트 결과',
+        const Text(' 인지 테스트 결과',
             style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
         const SizedBox(height: 8),
         Container(
