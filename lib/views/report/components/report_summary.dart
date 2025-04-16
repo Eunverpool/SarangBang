@@ -11,7 +11,7 @@ class ReportSummary extends StatelessWidget {
         const Text('대화 내용 요약',
             style: TextStyle(
                 fontWeight: FontWeight.bold,
-                fontSize: 16,
+                fontSize: 24,
                 color: Colors.black)),
         const SizedBox(height: 8),
         Container(

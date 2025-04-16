@@ -11,7 +11,7 @@ class ReportCognitive extends StatelessWidget {
         const Text('인지 테스트 결과',
             style: TextStyle(
                 fontWeight: FontWeight.bold,
-                fontSize: 16,
+                fontSize: 24,
                 color: Colors.black)),
         const SizedBox(height: 8),
         Container(

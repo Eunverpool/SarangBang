@@ -9,14 +9,14 @@ class ReportHeader extends StatelessWidget implements PreferredSizeWidget {
       leading: IconButton(
         icon: const Icon(Icons.arrow_back),
         onPressed: () {
-          Navigator.pop(context); // 뒤로 가기 기능
+          Navigator.pop(context);
         },
       ),
       title: const Text(
         '오늘의 일기',
         style: TextStyle(
-          fontSize: 16,
-          fontWeight: FontWeight.bold, // 글씨 굵게 설정
+          fontSize: 24,
+          fontWeight: FontWeight.bold,
         ),
       ),
       actions: const [
@@ -26,8 +26,8 @@ class ReportHeader extends StatelessWidget implements PreferredSizeWidget {
             child: Text(
               '2025년 3월 20일 목요일',
               style: TextStyle(
-                fontSize: 14,
-                fontWeight: FontWeight.bold, // 글씨 굵게 설정
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
               ),
             ),
           ),

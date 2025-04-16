@@ -11,7 +11,7 @@ class ReportEmotion extends StatelessWidget {
         const Text('감정 분석',
             style: TextStyle(
                 fontWeight: FontWeight.bold,
-                fontSize: 16,
+                fontSize: 24,
                 color: Colors.black)),
         const SizedBox(height: 8),
         Row(
@@ -20,19 +20,19 @@ class ReportEmotion extends StatelessWidget {
                 flex: 6,
                 child: Container(
                   color: Colors.green,
-                  height: 10,
+                  height: 20,
                 )),
             Expanded(
                 flex: 2,
                 child: Container(
                   color: Colors.blue,
-                  height: 10,
+                  height: 20,
                 )),
             Expanded(
                 flex: 2,
                 child: Container(
                   color: Colors.orange,
-                  height: 10,
+                  height: 20,
                 )),
           ],
         ),
@@ -67,8 +67,8 @@ class CircleIndicator extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 8,
-      height: 8,
+      width: 16,
+      height: 16,
       decoration: BoxDecoration(
         color: color,
         shape: BoxShape.circle,

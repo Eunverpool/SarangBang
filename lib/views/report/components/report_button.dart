@@ -16,6 +16,8 @@ class ReprotButton extends StatelessWidget {
             backgroundColor: AppColors.primary,
             foregroundColor: Colors.white,
             side: BorderSide(color: AppColors.primary),
+            textStyle: TextStyle(fontSize: 21), // 글씨 크기 증가
+            minimumSize: Size(150, 60), // 버튼 최소 크기 설정
           ),
           child: const Text('공유하기'),
         ),
