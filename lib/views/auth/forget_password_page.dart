@@ -14,7 +14,6 @@ class ForgetPasswordPage extends StatelessWidget {
       backgroundColor: AppColors.scaffoldWithBoxBackground,
       appBar: AppBar(
         leading: const AppBackButton(),
-        title: const Text('Forget Password'),
         backgroundColor: AppColors.scaffoldBackground,
       ),
       body: Center(
@@ -36,7 +35,7 @@ class ForgetPasswordPage extends StatelessWidget {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     Text(
-                      'Reset your password',
+                      '비밀번호 재설정',
                       style: Theme.of(context)
                           .textTheme
                           .titleLarge
@@ -44,10 +43,10 @@ class ForgetPasswordPage extends StatelessWidget {
                     ),
                     const SizedBox(height: AppDefaults.padding),
                     const Text(
-                      'Please enter your number. We will send a code\nto your phone to reset your password.',
+                      '전화번호를 입력해주세요.\n입력하신 전화번호로 인증번호가 전송됩니다.',
                     ),
                     const SizedBox(height: AppDefaults.padding * 3),
-                    const Text("Phone Number"),
+                    const Text("전화번호"),
                     const SizedBox(height: 8),
                     TextFormField(
                       autofocus: true,
@@ -62,7 +61,7 @@ class ForgetPasswordPage extends StatelessWidget {
                         onPressed: () {
                           Navigator.pushNamed(context, AppRoutes.passwordReset);
                         },
-                        child: const Text('Send me link'),
+                        child: const Text('인증번호 받기'),
                       ),
                     ),
                   ],
