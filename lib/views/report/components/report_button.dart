@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../../core/constants/app_colors.dart';
 
 class ReprotButton extends StatelessWidget {
   const ReprotButton({super.key});
@@ -6,16 +7,28 @@ class ReprotButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         OutlinedButton(
           onPressed: () {},
-          child: const Text('되돌아가기'),
+          style: OutlinedButton.styleFrom(
+            backgroundColor: AppColors.primary,
+            foregroundColor: Colors.white,
+            side: BorderSide(color: AppColors.primary),
+          ),
+          child: const Text('공유하기'),
         ),
-        ElevatedButton(
-          onPressed: () {},
-          child: const Text('저장하기'),
-        ),
+        // SizedBox(width: 8), // 버튼 사이 간격 조절
+        // OutlinedButton(
+        //   onPressed: () {},
+        //   style: OutlinedButton.styleFrom(
+        //     backgroundColor: Colors.white,
+        //     foregroundColor: Colors.black,
+        //     side: BorderSide(color: Colors.black),
+        //   ),
+        //   child: const Text('공유하기'),
+        //),
       ],
     );
   }
