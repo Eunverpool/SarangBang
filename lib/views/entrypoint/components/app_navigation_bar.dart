@@ -30,7 +30,7 @@ class AppBottomNavigationBar extends StatelessWidget {
           ),
           BottomAppBarItem(
             name: 'Menu',
-            iconLocation: AppIcons.menu,
+            iconLocation: AppIcons.diary,
             isActive: currentIndex == 1,
             onTap: () => onNavTap(1),
           ),

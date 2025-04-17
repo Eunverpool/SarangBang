@@ -12,6 +12,11 @@ import '../profile/profile_page.dart';
 import '../save/save_page.dart';
 import 'components/app_navigation_bar.dart';
 
+// 우리가 작업한거
+import '../../views/chat/chat_page.dart';
+import 'package:flutter/material.dart';
+
+
 /// This page will contain all the bottom navigation tabs
 class EntryPointUI extends StatefulWidget {
   const EntryPointUI({super.key});
@@ -57,10 +62,14 @@ class _EntryPointUIState extends State<EntryPointUI> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          onBottomNavigationTap(2);
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => const ChatPage()),
+          );
         },
         backgroundColor: AppColors.primary,
         child: SvgPicture.asset(AppIcons.cart),
+        
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       bottomNavigationBar: AppBottomNavigationBar(

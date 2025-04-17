@@ -31,17 +31,8 @@ class ProfileEditPage extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              /* <----  First Name -----> */
-              const Text("First Name"),
-              const SizedBox(height: 8),
-              TextFormField(
-                keyboardType: TextInputType.text,
-                textInputAction: TextInputAction.next,
-              ),
-              const SizedBox(height: AppDefaults.padding),
-
-              /* <---- Last Name -----> */
-              const Text("Last Name"),
+              /* <----  이름 -----> */
+              const Text("이름"),
               const SizedBox(height: 8),
               TextFormField(
                 keyboardType: TextInputType.text,
@@ -50,7 +41,7 @@ class ProfileEditPage extends StatelessWidget {
               const SizedBox(height: AppDefaults.padding),
 
               /* <---- Phone Number -----> */
-              const Text("Phone Number"),
+              const Text("전화번호"),
               const SizedBox(height: 8),
               TextFormField(
                 keyboardType: TextInputType.number,
@@ -59,16 +50,16 @@ class ProfileEditPage extends StatelessWidget {
               const SizedBox(height: AppDefaults.padding),
 
               /* <---- Gender -----> */
-              const Text("Gender"),
+              const Text("보호자 이메일"),
               const SizedBox(height: 8),
               TextFormField(
-                keyboardType: TextInputType.text,
+                keyboardType: TextInputType.emailAddress,
                 textInputAction: TextInputAction.next,
               ),
               const SizedBox(height: AppDefaults.padding),
 
               /* <---- Birthday -----> */
-              const Text("Birthday"),
+              const Text("생년월일"),
               const SizedBox(height: 8),
               TextFormField(
                 keyboardType: TextInputType.text,
@@ -77,9 +68,7 @@ class ProfileEditPage extends StatelessWidget {
               const SizedBox(height: AppDefaults.padding),
 
               /* <---- Password -----> */
-
-              /* <---- Birthday -----> */
-              const Text("Password"),
+              const Text("비밀번호"),
               const SizedBox(height: 8),
               TextFormField(
                 keyboardType: TextInputType.visiblePassword,
@@ -93,7 +82,7 @@ class ProfileEditPage extends StatelessWidget {
               SizedBox(
                 width: double.infinity,
                 child: ElevatedButton(
-                  child: const Text('Save'),
+                  child: const Text('저장하기'),
                   onPressed: () {},
                 ),
               ),

@@ -32,13 +32,7 @@ class SettingsPage extends StatelessWidget {
         child: Column(
           children: [
             AppSettingsListTile(
-              label: 'Language',
-              trailing: SvgPicture.asset(AppIcons.right),
-              onTap: () =>
-                  Navigator.pushNamed(context, AppRoutes.settingsLanguage),
-            ),
-            AppSettingsListTile(
-              label: 'Notification',
+              label: '알림 설정',
               trailing: SvgPicture.asset(AppIcons.right),
               onTap: () =>
                   Navigator.pushNamed(context, AppRoutes.settingsNotifications),
@@ -62,19 +56,15 @@ class SettingsPage extends StatelessWidget {
                   Navigator.pushNamed(context, AppRoutes.deliveryAddress),
             ),
             AppSettingsListTile(
-              label: 'Location',
+              label: '종합 보고서 기록 확인',
               trailing: SvgPicture.asset(AppIcons.right),
-              onTap: () {},
+              onTap: () =>
+                  Navigator.pushNamed(context, AppRoutes.deliveryAddress),    // 종합보고서 페이지 라우트
             ),
             AppSettingsListTile(
-              label: 'Profile Setting',
+              label: '프로필 설정',
               trailing: SvgPicture.asset(AppIcons.right),
               onTap: () => Navigator.pushNamed(context, AppRoutes.profileEdit),
-            ),
-            AppSettingsListTile(
-              label: 'Deactivate Account',
-              trailing: SvgPicture.asset(AppIcons.right),
-              onTap: () => Navigator.pushNamed(context, AppRoutes.introLogin),
             ),
           ],
         ),

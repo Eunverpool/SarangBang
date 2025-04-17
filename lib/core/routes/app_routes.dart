@@ -77,4 +77,6 @@ class AppRoutes {
 
   /* <---- personal settings -----> */
   static const chat_page = '/chat_page';
+  static const test_page = '/test_page';
+
 }
