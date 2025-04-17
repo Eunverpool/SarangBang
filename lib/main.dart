@@ -19,10 +19,8 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'eGrocery',
       theme: AppTheme.defaultTheme,
-      onGenerateRoute: RouteGenerator.onGenerate,
-
-      initialRoute: AppRoutes.entryPoint,
-
+      onGenerateRoute: RouteGenerator.onGenerate, 
+      initialRoute: AppRoutes.reportPage,
     );
   }
 }
