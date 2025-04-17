@@ -31,34 +31,18 @@ class Dummy {
   ];
 
   /// List Of Dummy Bundles
-  static List<BundleModel> bundles = [
+  static List<BundleModel> mainbundles = [
     BundleModel(
-      name: 'Bundle Pack',
+      name: '종합 보고서',
       cover: 'https://i.imgur.com/Y0IFT2g.png',
-      itemNames: ['Onion, Oil, Salt'],
-      price: 35,
-      mainPrice: 50.32,
     ),
     BundleModel(
-      name: 'Medium Spices Pack',
+      name: '대화하기',
       cover: 'https://i.postimg.cc/qtM4zj1K/packs-2.png',
-      itemNames: ['Onion, Oil, Salt'],
-      price: 35,
-      mainPrice: 50.32,
     ),
     BundleModel(
-      name: 'Bundle Pack',
+      name: '어제의 일기',
       cover: 'https://i.postimg.cc/MnwW8WRd/pack-1.png',
-      itemNames: ['Onion, Oil, Salt'],
-      price: 35,
-      mainPrice: 50.32,
-    ),
-    BundleModel(
-      name: 'Bundle Pack',
-      cover: 'https://i.postimg.cc/k2y7Jkv9/pack-4.png',
-      itemNames: ['Onion, Oil, Salt'],
-      price: 35,
-      mainPrice: 50.32,
     ),
   ];
 }

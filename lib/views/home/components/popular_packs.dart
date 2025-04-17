@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../core/components/bundle_tile_square.dart';
-import '../../../core/components/title_and_action_button.dart';
 import '../../../core/constants/constants.dart';
-import '../../../core/routes/app_routes.dart';
 
 class PopularPacks extends StatelessWidget {
   const PopularPacks({
@@ -12,26 +10,21 @@ class PopularPacks extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        TitleAndActionButton(
-          title: 'Popular Packs',
-          onTap: () => Navigator.pushNamed(context, AppRoutes.popularItems),
-        ),
-        SingleChildScrollView(
-          padding: const EdgeInsets.only(left: AppDefaults.padding),
-          scrollDirection: Axis.horizontal,
-          child: Row(
-            children: List.generate(
-              Dummy.bundles.length,
-              (index) => Padding(
-                padding: const EdgeInsets.only(right: AppDefaults.padding),
-                child: BundleTileSquare(data: Dummy.bundles[index]),
-              ),
-            ),
-          ),
-        ),
-      ],
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: AppDefaults.padding),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          // 왼쪽 (0번째, 정상)
+          BundleTileSquare(data: Dummy.mainbundles[0]),
+
+          // 가운데 (1번째, 약간 위로)
+          BundleTileSquare(data: Dummy.mainbundles[1]),
+
+          // 오른쪽 (2번째, 정상)
+          BundleTileSquare(data: Dummy.mainbundles[2]),
+        ],
+      ),
     );
   }
 }

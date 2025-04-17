@@ -56,14 +56,17 @@ class HomePage extends StatelessWidget {
               child: AdSpace(),
             ),
             const SliverToBoxAdapter(
+              child: SizedBox(height: AppDefaults.padding * 8),
+            ),
+            const SliverToBoxAdapter(
               child: PopularPacks(),
             ),
-            const SliverPadding(
-              padding: EdgeInsets.symmetric(vertical: AppDefaults.padding),
-              sliver: SliverToBoxAdapter(
-                child: OurNewItem(),
-              ),
-            ),
+            // const SliverPadding(
+            //   padding: EdgeInsets.symmetric(vertical: AppDefaults.padding),
+            //   sliver: SliverToBoxAdapter(
+            //     child: OurNewItem(),
+            //   ),
+            // ),
           ],
         ),
       ),
