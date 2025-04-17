@@ -17,7 +17,7 @@ class ReportEmotion extends StatelessWidget {
         Row(
           children: [
             Expanded(
-                flex: 6,
+                flex: 7,
                 child: Container(
                   color: Colors.green,
                   height: 20,
@@ -29,7 +29,7 @@ class ReportEmotion extends StatelessWidget {
                   height: 20,
                 )),
             Expanded(
-                flex: 2,
+                flex: 1,
                 child: Container(
                   color: Colors.orange,
                   height: 20,
