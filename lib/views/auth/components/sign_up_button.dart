@@ -16,7 +16,7 @@ class SignUpButton extends StatelessWidget {
       child: Row(
         children: [
           Text(
-            'Sign Up',
+            '회원가입',
             style: Theme.of(context).textTheme.titleLarge?.copyWith(
                   fontWeight: FontWeight.bold,
                 ),
@@ -24,7 +24,7 @@ class SignUpButton extends StatelessWidget {
           const Spacer(),
           ElevatedButton(
             onPressed: () {
-              Navigator.pushNamed(context, AppRoutes.numberVerification);
+              Navigator.pushNamed(context, AppRoutes.login);
             },
             style: ElevatedButton.styleFrom(elevation: 1),
             child: SvgPicture.asset(
