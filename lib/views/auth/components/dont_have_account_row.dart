@@ -12,10 +12,16 @@ class DontHaveAccountRow extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        const Text('Don\'t Have Account?'),
+        const Text(
+          '계정이 없으신가요?',
+          style: TextStyle(fontSize: 32),
+        ),
         TextButton(
           onPressed: () => Navigator.pushNamed(context, AppRoutes.signup),
-          child: const Text('Sign Up'),
+          child: const Text(
+            '회원가입',
+            style: TextStyle(fontSize: 32),
+          ),
         ),
       ],
     );

@@ -46,18 +46,24 @@ class _LoginPageFormState extends State<LoginPageForm> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               // Phone Field
-              const Text("Phone Number"),
-              const SizedBox(height: 8),
+              const Text(
+                "전화번호",
+                style: TextStyle(fontSize: 32),
+              ),
+              const SizedBox(height: 20),
               TextFormField(
                 keyboardType: TextInputType.number,
-                validator: Validators.requiredWithFieldName('Phone').call,
+                validator: Validators.requiredWithFieldName('전화번호').call,
                 textInputAction: TextInputAction.next,
               ),
               const SizedBox(height: AppDefaults.padding),
 
               // Password Field
-              const Text("Password"),
-              const SizedBox(height: 8),
+              const Text(
+                "비밀번호",
+                style: TextStyle(fontSize: 32),
+              ),
+              const SizedBox(height: 20),
               TextFormField(
                 validator: Validators.password.call,
                 onFieldSubmitted: (v) => onLogin(),
@@ -84,7 +90,8 @@ class _LoginPageFormState extends State<LoginPageForm> {
                   onPressed: () {
                     Navigator.pushNamed(context, AppRoutes.forgotPassword);
                   },
-                  child: const Text('Forget Password?'),
+                  child: const Text('비밀번호를 잊으셨나요?',
+                      style: TextStyle(fontSize: 26)),
                 ),
               ),
 

@@ -12,6 +12,8 @@ import '../profile/profile_page.dart';
 import '../save/save_page.dart';
 import 'components/app_navigation_bar.dart';
 
+import '../diary/diary_page.dart';
+
 /// This page will contain all the bottom navigation tabs
 class EntryPointUI extends StatefulWidget {
   const EntryPointUI({super.key});
@@ -33,7 +35,7 @@ class _EntryPointUIState extends State<EntryPointUI> {
   /// All the pages
   List<Widget> pages = [
     const HomePage(),
-    const MenuPage(),
+    const DiaryPage(),
     const CartPage(isHomePage: true),
     const SavePage(isHomePage: false),
     const ProfilePage(),

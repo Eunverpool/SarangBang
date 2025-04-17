@@ -20,19 +20,12 @@ class LoginPageHeader extends StatelessWidget {
           ),
         ),
         Text(
-          'Welcome to our',
-          style: Theme.of(context)
-              .textTheme
-              .titleLarge
-              ?.copyWith(fontWeight: FontWeight.bold),
-        ),
-        Text(
-          'E-Grocery',
+          '사랑방',
           style: Theme.of(context).textTheme.titleLarge?.copyWith(
                 fontWeight: FontWeight.bold,
-                color: AppColors.primary,
+                fontSize: 32,
               ),
-        )
+        ),
       ],
     );
   }

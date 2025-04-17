@@ -5,7 +5,7 @@ class OnboardingData {
   static List<OnboardingModel> items = [
     OnboardingModel(
       imageUrl: AppImages.onboarding1,
-      headline: 'Browse all the category',
+      headline: 'Browse all the wazaza',
       description:
           'In aliquip aute exercitation ut et nisi ut mollit. Deserunt dolor elit pariatur aute .',
     ),

@@ -14,7 +14,10 @@ class LoginButton extends StatelessWidget {
       width: double.infinity,
       child: ElevatedButton(
         onPressed: onPressed,
-        child: const Text('Login'),
+        child: const Text(
+          '로그인',
+          style: TextStyle(fontSize: 32),
+        ),
       ),
     );
   }
