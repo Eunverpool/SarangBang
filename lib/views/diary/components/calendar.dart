@@ -136,24 +136,61 @@ class _DiaryCalendarState extends State<DiaryCalendar> {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        /// 🔹 직접 만든 연/월 선택 헤더
-        GestureDetector(
-          onTap: () => _showYearMonthPicker(context),
-          child: Padding(
-            padding: const EdgeInsets.symmetric(vertical: 12.0),
-            child: Text(
-              '${_focusedDay.year}년 ${_focusedDay.month}월',
-              style: const TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.bold,
+        // /// 🔹 직접 만든 연/월 선택 헤더
+        // GestureDetector(
+        //   onTap: () => _showYearMonthPicker(context),
+        //   child: Padding(
+        //     padding: const EdgeInsets.symmetric(vertical: 12.0),
+        //     child: Text(
+        //       '${_focusedDay.year}년 ${_focusedDay.month}월',
+        //       style: const TextStyle(
+        //         fontSize: 16,
+        //         fontWeight: FontWeight.bold,
+        //       ),
+        //     ),
+        //   ),
+        // ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            IconButton(
+              icon: const Icon(Icons.chevron_left),
+              onPressed: () {
+                setState(() {
+                  _focusedDay =
+                      DateTime(_focusedDay.year, _focusedDay.month - 1);
+                });
+              },
+            ),
+            GestureDetector(
+              onTap: () => _showYearMonthPicker(context),
+              child: Padding(
+                padding:
+                    const EdgeInsets.symmetric(vertical: 12.0, horizontal: 8.0),
+                child: Text(
+                  '${_focusedDay.year}년 ${_focusedDay.month}월',
+                  style: const TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
               ),
             ),
-          ),
+            IconButton(
+              icon: const Icon(Icons.chevron_right),
+              onPressed: () {
+                setState(() {
+                  _focusedDay =
+                      DateTime(_focusedDay.year, _focusedDay.month + 1);
+                });
+              },
+            ),
+          ],
         ),
 
         /// 📅 감정 이모지가 적용된 커스터마이징 캘린더
         TableCalendar(
-          // headerVisible: false, //기본 헤더 제거(년 월)
+          headerVisible: false, //기본 헤더 제거(년 월)
           firstDay: DateTime.utc(2020, 1, 1), // 시작 날짜
           lastDay: DateTime.utc(2039, 12, 31), // 종료 날짜
           locale: 'ko-KR', // 한글 로케일 설정
