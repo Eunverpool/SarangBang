@@ -11,6 +11,121 @@ class DiaryCalendar extends StatefulWidget {
 }
 
 class _DiaryCalendarState extends State<DiaryCalendar> {
+  void _showYearMonthPicker(BuildContext context) async {
+    int selectedYearIndex = _focusedDay.year - 2020;
+    int selectedMonthIndex = _focusedDay.month - 1;
+
+    final yearController =
+        FixedExtentScrollController(initialItem: selectedYearIndex);
+    final monthController =
+        FixedExtentScrollController(initialItem: selectedMonthIndex);
+
+    await showDialog(
+      context: context,
+      builder: (context) {
+        return StatefulBuilder(
+          builder: (context, setModalState) {
+            return AlertDialog(
+              title: const Text("월 선택"),
+              content: SizedBox(
+                height: 200,
+                child: Stack(
+                  alignment: Alignment.center,
+                  children: [
+                    Row(
+                      children: [
+                        /// 연도 휠
+                        Expanded(
+                          child: ListWheelScrollView.useDelegate(
+                            controller: yearController, // 초기 위치 지정
+                            itemExtent: 40,
+                            physics: const FixedExtentScrollPhysics(),
+                            onSelectedItemChanged: (index) {
+                              setModalState(() {
+                                selectedYearIndex = index;
+                              });
+                            },
+                            childDelegate: ListWheelChildBuilderDelegate(
+                              childCount: 20,
+                              builder: (context, index) {
+                                return Center(
+                                  child: Text(
+                                    '${2020 + index}년',
+                                    style: const TextStyle(fontSize: 16),
+                                  ),
+                                );
+                              },
+                            ),
+                          ),
+                        ),
+
+                        /// 월 휠
+                        Expanded(
+                          child: ListWheelScrollView.useDelegate(
+                            controller: monthController, //초기 위치 지정
+                            itemExtent: 40,
+                            physics: const FixedExtentScrollPhysics(),
+                            onSelectedItemChanged: (index) {
+                              setModalState(() {
+                                selectedMonthIndex = index;
+                              });
+                            },
+                            childDelegate: ListWheelChildBuilderDelegate(
+                              childCount: 12,
+                              builder: (context, index) {
+                                return Center(
+                                  child: Text(
+                                    '${index + 1}월',
+                                    style: const TextStyle(fontSize: 16),
+                                  ),
+                                );
+                              },
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+
+                    /// ✅ 가운데 선택 강조 가이드 박스 (연한 배경)
+                    Positioned(
+                      top: 80, // (200 - 40) / 2
+                      left: 0,
+                      right: 0,
+                      height: 40,
+                      child: IgnorePointer(
+                        child: Container(
+                          color: Colors.lightGreen[100]!
+                              .withAlpha((255 * 0.5).round()), // 연두색 강조
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              actions: [
+                TextButton(
+                  onPressed: () => Navigator.of(context).pop(),
+                  child: const Text('취소'),
+                ),
+                TextButton(
+                  onPressed: () {
+                    final year = 2020 + selectedYearIndex;
+                    final month = selectedMonthIndex + 1;
+                    setState(() {
+                      _focusedDay = DateTime(year, month);
+                    });
+                    Navigator.of(context).pop();
+                  },
+                  child: const Text('확인'),
+                ),
+              ],
+            );
+          },
+        );
+      },
+    );
+  }
+
   // 현재 보고 있는 날짜
   DateTime _focusedDay = DateTime.now();
 
@@ -21,14 +136,40 @@ class _DiaryCalendarState extends State<DiaryCalendar> {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        
+        /// 🔹 직접 만든 연/월 선택 헤더
+        GestureDetector(
+          onTap: () => _showYearMonthPicker(context),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 12.0),
+            child: Text(
+              '${_focusedDay.year}년 ${_focusedDay.month}월',
+              style: const TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ),
+        ),
+
         /// 📅 감정 이모지가 적용된 커스터마이징 캘린더
         TableCalendar(
-          firstDay: DateTime.utc(2020, 1, 1),     // 시작 날짜
-          lastDay: DateTime.utc(2030, 12, 31),    // 종료 날짜
-          locale: 'ko-KR',                        // 한글 로케일 설정
-          focusedDay: _focusedDay,                // 현재 보여주는 월 기준 날짜
+          // headerVisible: false, //기본 헤더 제거(년 월)
+          firstDay: DateTime.utc(2020, 1, 1), // 시작 날짜
+          lastDay: DateTime.utc(2039, 12, 31), // 종료 날짜
+          locale: 'ko-KR', // 한글 로케일 설정
+          focusedDay: _focusedDay, // 현재 보여주는 월 기준 날짜
 
+          daysOfWeekStyle: const DaysOfWeekStyle(
+            weekdayStyle: TextStyle(
+              fontSize: 14, // ✅ 크기 조정
+              height: 1, // ✅ 줄 높이 추가
+            ),
+            weekendStyle: TextStyle(
+              fontSize: 14,
+              height: 1,
+              color: Colors.red, // 일요일 색 강조 (선택)
+            ),
+          ),
           // 선택된 날짜인지 여부 체크
           selectedDayPredicate: (day) => isSameDay(_selectedDay, day),
 
@@ -39,7 +180,7 @@ class _DiaryCalendarState extends State<DiaryCalendar> {
               _focusedDay = focused;
             });
           },
-          
+
           /// 캘린더 헤더 스타일 (연/월만 중앙 정렬)
           headerStyle: const HeaderStyle(
             formatButtonVisible: false,
@@ -66,41 +207,90 @@ class _DiaryCalendarState extends State<DiaryCalendar> {
           calendarBuilders: CalendarBuilders(
             // 일반 날짜
             defaultBuilder: (context, day, _) {
-              final emoji = emotionEmoji[DateTime.utc(day.year, day.month, day.day)];
-              if (emoji != null) {
-                return Center(child: Text(emoji, style: const TextStyle(fontSize: 20)));
-              }
-              return null; // 기본 숫자 표시
+              final emoji =
+                  emotionEmoji[DateTime.utc(day.year, day.month, day.day)];
+
+              return Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    '${day.day}',
+                    style: const TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                  const SizedBox(height: 2),
+                  emoji != null
+                      ? Text(emoji, style: const TextStyle(fontSize: 16))
+                      : const Text(' ',
+                          style: TextStyle(fontSize: 16)), // ✅ 여기가 핵심!
+                ],
+              );
             },
 
             // 오늘 날짜
             todayBuilder: (context, day, _) {
-              final emoji = emotionEmoji[DateTime.utc(day.year, day.month, day.day)];
+              final emoji =
+                  emotionEmoji[DateTime.utc(day.year, day.month, day.day)];
               return Container(
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
                   border: Border.all(color: Colors.green, width: 1.5),
                 ),
                 alignment: Alignment.center,
-                child: Text(
-                  emoji ?? '${day.day}',
-                  style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.grey),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      '${day.day}',
+                      style: const TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 14,
+                        color: Colors.grey,
+                      ),
+                    ),
+                    const SizedBox(height: 2),
+                    Text(
+                      emoji ?? '',
+                      style: const TextStyle(
+                        fontSize: 18,
+                      ),
+                    ),
+                  ],
                 ),
               );
             },
 
             // 선택된 날짜
             selectedBuilder: (context, day, _) {
-              final emoji = emotionEmoji[DateTime.utc(day.year, day.month, day.day)];
+              final emoji =
+                  emotionEmoji[DateTime.utc(day.year, day.month, day.day)];
               return Container(
                 decoration: const BoxDecoration(
                   shape: BoxShape.circle,
                   color: Colors.green,
                 ),
                 alignment: Alignment.center,
-                child: Text(
-                  emoji ?? '${day.day}',
-                  style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      '${day.day}',
+                      style: const TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 14,
+                        color: Colors.white,
+                      ),
+                    ),
+                    // const SizedBox(height: 2),
+                    Text(
+                      emoji ?? '',
+                      style: const TextStyle(
+                        fontSize: 18,
+                      ),
+                    ),
+                  ],
                 ),
               );
             },
@@ -136,12 +326,12 @@ class _DiaryCalendarState extends State<DiaryCalendar> {
                   _selectedDay!.month,
                   _selectedDay!.day,
                 )]!,
-                style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                style:
+                    const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
               ),
             ),
           ),
       ],
     );
-    
   }
 }

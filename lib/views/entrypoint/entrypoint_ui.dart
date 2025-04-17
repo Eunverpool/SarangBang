@@ -1,6 +1,7 @@
 import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:grocery/views/store2/menuPage2.dart';
 import '../../core/constants/app_icons.dart';
 
 import '../../core/constants/app_colors.dart';
@@ -11,6 +12,7 @@ import '../menu/menu_page.dart';
 import '../profile/profile_page.dart';
 import '../save/save_page.dart';
 import 'components/app_navigation_bar.dart';
+import '../../views/store2/menuPage2.dart';
 
 import '../diary/diary_page.dart';
 
@@ -37,7 +39,7 @@ class _EntryPointUIState extends State<EntryPointUI> {
     const HomePage(),
     const DiaryPage(),
     const CartPage(isHomePage: true),
-    const SavePage(isHomePage: false),
+    const menuPage2(),
     const ProfilePage(),
   ];
 

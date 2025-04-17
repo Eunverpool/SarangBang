@@ -74,10 +74,11 @@ class AppRoutes {
   static const paymentMethod = '/paymentMethod';
   static const paymentCardAdd = '/paymentCardAdd';
 
+  static const store2 = '/store2';
+
   /* <---- Diary Page -----> */
   static const diaryPage = '/diaryPage';
 
   /* Report Page*/
   static const reportPage = '/reportPage';
-
 }

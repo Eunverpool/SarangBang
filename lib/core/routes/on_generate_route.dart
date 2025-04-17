@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:grocery/views/menu/menu_page.dart';
 
 import '../../views/auth/forget_password_page.dart';
 import '../../views/auth/intro_login_page.dart';
@@ -53,6 +54,8 @@ import '../../views/report/report_page.dart';
 import 'app_routes.dart';
 import 'unknown_page.dart';
 
+import '../../views/store2/menuPage2.dart';
+
 class RouteGenerator {
   static Route? onGenerate(RouteSettings settings) {
     final route = settings.name;
@@ -62,6 +65,10 @@ class RouteGenerator {
         return CupertinoPageRoute(builder: (_) => const DiaryPage());
       case AppRoutes.reportPage:
         return CupertinoPageRoute(builder: (_) => const ReportPage());
+      //상점 페이지
+      case AppRoutes.store2:
+        return CupertinoPageRoute(builder: (_) => const menuPage2());
+
       case AppRoutes.introLogin:
         return CupertinoPageRoute(builder: (_) => const IntroLoginPage());
 
