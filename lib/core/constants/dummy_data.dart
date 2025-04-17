@@ -1,5 +1,6 @@
 import '../models/dummy_bundle_model.dart';
 import '../models/dummy_product_model.dart';
+import '../models/dummy_mainbundle_model.dart';
 
 class Dummy {
   /// List Of Dummy Products
@@ -31,18 +32,48 @@ class Dummy {
   ];
 
   /// List Of Dummy Bundles
-  static List<BundleModel> mainbundles = [
-    BundleModel(
+  static List<MainBundleModel> mainbundles = [
+    MainBundleModel(
       name: '종합 보고서',
       cover: 'https://i.imgur.com/Y0IFT2g.png',
     ),
-    BundleModel(
+    MainBundleModel(
       name: '대화하기',
       cover: 'https://i.postimg.cc/qtM4zj1K/packs-2.png',
     ),
-    BundleModel(
+    MainBundleModel(
       name: '어제의 일기',
       cover: 'https://i.postimg.cc/MnwW8WRd/pack-1.png',
+    ),
+  ];
+  static List<BundleModel> bundles = [
+    BundleModel(
+      name: '귀여운 손녀',
+      cover: 'https://i.postimg.cc/LXgqbpLy/990-4d81f90e9c4a.png',
+      itemNames: ['Onion, Oil, Salt'],
+      price: 35,
+      mainPrice: 50.32,
+    ),
+    BundleModel(
+      name: '귀여운 손자',
+      cover: 'https://i.postimg.cc/zGPGZQJ4/a5b-2ff48936406a.png',
+      itemNames: ['Onion, Oil, Salt'],
+      price: 35,
+      mainPrice: 50.32,
+    ),
+    BundleModel(
+      name: '청소년',
+      cover: 'https://i.postimg.cc/bvVP2SGM/a04-9c9269fc6047.png',
+      itemNames: ['Onion, Oil, Salt'],
+      price: 35,
+      mainPrice: 50.32,
+    ),
+    BundleModel(
+      name: 'Bundle Pack',
+      cover: 'https://i.postimg.cc/k2y7Jkv9/pack-4.png',
+      itemNames: ['Onion, Oil, Salt'],
+      price: 35,
+      mainPrice: 50.32,
     ),
   ];
 }

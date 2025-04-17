@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../core/components/bundle_tile_square.dart';
+import '../../../core/components/bundle_tile_square2.dart';
 import '../../../core/constants/constants.dart';
 
 class PopularPacks extends StatelessWidget {
@@ -16,13 +17,13 @@ class PopularPacks extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           // 왼쪽 (0번째, 정상)
-          BundleTileSquare(data: Dummy.mainbundles[0]),
+          BundleTileSquare2(data: Dummy.mainbundles[0]),
 
           // 가운데 (1번째, 약간 위로)
-          BundleTileSquare(data: Dummy.mainbundles[1]),
+          BundleTileSquare2(data: Dummy.mainbundles[1]),
 
           // 오른쪽 (2번째, 정상)
-          BundleTileSquare(data: Dummy.mainbundles[2]),
+          BundleTileSquare2(data: Dummy.mainbundles[2]),
         ],
       ),
     );
