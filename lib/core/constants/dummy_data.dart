@@ -40,7 +40,7 @@ class Dummy {
     MainBundleModel(
         name: '대화하기',
         cover: 'https://i.postimg.cc/qtM4zj1K/packs-2.png',
-        route: "/chat"),
+        route: "/chat_page"),
     MainBundleModel(
         name: '어제의 일기',
         cover: 'https://i.postimg.cc/MnwW8WRd/pack-1.png',

@@ -51,6 +51,7 @@ class ProfileEditPage extends StatelessWidget {
 
               /* <---- Phone Number -----> */
               const Text("전화번호"),
+              const Text("전화번호"),
               const SizedBox(height: 8),
               TextFormField(
                 keyboardType: TextInputType.number,
@@ -62,7 +63,7 @@ class ProfileEditPage extends StatelessWidget {
               const Text("성별"),
               const SizedBox(height: 8),
               TextFormField(
-                keyboardType: TextInputType.text,
+                keyboardType: TextInputType.emailAddress,
                 textInputAction: TextInputAction.next,
               ),
               const SizedBox(height: AppDefaults.padding),

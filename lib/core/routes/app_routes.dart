@@ -81,4 +81,7 @@ class AppRoutes {
 
   /* Report Page*/
   static const reportPage = '/reportPage';
+
+  static const chat_page = '/chat_page';
+  static const test_page = '/test_page';
 }

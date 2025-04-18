@@ -31,7 +31,7 @@ class PopularPackPage extends StatelessWidget {
                   crossAxisSpacing: 16,
                   mainAxisSpacing: 16,
                 ),
-                itemCount: 8,
+                itemCount: 9,
                 itemBuilder: (context, index) {
                   return BundleTileSquare2(
                     data: Dummy.mainbundles.first,
