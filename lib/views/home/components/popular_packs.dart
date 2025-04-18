@@ -17,7 +17,9 @@ class PopularPacks extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           // 왼쪽 (0번째, 정상)
-          BundleTileSquare2(data: Dummy.mainbundles[0]),
+          BundleTileSquare2(
+            data: Dummy.mainbundles[0],
+          ),
 
           // 가운데 (1번째, 약간 위로)
           BundleTileSquare2(data: Dummy.mainbundles[1]),

@@ -21,7 +21,7 @@ class BundleTileSquare2 extends StatelessWidget {
       borderRadius: AppDefaults.borderRadius,
       child: InkWell(
         onTap: () {
-          Navigator.pushNamed(context, AppRoutes.bundleProduct);
+          Navigator.pushNamed(context, data.route);
         },
         borderRadius: AppDefaults.borderRadius,
         child: Container(
@@ -34,17 +34,17 @@ class BundleTileSquare2 extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Padding(
-              //   padding:
-              //       const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-              //   child: AspectRatio(
-              //     aspectRatio: 1 / 1,
-              //     child: NetworkImageWithLoader(
-              //       data.cover,
-              //       fit: BoxFit.contain,
-              //     ),
-              //   ),
-              // ),
+              Padding(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                child: AspectRatio(
+                  aspectRatio: 1 / 1,
+                  child: NetworkImageWithLoader(
+                    data.cover,
+                    fit: BoxFit.contain,
+                  ),
+                ),
+              ),
               const SizedBox(height: 8),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -61,10 +61,10 @@ class BundleTileSquare2 extends StatelessWidget {
                 ],
               ),
               const SizedBox(height: 8),
-              Row(
+              const Row(
                 children: [
-                  const SizedBox(width: 4),
-                  const Spacer(),
+                  SizedBox(width: 4),
+                  Spacer(),
                 ],
               ),
               const SizedBox(height: 16),
