@@ -35,15 +35,15 @@ class Dummy {
   static List<MainBundleModel> mainbundles = [
     MainBundleModel(
         name: '종합 보고서',
-        cover: 'https://i.imgur.com/Y0IFT2g.png',
+        cover: 'lib/core/constants/report.png',
         route: "/reportPage"),
     MainBundleModel(
         name: '대화하기',
-        cover: 'https://i.postimg.cc/qtM4zj1K/packs-2.png',
+        cover: 'lib/core/constants/chat.png',
         route: "/chat_page"),
     MainBundleModel(
         name: '어제의 일기',
-        cover: 'https://i.postimg.cc/MnwW8WRd/pack-1.png',
+        cover: 'lib/core/constants/diary.png',
         route: "/yesterday"),
   ];
   static List<BundleModel> bundles = [
