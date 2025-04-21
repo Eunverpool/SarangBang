@@ -3,6 +3,9 @@ import 'package:table_calendar/table_calendar.dart';
 
 import '../data/diary_data.dart';
 
+//grocery는 내 프로젝트 이름, pubspec.yaml 파일에서 찾아볼 수 있음
+import 'package:grocery/core/routes/app_routes.dart';
+
 class DiaryCalendar extends StatefulWidget {
   const DiaryCalendar({super.key});
 
@@ -345,15 +348,16 @@ class _DiaryCalendarState extends State<DiaryCalendar> {
             )))
           GestureDetector(
             onTap: () {
-              // 일일 보고서 페이지 연결 (현재는 스낵바로 대체)
-              final summary = diarySummary[DateTime.utc(
-                _selectedDay!.year,
-                _selectedDay!.month,
-                _selectedDay!.day,
-              )];
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(content: Text('일일보고서 보기: $summary')),
-              );
+              // // 일일 보고서 페이지 연결 (현재는 스낵바로 대체)
+              // final summary = diarySummary[DateTime.utc(
+              //   _selectedDay!.year,
+              //   _selectedDay!.month,
+              //   _selectedDay!.day,
+              // )];
+              // ScaffoldMessenger.of(context).showSnackBar(
+              //   SnackBar(content: Text('일일보고서 보기: $summary')),
+              // );
+              Navigator.pushNamed(context, AppRoutes.reportPage);
             },
             child: Padding(
               padding: const EdgeInsets.all(12.0),
