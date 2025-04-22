@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
 
-import '../data/diary_data.dart';
+import '../../../data/report_data.dart';
 
 //grocery는 내 프로젝트 이름, pubspec.yaml 파일에서 찾아볼 수 있음
 import 'package:grocery/core/routes/app_routes.dart';
@@ -14,6 +14,12 @@ class DiaryCalendar extends StatefulWidget {
 }
 
 class _DiaryCalendarState extends State<DiaryCalendar> {
+  // 현재 보고 있는 날짜
+  DateTime _focusedDay = DateTime.now();
+
+  // 유저가 선택한 날짜 (터치 시 변경)
+  DateTime? _selectedDay;
+
   void _showYearMonthPicker(BuildContext context) async {
     int selectedYearIndex = _focusedDay.year - 2020;
     int selectedMonthIndex = _focusedDay.month - 1;
@@ -129,30 +135,50 @@ class _DiaryCalendarState extends State<DiaryCalendar> {
     );
   }
 
-  // 현재 보고 있는 날짜
-  DateTime _focusedDay = DateTime.now();
+  /// ✅ 리팩토링된 부분: emoji UI 렌더링 공통 함수
+  Widget _buildEmojiDay(int day, String? emoji,
+      {bool selected = false, bool today = false}) {
+    final textColor = selected
+        ? Colors.white
+        : today
+            ? Colors.grey
+            : Colors.black;
+    final bgColor = selected ? Colors.green : Colors.transparent;
+    final border = today
+        ? Border.all(color: Colors.green, width: 1.5)
+        : Border.all(color: Colors.transparent);
 
-  // 유저가 선택한 날짜 (터치 시 변경)
-  DateTime? _selectedDay;
+    return Container(
+      decoration: BoxDecoration(
+        shape: BoxShape.circle,
+        color: bgColor,
+        border: border,
+      ),
+      alignment: Alignment.center,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Text(
+            '$day',
+            style: TextStyle(
+                fontWeight: FontWeight.bold, fontSize: 14, color: textColor),
+          ),
+          const SizedBox(height: 2),
+          Text(emoji ?? '', style: const TextStyle(fontSize: 18)),
+        ],
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
+    final selectedKey = _selectedDay != null
+        ? DateTime.utc(
+            _selectedDay!.year, _selectedDay!.month, _selectedDay!.day)
+        : null;
+    final selectedReport = selectedKey != null ? reportDB[selectedKey] : null;
     return Column(
       children: [
-        // /// 🔹 직접 만든 연/월 선택 헤더
-        // GestureDetector(
-        //   onTap: () => _showYearMonthPicker(context),
-        //   child: Padding(
-        //     padding: const EdgeInsets.symmetric(vertical: 12.0),
-        //     child: Text(
-        //       '${_focusedDay.year}년 ${_focusedDay.month}월',
-        //       style: const TextStyle(
-        //         fontSize: 16,
-        //         fontWeight: FontWeight.bold,
-        //       ),
-        //     ),
-        //   ),
-        // ),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -247,131 +273,69 @@ class _DiaryCalendarState extends State<DiaryCalendar> {
           calendarBuilders: CalendarBuilders(
             // 일반 날짜
             defaultBuilder: (context, day, _) {
-              final emoji =
-                  emotionEmoji[DateTime.utc(day.year, day.month, day.day)];
-
-              return Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    '${day.day}',
-                    style: const TextStyle(
-                      fontSize: 14,
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-                  const SizedBox(height: 2),
-                  emoji != null
-                      ? Text(emoji, style: const TextStyle(fontSize: 16))
-                      : const Text(' ',
-                          style: TextStyle(fontSize: 16)), // ✅ 여기가 핵심!
-                ],
-              );
+              final report =
+                  reportDB[DateTime.utc(day.year, day.month, day.day)];
+              return _buildEmojiDay(day.day, report?.emoji);
             },
 
             // 오늘 날짜
             todayBuilder: (context, day, _) {
-              final emoji =
-                  emotionEmoji[DateTime.utc(day.year, day.month, day.day)];
-              return Container(
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  border: Border.all(color: Colors.green, width: 1.5),
-                ),
-                alignment: Alignment.center,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      '${day.day}',
-                      style: const TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 14,
-                        color: Colors.grey,
-                      ),
-                    ),
-                    const SizedBox(height: 2),
-                    Text(
-                      emoji ?? '',
-                      style: const TextStyle(
-                        fontSize: 18,
-                      ),
-                    ),
-                  ],
-                ),
-              );
+              final report =
+                  reportDB[DateTime.utc(day.year, day.month, day.day)];
+              return _buildEmojiDay(day.day, report?.emoji, today: true);
             },
 
             // 선택된 날짜
             selectedBuilder: (context, day, _) {
-              final emoji =
-                  emotionEmoji[DateTime.utc(day.year, day.month, day.day)];
-              return Container(
-                decoration: const BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: Colors.green,
-                ),
-                alignment: Alignment.center,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      '${day.day}',
-                      style: const TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 14,
-                        color: Colors.white,
-                      ),
-                    ),
-                    // const SizedBox(height: 2),
-                    Text(
-                      emoji ?? '',
-                      style: const TextStyle(
-                        fontSize: 18,
-                      ),
-                    ),
-                  ],
-                ),
-              );
+              final report =
+                  reportDB[DateTime.utc(day.year, day.month, day.day)];
+              return _buildEmojiDay(day.day, report?.emoji, selected: true);
             },
           ),
-        ), // TableCalendar
+        ),
 
         const SizedBox(height: 20),
 
         /// 📌 선택된 날짜의 일기 요약 표시 (제목 한 줄)
-        if (_selectedDay != null &&
-            diarySummary.containsKey(DateTime.utc(
-              _selectedDay!.year,
-              _selectedDay!.month,
-              _selectedDay!.day,
-            )))
-          GestureDetector(
-            onTap: () {
-              // // 일일 보고서 페이지 연결 (현재는 스낵바로 대체)
-              // final summary = diarySummary[DateTime.utc(
-              //   _selectedDay!.year,
-              //   _selectedDay!.month,
-              //   _selectedDay!.day,
-              // )];
-              // ScaffoldMessenger.of(context).showSnackBar(
-              //   SnackBar(content: Text('일일보고서 보기: $summary')),
-              // );
-              Navigator.pushNamed(context, AppRoutes.reportPage);
-            },
-            child: Padding(
-              padding: const EdgeInsets.all(12.0),
-              child: Text(
-                diarySummary[DateTime.utc(
-                  _selectedDay!.year,
-                  _selectedDay!.month,
-                  _selectedDay!.day,
-                )]!,
-                style:
-                    const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-              ),
-            ),
-          ),
+        // if (_selectedDay != null && selectedReport != null)
+        //   GestureDetector(
+        //     onTap: () {
+        //       Navigator.pushNamed(
+        //         context,
+        //         AppRoutes.reportPage,
+        //         arguments: _selectedDay,
+        //       );
+        //     },
+        //     child: Padding(
+        //       padding: const EdgeInsets.all(12.0),
+        //       child: Text(
+        //         '${selectedReport.emoji} ${selectedReport.title}',
+        //         style:
+        //             const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+        //       ),
+        //     ),
+        //   ),
+        ...(_selectedDay != null && selectedReport != null
+            ? [
+                GestureDetector(
+                  onTap: () {
+                    Navigator.pushNamed(
+                      context,
+                      AppRoutes.reportPage,
+                      arguments: _selectedDay,
+                    );
+                  },
+                  child: Padding(
+                    padding: const EdgeInsets.all(12.0),
+                    child: Text(
+                      '${selectedReport.emoji} ${selectedReport.title}',
+                      style: const TextStyle(
+                          fontSize: 16, fontWeight: FontWeight.bold),
+                    ),
+                  ),
+                )
+              ]
+            : []),
       ],
     );
   }

@@ -6,13 +6,21 @@ import 'package:grocery/views/report/components/report_emotion.dart';
 import 'package:grocery/views/report/components/report_cognitivetest.dart';
 import '../../core/constants/constants.dart';
 
+import '../../data/report_data.dart';
+
 class ReportPage extends StatelessWidget {
-  const ReportPage({super.key});
+  final DateTime selectedDate;
+  const ReportPage({super.key, required this.selectedDate});
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-      appBar: ReportHeader(),
+    final report = getReportByDate(selectedDate);
+    // report null 체크하고 넘기기
+    if (report == null) {
+      return const Center(child: Text('해당 날짜의 보고서가 없습니다.'));
+    }
+    return Scaffold(
+      appBar: ReportHeader(date: selectedDate),
       body: Padding(
         padding: EdgeInsets.all(16.0),
         child: Column(
@@ -22,9 +30,9 @@ class ReportPage extends StatelessWidget {
               flex: 2,
               child: Column(
                 children: [
-                  ReportSummary(),
+                  ReportSummary(summary: report.summary),
                   SizedBox(height: 50),
-                  ReportEmotion(),
+                  ReportEmotion(emotionRatio: report.emotionRatio),
                 ],
               ),
             ),

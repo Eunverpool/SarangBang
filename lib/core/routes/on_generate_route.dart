@@ -61,7 +61,9 @@ class RouteGenerator {
       case AppRoutes.diaryPage:
         return CupertinoPageRoute(builder: (_) => const DiaryPage());
       case AppRoutes.reportPage:
-        return CupertinoPageRoute(builder: (_) => const ReportPage());
+        final selectedDate = settings.arguments as DateTime;
+        return CupertinoPageRoute(
+            builder: (_) => ReportPage(selectedDate: selectedDate));
       case AppRoutes.introLogin:
         return CupertinoPageRoute(builder: (_) => const IntroLoginPage());
 
