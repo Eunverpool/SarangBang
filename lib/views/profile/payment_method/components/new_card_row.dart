@@ -16,7 +16,7 @@ class AddNewCardRow extends StatelessWidget {
       child: Row(
         children: [
           Text(
-            'My Card',
+            '내 카드',
             style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                   fontWeight: FontWeight.bold,
                   color: Colors.black,

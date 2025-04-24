@@ -37,44 +37,44 @@ class _Footer extends StatelessWidget {
             padding: const EdgeInsets.all(AppDefaults.padding),
             child: ElevatedButton(
               onPressed: () => Navigator.pushNamed(context, AppRoutes.login),
-              child: const Text('Login With Email'),
+              child: const Text('로그인 및 회원가입'),
             ),
           ),
         ),
         const SizedBox(height: AppDefaults.margin),
-        Text(
-          'OR',
-          style: Theme.of(context)
-              .textTheme
-              .titleLarge
-              ?.copyWith(fontWeight: FontWeight.bold),
-        ),
-        const SizedBox(height: AppDefaults.margin),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            IconButton(
-              onPressed: () {},
-              icon: SvgPicture.asset(AppIcons.appleIcon),
-              iconSize: 48,
-            ),
-            IconButton(
-              onPressed: () {},
-              icon: SvgPicture.asset(AppIcons.googleIcon),
-              iconSize: 48,
-            ),
-            IconButton(
-              onPressed: () {},
-              icon: SvgPicture.asset(AppIcons.twitterIcon),
-              iconSize: 48,
-            ),
-            IconButton(
-              onPressed: () {},
-              icon: SvgPicture.asset(AppIcons.facebookIcon),
-              iconSize: 48,
-            ),
-          ],
-        ),
+        // Text(
+        //   'OR',
+        //   style: Theme.of(context)
+        //       .textTheme
+        //       .titleLarge
+        //       ?.copyWith(fontWeight: FontWeight.bold),
+        // ),
+        // const SizedBox(height: AppDefaults.margin),
+        // Row(
+        //   mainAxisAlignment: MainAxisAlignment.center,
+        //   children: [
+        //     IconButton(
+        //       onPressed: () {},
+        //       icon: SvgPicture.asset(AppIcons.appleIcon),
+        //       iconSize: 48,
+        //     ),
+        //     IconButton(
+        //       onPressed: () {},
+        //       icon: SvgPicture.asset(AppIcons.googleIcon),
+        //       iconSize: 48,
+        //     ),
+        //     IconButton(
+        //       onPressed: () {},
+        //       icon: SvgPicture.asset(AppIcons.twitterIcon),
+        //       iconSize: 48,
+        //     ),
+        //     IconButton(
+        //       onPressed: () {},
+        //       icon: SvgPicture.asset(AppIcons.facebookIcon),
+        //       iconSize: 48,
+        //     ),
+        //   ],
+        // ),
       ],
     );
   }
@@ -95,14 +95,14 @@ class _AppLogoAndHeadline extends StatelessWidget {
           ),
         ),
         Text(
-          'Welcome to our',
+          '환영합니다',
           style: Theme.of(context)
               .textTheme
               .headlineSmall
               ?.copyWith(fontWeight: FontWeight.bold),
         ),
         Text(
-          'E-Grocery',
+          '사랑방',
           style: Theme.of(context).textTheme.headlineSmall?.copyWith(
                 fontWeight: FontWeight.bold,
                 color: AppColors.primary,

@@ -15,7 +15,7 @@ class SettingsPage extends StatelessWidget {
       appBar: AppBar(
         leading: const AppBackButton(),
         title: const Text(
-          'Settings',
+          '설정',
         ),
       ),
       backgroundColor: AppColors.cardColor,
@@ -38,28 +38,30 @@ class SettingsPage extends StatelessWidget {
                   Navigator.pushNamed(context, AppRoutes.settingsNotifications),
             ),
             AppSettingsListTile(
-              label: 'Change Password',
+              label: '비밀번호 변경',
               trailing: SvgPicture.asset(AppIcons.right),
               onTap: () =>
                   Navigator.pushNamed(context, AppRoutes.changePassword),
             ),
             AppSettingsListTile(
-              label: 'Change Phone Number',
+              label: '전화번호 변경',
               trailing: SvgPicture.asset(AppIcons.right),
               onTap: () =>
                   Navigator.pushNamed(context, AppRoutes.changePhoneNumber),
             ),
-            AppSettingsListTile(
-              label: 'Edit Home Address',
-              trailing: SvgPicture.asset(AppIcons.right),
-              onTap: () =>
-                  Navigator.pushNamed(context, AppRoutes.deliveryAddress),
-            ),
+
+            // 집주소 변경은 제외
+            // AppSettingsListTile(
+            //   label: 'Edit Home Address',
+            //   trailing: SvgPicture.asset(AppIcons.right),
+            //   onTap: () =>
+            //       Navigator.pushNamed(context, AppRoutes.deliveryAddress),
+            // ),
             AppSettingsListTile(
               label: '종합 보고서 기록 확인',
               trailing: SvgPicture.asset(AppIcons.right),
-              onTap: () =>
-                  Navigator.pushNamed(context, AppRoutes.deliveryAddress),    // 종합보고서 페이지 라우트
+              onTap: () => Navigator.pushNamed(
+                  context, AppRoutes.deliveryAddress), // 종합보고서 페이지 라우트
             ),
             AppSettingsListTile(
               label: '프로필 설정',

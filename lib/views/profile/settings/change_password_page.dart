@@ -13,7 +13,7 @@ class ChangePasswordPage extends StatelessWidget {
       appBar: AppBar(
         leading: const AppBackButton(),
         title: const Text(
-          'Change Password Page',
+          '비밀번호 변경',
         ),
       ),
       backgroundColor: AppColors.cardColor,
@@ -34,7 +34,7 @@ class ChangePasswordPage extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 /* <----  Current Password -----> */
-                const Text("Current Password"),
+                const Text("현재 비밀번호"),
                 const SizedBox(height: 8),
                 TextFormField(
                   keyboardType: TextInputType.visiblePassword,
@@ -50,7 +50,7 @@ class ChangePasswordPage extends StatelessWidget {
                 const SizedBox(height: AppDefaults.padding),
 
                 /* <---- New Password -----> */
-                const Text("New Password"),
+                const Text("새 비밀번호"),
                 const SizedBox(height: 8),
                 TextFormField(
                   keyboardType: TextInputType.visiblePassword,
@@ -66,7 +66,7 @@ class ChangePasswordPage extends StatelessWidget {
                 const SizedBox(height: AppDefaults.padding),
 
                 /* <---- Confirm Password-----> */
-                const Text("Confirm Password"),
+                const Text("새 비밀번호 확인"),
                 const SizedBox(height: 8),
                 TextFormField(
                   keyboardType: TextInputType.visiblePassword,
@@ -86,7 +86,7 @@ class ChangePasswordPage extends StatelessWidget {
                 SizedBox(
                   width: double.infinity,
                   child: ElevatedButton(
-                    child: const Text('Update Password'),
+                    child: const Text('확인'),
                     onPressed: () {},
                   ),
                 ),
