@@ -20,7 +20,6 @@ import '../diary/diary_page.dart';
 import '../../views/chat/chat_page.dart';
 import 'package:flutter/material.dart';
 
-
 /// This page will contain all the bottom navigation tabs
 class EntryPointUI extends StatefulWidget {
   const EntryPointUI({super.key});
@@ -72,8 +71,7 @@ class _EntryPointUIState extends State<EntryPointUI> {
           );
         },
         backgroundColor: AppColors.primary,
-        child: SvgPicture.asset(AppIcons.cart),
-        
+        child: const Icon(Icons.mic, color: Colors.white),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       bottomNavigationBar: AppBottomNavigationBar(
