@@ -3,6 +3,7 @@ import 'package:flutter_svg/svg.dart';
 
 import '../../core/components/app_back_button.dart';
 import '../../core/components/bundle_tile_square.dart';
+import '../../core/components/bundle_tile_square2.dart';
 import '../../core/constants/constants.dart';
 import '../../core/routes/app_routes.dart';
 
@@ -32,8 +33,8 @@ class PopularPackPage extends StatelessWidget {
                 ),
                 itemCount: 8,
                 itemBuilder: (context, index) {
-                  return BundleTileSquare(
-                    data: Dummy.bundles.first,
+                  return BundleTileSquare2(
+                    data: Dummy.mainbundles.first,
                   );
                 },
               ),

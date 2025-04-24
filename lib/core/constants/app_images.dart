@@ -2,7 +2,7 @@ class AppImages {
   static const roundedLogo = 'lib/core/constants/sarangbang.webp';
 
   /* <---- Homepage banner -----> */
-  static const homePageBanner = 'https://i.imgur.com/8hBIsS5.png';
+  static const homePageBanner = 'lib/core/constants/homepage.png';
 
   /* <---- Image used on unknown page -----> */
   static const illustrations404 = 'https://i.imgur.com/SGTzEiC.png';

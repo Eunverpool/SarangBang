@@ -1,5 +1,6 @@
 import '../models/dummy_bundle_model.dart';
 import '../models/dummy_product_model.dart';
+import '../models/dummy_mainbundle_model.dart';
 
 class Dummy {
   /// List Of Dummy Products
@@ -31,6 +32,20 @@ class Dummy {
   ];
 
   /// List Of Dummy Bundles
+  static List<MainBundleModel> mainbundles = [
+    MainBundleModel(
+      name: '종합 보고서',
+      cover: 'https://i.imgur.com/Y0IFT2g.png',
+    ),
+    MainBundleModel(
+      name: '대화하기',
+      cover: 'https://i.postimg.cc/qtM4zj1K/packs-2.png',
+    ),
+    MainBundleModel(
+      name: '어제의 일기',
+      cover: 'https://i.postimg.cc/MnwW8WRd/pack-1.png',
+    ),
+  ];
   static List<BundleModel> bundles = [
     BundleModel(
       name: '귀여운 손녀',
