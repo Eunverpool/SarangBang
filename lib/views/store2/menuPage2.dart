@@ -10,30 +10,28 @@ class menuPage2 extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Padding(
-          padding: const EdgeInsets.symmetric(vertical: 30.0), // 좌우 패딩 추가
-          child: TitleAndActionButton(
-            title: '상점 페이지',
-            onTap: () => Navigator.pushNamed(context, AppRoutes.popularItems),
-          ),
-        ),
-        const SizedBox(height: 100.0), // 제목과 스크롤 뷰 사이의 간격
-        SingleChildScrollView(
-          padding: const EdgeInsets.only(left: AppDefaults.padding),
-          scrollDirection: Axis.horizontal,
-          child: Row(
-            children: List.generate(
-              Dummy.bundles.length,
-              (index) => Padding(
-                padding: const EdgeInsets.only(right: AppDefaults.padding),
-                child: BundleTileSquare(data: Dummy.bundles[index]),
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('상점 페이지'),
+      ),
+      body: Column(
+        children: [
+          const SizedBox(height: 100.0), // 제목과 스크롤 뷰 사이의 간격
+          SingleChildScrollView(
+            padding: const EdgeInsets.only(left: AppDefaults.padding),
+            scrollDirection: Axis.horizontal,
+            child: Row(
+              children: List.generate(
+                Dummy.bundles.length,
+                (index) => Padding(
+                  padding: const EdgeInsets.only(right: AppDefaults.padding),
+                  child: BundleTileSquare(data: Dummy.bundles[index]),
+                ),
               ),
             ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }
