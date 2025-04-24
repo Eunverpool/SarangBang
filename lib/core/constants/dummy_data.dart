@@ -44,7 +44,7 @@ class Dummy {
     MainBundleModel(
         name: '어제의 일기',
         cover: 'lib/core/constants/diary.png',
-        route: "/yesterday"),
+        route: "/reportPage"),
   ];
   static List<BundleModel> bundles = [
     BundleModel(
