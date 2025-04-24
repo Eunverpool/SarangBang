@@ -74,6 +74,13 @@ class Dummy {
       itemNames: ['Onion, Oil, Salt'],
       price: 35,
       mainPrice: 50.32,
-    ),
+    )
+  ];
+  static List<String> voices = [
+    '귀여운 목소리',
+    '차분한 목소리',
+    '활기찬 목소리',
+    '부드러운 목소리',
+    '강렬한 목소리',
   ];
 }
