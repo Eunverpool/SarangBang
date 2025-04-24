@@ -49,7 +49,7 @@ class ProfileHeaderOptions extends StatelessWidget {
                 Navigator.pushNamed(context, AppRoutes.deliveryAddress);
               },
             ),
-          )
+          ),
         ],
       ),
     );
