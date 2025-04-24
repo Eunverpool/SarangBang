@@ -7,6 +7,7 @@ import '../../core/routes/app_routes.dart';
 import 'components/ad_space.dart';
 import 'components/our_new_item.dart';
 import 'components/popular_packs.dart';
+import '../../../core/components/network_image.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -18,39 +19,42 @@ class HomePage extends StatelessWidget {
         child: CustomScrollView(
           slivers: [
             SliverAppBar(
-              leading: Padding(
-                padding: const EdgeInsets.only(left: 8),
-                child: ElevatedButton(
-                  onPressed: () {
-                    Navigator.pushNamed(context, AppRoutes.drawerPage);
-                  },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xFFF2F6F3),
-                    shape: const CircleBorder(),
-                  ),
-                  child: SvgPicture.asset(AppIcons.sidebarIcon),
-                ),
+              automaticallyImplyLeading: false,
+              // leading: Padding(
+              //   padding: const EdgeInsets.only(left: 8),
+              //   child: ElevatedButton(
+              //     onPressed: () {
+              //       Navigator.pushNamed(context, AppRoutes.drawerPage);
+              //     },
+              //     style: ElevatedButton.styleFrom(
+              //       backgroundColor: const Color(0xFFF2F6F3),
+              //       shape: const CircleBorder(),
+              //     ),
+              //     child: SvgPicture.asset(AppIcons.sidebarIcon),
+              //   ),
+              // ),
+              //floating: true,
+              title: SizedBox(
+                height: 50,
+                width: 150,
+                child: NetworkImageWithLoader('https://i.imgur.com/oWH9HAk.png',
+                    fit: BoxFit.contain),
               ),
-              floating: true,
-              title: SvgPicture.asset(
-                "assets/images/app_logo.svg",
-                height: 32,
-              ),
-              actions: [
-                Padding(
-                  padding: const EdgeInsets.only(right: 8, top: 4, bottom: 4),
-                  child: ElevatedButton(
-                    onPressed: () {
-                      Navigator.pushNamed(context, AppRoutes.search);
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color(0xFFF2F6F3),
-                      shape: const CircleBorder(),
-                    ),
-                    child: SvgPicture.asset(AppIcons.search),
-                  ),
-                ),
-              ],
+              // actions: [
+              //   Padding(
+              //     padding: const EdgeInsets.only(right: 8, top: 4, bottom: 4),
+              //     child: ElevatedButton(
+              //       onPressed: () {
+              //         Navigator.pushNamed(context, AppRoutes.search);
+              //       },
+              //       style: ElevatedButton.styleFrom(
+              //         backgroundColor: const Color(0xFFF2F6F3),
+              //         shape: const CircleBorder(),
+              //       ),
+              //       child: SvgPicture.asset(AppIcons.search),
+              //     ),
+              //   ),
+              //],
             ),
             const SliverToBoxAdapter(
               child: AdSpace(),
