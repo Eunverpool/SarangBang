@@ -55,6 +55,8 @@ import 'app_routes.dart';
 import 'unknown_page.dart';
 
 import '../../views/store2/menuPage2.dart';
+import '../../views/chat/chat_page.dart';
+import '../../views/chat/test.dart';
 
 class RouteGenerator {
   static Route? onGenerate(RouteSettings settings) {
@@ -64,7 +66,9 @@ class RouteGenerator {
       case AppRoutes.diaryPage:
         return CupertinoPageRoute(builder: (_) => const DiaryPage());
       case AppRoutes.reportPage:
-        return CupertinoPageRoute(builder: (_) => const ReportPage());
+        final selectedDate = settings.arguments as DateTime;
+        return CupertinoPageRoute(
+            builder: (_) => ReportPage(selectedDate: selectedDate));
       //상점 페이지
       case AppRoutes.store2:
         return CupertinoPageRoute(builder: (_) => const menuPage2());
@@ -211,6 +215,13 @@ class RouteGenerator {
 
       case AppRoutes.paymentCardAdd:
         return CupertinoPageRoute(builder: (_) => const AddNewCardPage());
+
+      // 우리가 따로 작성한거 여기 밑에 쓰셈
+      case AppRoutes.chat_page:
+        return CupertinoPageRoute(builder: (_) => const ChatPage());
+
+      case AppRoutes.test_page:
+        return CupertinoPageRoute(builder: (_) => const TestPage());
 
       default:
         return errorRoute();

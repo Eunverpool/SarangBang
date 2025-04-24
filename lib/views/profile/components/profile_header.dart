@@ -62,13 +62,13 @@ class _UserData extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                'Shakibul Islam',
+                '사용자 이름 db에서 꺼내올거임',
                 style: Theme.of(context).textTheme.titleLarge?.copyWith(
                     fontWeight: FontWeight.bold, color: Colors.white),
               ),
               const SizedBox(height: 8),
               Text(
-                'ID: 1540580',
+                '안녕하세요?',
                 style: Theme.of(context)
                     .textTheme
                     .bodyLarge

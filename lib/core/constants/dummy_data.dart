@@ -34,17 +34,17 @@ class Dummy {
   /// List Of Dummy Bundles
   static List<MainBundleModel> mainbundles = [
     MainBundleModel(
-      name: '종합 보고서',
-      cover: 'https://i.imgur.com/Y0IFT2g.png',
-    ),
+        name: '종합 보고서',
+        cover: 'lib/core/constants/report.png',
+        route: "/reportPage"),
     MainBundleModel(
-      name: '대화하기',
-      cover: 'https://i.postimg.cc/qtM4zj1K/packs-2.png',
-    ),
+        name: '대화하기',
+        cover: 'lib/core/constants/chat.png',
+        route: "/chat_page"),
     MainBundleModel(
-      name: '어제의 일기',
-      cover: 'https://i.postimg.cc/MnwW8WRd/pack-1.png',
-    ),
+        name: '어제의 일기',
+        cover: 'lib/core/constants/diary.png',
+        route: "/reportPage"),
   ];
   static List<BundleModel> bundles = [
     BundleModel(
