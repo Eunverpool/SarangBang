@@ -54,7 +54,7 @@ class _UserData extends StatelessWidget {
               child: AspectRatio(
                 aspectRatio: 1 / 1,
                 child:
-                    NetworkImageWithLoader('https://i.imgur.com/eFrOhen.png'),
+                    NetworkImageWithLoader('https://i.imgur.com/DK2IBDi.png'),
               ),
             ),
           ),
