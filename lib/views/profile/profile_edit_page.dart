@@ -13,7 +13,7 @@ class ProfileEditPage extends StatelessWidget {
       appBar: AppBar(
         leading: const AppBackButton(),
         title: const Text(
-          'Profile',
+          '내 정보 수정',
         ),
       ),
       body: SingleChildScrollView(
@@ -50,7 +50,6 @@ class ProfileEditPage extends StatelessWidget {
               const SizedBox(height: AppDefaults.padding),
 
               /* <---- Phone Number -----> */
-              const Text("전화번호"),
               const Text("전화번호"),
               const SizedBox(height: 8),
               TextFormField(

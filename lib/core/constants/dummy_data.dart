@@ -69,11 +69,18 @@ class Dummy {
       mainPrice: 50.32,
     ),
     BundleModel(
-      name: 'Bundle Pack',
-      cover: 'https://i.postimg.cc/k2y7Jkv9/pack-4.png',
+      name: '성인',
+      cover: 'https://i.postimg.cc/gk63S13t/040-a5c20a8f04ea.png',
       itemNames: ['Onion, Oil, Salt'],
       price: 35,
       mainPrice: 50.32,
-    ),
+    )
+  ];
+  static List<String> voices = [
+    '귀여운 목소리',
+    '차분한 목소리',
+    '활기찬 목소리',
+    '부드러운 목소리',
+    '강렬한 목소리',
   ];
 }

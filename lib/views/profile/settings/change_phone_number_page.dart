@@ -12,7 +12,7 @@ class ChangePhoneNumberPage extends StatelessWidget {
       appBar: AppBar(
         leading: const AppBackButton(),
         title: const Text(
-          'Change Phone Number Page',
+          '전화번호 변경',
         ),
       ),
       backgroundColor: AppColors.cardColor,
@@ -32,8 +32,8 @@ class ChangePhoneNumberPage extends StatelessWidget {
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                /* <----  New Phone Number -----> */
-                const Text("New Phone Number"),
+                /* <----  기존 전화번호 -----> */
+                const Text("기존 전화번호"),
                 const SizedBox(height: 8),
                 TextFormField(
                   keyboardType: TextInputType.number,
@@ -41,8 +41,8 @@ class ChangePhoneNumberPage extends StatelessWidget {
                 ),
                 const SizedBox(height: AppDefaults.padding),
 
-                /* <---- Retype Phone Number -----> */
-                const Text("Retype Phone Number"),
+                /* <---- 새 전화번호 -----> */
+                const Text("새 전화번호"),
                 const SizedBox(height: 8),
                 TextFormField(
                   keyboardType: TextInputType.number,

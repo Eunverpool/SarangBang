@@ -20,37 +20,43 @@ class AppBottomNavigationBar extends StatelessWidget {
       notchMargin: AppDefaults.margin,
       color: AppColors.scaffoldBackground,
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween, // ← 삭제해도 됨
         children: [
-          BottomAppBarItem(
-            name: 'Home',
-            iconLocation: AppIcons.home,
-            isActive: currentIndex == 0,
-            onTap: () => onNavTap(0),
+          Expanded(
+            child: BottomAppBarItem(
+              name: '집',
+              iconLocation: const Icon(Icons.home, size: 25),
+              isActive: currentIndex == 0,
+              onTap: () => onNavTap(0),
+            ),
           ),
-          BottomAppBarItem(
-            name: 'Menu',
-            iconLocation: AppIcons.menu,
-            isActive: currentIndex == 1,
-            onTap: () => onNavTap(1),
+          Expanded(
+            child: BottomAppBarItem(
+              name: '일지',
+              iconLocation: const Icon(Icons.calendar_month, size: 25),
+              isActive: currentIndex == 1,
+              onTap: () => onNavTap(1),
+            ),
           ),
           const Padding(
-            padding: EdgeInsets.all(AppDefaults.padding * 2),
+            padding: EdgeInsets.all(AppDefaults.padding * 1.5),
             child: SizedBox(width: AppDefaults.margin),
           ),
-          /* <---- We have to leave this 3rd index (2) for the cart item -----> */
-
-          BottomAppBarItem(
-            name: '상점',
-            iconLocation: AppIcons.save,
-            isActive: currentIndex == 3,
-            onTap: () => onNavTap(3),
+          Expanded(
+            child: BottomAppBarItem(
+              name: '상점',
+              iconLocation: const Icon(Icons.shopping_cart, size: 25),
+              isActive: currentIndex == 3,
+              onTap: () => onNavTap(3),
+            ),
           ),
-          BottomAppBarItem(
-            name: 'Profile',
-            iconLocation: AppIcons.profile,
-            isActive: currentIndex == 4,
-            onTap: () => onNavTap(4),
+          Expanded(
+            child: BottomAppBarItem(
+              name: '내 정보',
+              iconLocation: const Icon(Icons.account_circle, size: 25),
+              isActive: currentIndex == 4,
+              onTap: () => onNavTap(4),
+            ),
           ),
         ],
       ),

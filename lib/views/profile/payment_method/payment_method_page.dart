@@ -15,7 +15,7 @@ class PaymentMethodPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         leading: const AppBackButton(),
-        title: const Text('Payment Option'),
+        title: const Text('결제 수단'),
       ),
       body: Column(
         children: [
@@ -27,7 +27,7 @@ class PaymentMethodPage extends StatelessWidget {
             child: Padding(
               padding: const EdgeInsets.all(AppDefaults.padding),
               child: Text(
-                'Other Payment Option',
+                '다른 결제 수단',
                 style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                       fontWeight: FontWeight.bold,
                       color: Colors.black,
@@ -35,24 +35,24 @@ class PaymentMethodPage extends StatelessWidget {
               ),
             ),
           ),
-          PaymentOptionTile(
-            icon: 'https://i.imgur.com/7pI5714.png',
-            label: 'Paypal',
-            accountName: 'mypaypal@gmail.com',
-            onTap: () {},
-          ),
-          PaymentOptionTile(
-            icon: 'https://i.imgur.com/aRJj3iU.png',
-            label: 'Cash on Delivery',
-            accountName: 'Pay in Cash',
-            onTap: () {},
-          ),
-          PaymentOptionTile(
-            icon: 'https://i.imgur.com/lLUcMC1.png',
-            label: 'Apple Pay',
-            accountName: 'applepay.com',
-            onTap: () {},
-          ),
+          // PaymentOptionTile(
+          //   icon: 'https://i.imgur.com/7pI5714.png',
+          //   label: 'Paypal',
+          //   accountName: 'mypaypal@gmail.com',
+          //   onTap: () {},
+          // ),
+          // PaymentOptionTile(
+          //   icon: 'https://i.imgur.com/aRJj3iU.png',
+          //   label: 'Cash on Delivery',
+          //   accountName: 'Pay in Cash',
+          //   onTap: () {},
+          // ),
+          // PaymentOptionTile(
+          //   icon: 'https://i.imgur.com/lLUcMC1.png',
+          //   label: 'Apple Pay',
+          //   accountName: 'applepay.com',
+          //   onTap: () {},
+          // ),
         ],
       ),
     );

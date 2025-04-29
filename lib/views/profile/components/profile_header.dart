@@ -14,7 +14,7 @@ class ProfileHeader extends StatelessWidget {
     return Stack(
       children: [
         /// Background
-        Image.asset('assets/images/profile_page_background.png'),
+        // Image.asset('assets/images/profile_page_background.png'),
 
         /// Content
         Column(
@@ -24,7 +24,7 @@ class ProfileHeader extends StatelessWidget {
               elevation: 0,
               backgroundColor: Colors.transparent,
               titleTextStyle: Theme.of(context).textTheme.titleLarge?.copyWith(
-                    color: Colors.white,
+                    color: Colors.black,
                     fontWeight: FontWeight.bold,
                   ),
             ),
@@ -52,27 +52,35 @@ class _UserData extends StatelessWidget {
             height: 100,
             child: ClipOval(
               child: AspectRatio(
-                  aspectRatio: 1 / 1,
-                  child: NetworkImageWithLoader(
-                      'https://images.unsplash.com/photo-1628157588553-5eeea00af15c?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=880&q=80')),
+                aspectRatio: 1 / 1,
+                child:
+                    NetworkImageWithLoader('https://i.imgur.com/DK2IBDi.png'),
+              ),
             ),
           ),
           const SizedBox(width: AppDefaults.padding),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                '사용자 이름 db에서 꺼내올거임',
-                style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                    fontWeight: FontWeight.bold, color: Colors.white),
-              ),
+              Row(children: [
+                Text(
+                  '박선문',
+                  style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                      fontWeight: FontWeight.bold, color: Colors.black),
+                ),
+                Text(
+                  '님',
+                  style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                      fontWeight: FontWeight.bold, color: Colors.grey),
+                ),
+              ]),
               const SizedBox(height: 8),
               Text(
-                '안녕하세요?',
+                '오늘 하루는 어떠셨나요? ',
                 style: Theme.of(context)
                     .textTheme
                     .bodyLarge
-                    ?.copyWith(color: Colors.white),
+                    ?.copyWith(color: Colors.black),
               ),
             ],
           )

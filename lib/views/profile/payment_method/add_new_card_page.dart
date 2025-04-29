@@ -49,7 +49,7 @@ class _AddNewCardPageState extends State<AddNewCardPage> {
     return Scaffold(
       appBar: AppBar(
         leading: const AppBackButton(),
-        title: const Text('Add New Card'),
+        title: const Text('카드 추가'),
       ),
       backgroundColor: AppColors.cardColor,
       body: SingleChildScrollView(
@@ -119,16 +119,20 @@ class CreditCardForm extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text("Card Name"),
+          const Text("카드 소유자 이름", style: TextStyle(color: Colors.black)),
           const SizedBox(height: 8),
           TextFormField(
             keyboardType: TextInputType.text,
             textInputAction: TextInputAction.next,
             controller: holderName,
             onChanged: onTextChanged,
+            decoration: const InputDecoration(
+              hintText: '카드에 표시된 이름과 동일하게 입력하세요',
+              hintStyle: TextStyle(color: Colors.grey),
+            ),
           ),
           const SizedBox(height: AppDefaults.padding),
-          const Text("Card Number"),
+          const Text("카드 번호", style: TextStyle(color: Colors.black)),
           const SizedBox(height: 8),
           TextFormField(
             keyboardType: TextInputType.number,
@@ -143,7 +147,7 @@ class CreditCardForm extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Text("Expire Date"),
+                    const Text("만료일", style: TextStyle(color: Colors.black)),
                     const SizedBox(height: 8),
                     TextFormField(
                       keyboardType: TextInputType.number,
@@ -159,7 +163,8 @@ class CreditCardForm extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Text("CVV"),
+                    const Text("보안 코드(CVV)",
+                        style: TextStyle(color: Colors.black)),
                     const SizedBox(height: 8),
                     TextFormField(
                       keyboardType: TextInputType.number,
@@ -176,7 +181,7 @@ class CreditCardForm extends StatelessWidget {
           Row(
             children: [
               Text(
-                'Remember My Card Details',
+                '내 카드 정보 기억하기',
                 style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                       color: Colors.black,
                     ),
@@ -196,7 +201,7 @@ class CreditCardForm extends StatelessWidget {
             width: double.infinity,
             child: ElevatedButton(
               onPressed: () {},
-              child: const Text('Add Card'),
+              child: const Text('등록하기'),
             ),
           ),
           const SizedBox(height: AppDefaults.padding),

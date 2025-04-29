@@ -11,8 +11,8 @@ class PaymentDefaultCard extends StatelessWidget {
     return CreditCardWidget(
       cardNumber: '146465465456',
       expiryDate: '10/24',
-      cardHolderName: 'Dannis Alvert',
-      labelCardHolder: 'Dannis',
+      cardHolderName: 'Sunmoon Park',
+      labelCardHolder: 'Sunmoon',
       isHolderNameVisible: true,
       backgroundNetworkImage: 'https://i.imgur.com/uUDkwQx.png',
       cvvCode: '5424',
