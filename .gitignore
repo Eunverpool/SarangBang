@@ -1,2 +1,2 @@
-node_modules/          # Nodeg.js 모듈
-*.env                  # 환경 변수 파일shsh
+node_modules/
+*.env
