@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:grocery/views/chat/colab.dart';
 import 'package:grocery/views/menu/menu_page.dart';
 
 import '../../views/auth/forget_password_page.dart';
@@ -222,6 +223,9 @@ class RouteGenerator {
 
       case AppRoutes.test_page:
         return CupertinoPageRoute(builder: (_) => const TestPage());
+
+      case AppRoutes.colab_test:
+        return CupertinoPageRoute(builder: (_) => const Colab());
 
       default:
         return errorRoute();

@@ -20,7 +20,12 @@ class MyApp extends StatelessWidget {
       title: 'SarangBang',
       theme: AppTheme.defaultTheme,
       onGenerateRoute: RouteGenerator.onGenerate,
-      initialRoute: AppRoutes.entryPoint,
+      
+      // 메인페이지 경로
+      // initialRoute: AppRoutes.entryPoint,
+
+      // 테스트용 작업중
+      initialRoute: AppRoutes.colab_test,
     );
   }
 }

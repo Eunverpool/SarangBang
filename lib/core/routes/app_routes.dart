@@ -84,4 +84,9 @@ class AppRoutes {
 
   static const chat_page = '/chat_page';
   static const test_page = '/test_page';
+
+  /* colab 통신 테스트용 */
+  static const colab_test = '/colab_test';
+
+
 }
