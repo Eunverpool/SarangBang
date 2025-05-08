@@ -13,18 +13,27 @@ class PopularPacks extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: AppDefaults.padding),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      child: Column(
+        // Row 대신 Column 사용
+        crossAxisAlignment: CrossAxisAlignment.stretch, // 자식 위젯들을 가로로 최대한 늘림
         children: [
-          // 왼쪽 (0번째, 정상)
-          BundleTileSquare2(
-            data: Dummy.mainbundles[0],
+          // 1번째 아이템
+          Padding(
+            padding:
+                const EdgeInsets.only(bottom: AppDefaults.padding), // 아래쪽 간격 추가
+            child: BundleTileSquare2(
+              data: Dummy.mainbundles[0],
+            ),
           ),
 
-          // 가운데 (1번째, 약간 위로)
-          BundleTileSquare2(data: Dummy.mainbundles[1]),
+          // 2번째 아이템
+          Padding(
+            padding:
+                const EdgeInsets.only(bottom: AppDefaults.padding), // 아래쪽 간격 추가
+            child: BundleTileSquare2(data: Dummy.mainbundles[1]),
+          ),
 
-          // 오른쪽 (2번째, 정상)
+          // 3번째 아이템
           BundleTileSquare2(data: Dummy.mainbundles[2]),
         ],
       ),

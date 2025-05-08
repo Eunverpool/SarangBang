@@ -43,7 +43,6 @@ class DeviceIdManager {
 
 void main() {
   initializeDateFormatting().then((_) => runApp(const MyApp()));
-  // 앱 시작 시 기기 ID를 콘솔에 출력 (선택 사항)
   DeviceIdManager.printDeviceId();
 }
 
