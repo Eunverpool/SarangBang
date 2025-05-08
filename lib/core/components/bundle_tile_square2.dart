@@ -25,17 +25,16 @@ class BundleTileSquare2 extends StatelessWidget {
         },
         borderRadius: AppDefaults.borderRadius,
         child: Container(
-          width: 100,
           padding: const EdgeInsets.symmetric(horizontal: AppDefaults.padding),
           decoration: BoxDecoration(
             border: Border.all(width: 0.1, color: AppColors.placeholder),
             borderRadius: AppDefaults.borderRadius,
           ),
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Padding(
-                padding: const EdgeInsets.all(8.0), // 원하는 여백 크기 설정 (예: 8.0)
+                padding: const EdgeInsets.all(7.0), // 원하는 여백 크기 설정 (예: 8.0)
                 child: AspectRatio(
                   aspectRatio: 5 / 1,
                   child: NetworkImageWithLoader(
@@ -46,7 +45,7 @@ class BundleTileSquare2 extends StatelessWidget {
               ),
               const SizedBox(height: 8),
               Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Text(
                     data.name,
