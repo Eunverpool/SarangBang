@@ -4,6 +4,7 @@ const cors = require("cors");
 const bodyParser = require("body-parser");
 const connectDB = require("./config/db");
 const userRoutes = require("./routes/userRoutes");
+const diaryRoutes = require("./routes/diaryRoutes");
 
 dotenv.config();
 const app = express();
@@ -18,7 +19,7 @@ app.get("/", (req, res) => {
   res.send("Hello from the backend!");
 });
 app.use("/users", userRoutes);
-
+app.use("/diary", diaryRoutes);
 app.listen(port, () => {
   console.log(`🚀 Server running at http://localhost:${port}`);
 });
