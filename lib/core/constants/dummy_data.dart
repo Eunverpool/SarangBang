@@ -50,30 +50,30 @@ class Dummy {
     BundleModel(
       name: '귀여운 손녀',
       cover: 'https://i.postimg.cc/LXgqbpLy/990-4d81f90e9c4a.png',
-      itemNames: ['Onion, Oil, Salt'],
-      price: 35,
-      mainPrice: 50.32,
+      itemNames: ['캐릭터'],
+      price: 5000,
+      mainPrice: 0,
     ),
     BundleModel(
       name: '귀여운 손자',
       cover: 'https://i.postimg.cc/zGPGZQJ4/a5b-2ff48936406a.png',
-      itemNames: ['Onion, Oil, Salt'],
-      price: 35,
-      mainPrice: 50.32,
+      itemNames: ['캐릭터'],
+      price: 10000,
+      mainPrice: 0,
     ),
     BundleModel(
       name: '청소년',
       cover: 'https://i.postimg.cc/bvVP2SGM/a04-9c9269fc6047.png',
-      itemNames: ['Onion, Oil, Salt'],
-      price: 35,
-      mainPrice: 50.32,
+      itemNames: ['캐릭터'],
+      price: 10000,
+      mainPrice: 0,
     ),
     BundleModel(
       name: '성인',
       cover: 'https://i.postimg.cc/gk63S13t/040-a5c20a8f04ea.png',
-      itemNames: ['Onion, Oil, Salt'],
+      itemNames: ['캐릭터'],
       price: 35,
-      mainPrice: 50.32,
+      mainPrice: 0,
     )
   ];
   static List<String> voices = [
