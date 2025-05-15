@@ -99,6 +99,8 @@ class _ChatPageState extends State<ChatPage> {
     });
   }
 
+  String _currentQuestion = "오늘 일어났던 일 중에서 기억에 가장 많이 남는 일은 어떤 것인가요?";
+
   void _toggleListening() async {
     _isListening ? _stopListening() : _startListening();
   }
@@ -106,10 +108,13 @@ class _ChatPageState extends State<ChatPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.green[100],
+      backgroundColor: Colors.white,
       appBar: AppBar(
-        backgroundColor: Colors.green[300],
-        title: const Text('5월 2일의 기록'),
+        title: const Text("5월 2일의 기록"),
+        backgroundColor: Colors.white,
+        elevation: 0,
+        centerTitle: true,
+        foregroundColor: Colors.black,
         actions: [
           IconButton(
             icon: const Icon(Icons.check),
@@ -121,53 +126,110 @@ class _ChatPageState extends State<ChatPage> {
       ),
       body: Column(
         children: [
-          Expanded(
-            child: ListView(
-              padding: const EdgeInsets.all(16),
-              children: [
-                // ✅ 첫 AI 말풍선 고정
-                ChatBubble(
-                  //LLaMA API에서 받아온 응답을 _aiMessages 리스트에 추가하면서:
-
-                  // _aiMessages.add({
-                  //   'message': llamaResponse,
-                  //   'time': _currentTime(),
-                  // });
-
-                  // _flutterTts.speak(llamaResponse); // 자동 읽기
-                  // 그리고 ChatBubble에서 그 메시지를 클릭하면 다시 들을 수 있게 유지
-                  message: "오늘 일어났던 일 중 가장 기억에 남는 일은 무엇인가요?",
-                  isMe: false,
-                  time: "오전 9:00",
-                  onTap: () {
-                    _flutterTts.setLanguage('ko-KR');
-                    _flutterTts.setPitch(1.0);
-                    _flutterTts.setSpeechRate(0.5);
-                    _flutterTts.speak("오늘 일어났던 일 중 가장 기억에 남는 일은 무엇인가요?");
-                  },
-                ),
-
-                // ✅ 확정된 사용자 메시지 출력
-                ..._messages.map(
-                  (msg) => ChatBubble(
-                    message: msg['message']!,
-                    time: msg['time']!,
-                    isMe: true,
-                  ),
-                ),
-
-                // ✅ 실시간 중간 인식 메시지
-                if (_interimText.isNotEmpty)
-                  ChatBubble(
-                    message: _interimText,
-                    time: _currentTime(),
-                    isMe: true,
-                  ),
-              ],
+          // 상단 안내 문구
+          const Padding(
+            padding: EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+            child: Text(
+              "오늘 일어났던 일에 대해 저와 대화를 하며 기록해주세요.",
+              style: TextStyle(fontSize: 14, color: Colors.grey),
+              textAlign: TextAlign.center,
             ),
           ),
 
-          // ✅ 하단 마이크 버튼 UI
+          // 중앙 영역 전체 배경 포함
+          Expanded(
+            child: Container(
+              width: double.infinity,
+              color: const Color.fromARGB(255, 197, 225, 165),
+              padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+              child: SingleChildScrollView(
+                reverse: true,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    // ✅ AI 질문 텍스트
+                    GestureDetector(
+                      onTap: () {
+                        _flutterTts.setLanguage('ko-KR');
+                        _flutterTts.setPitch(1.0);
+                        _flutterTts.setSpeechRate(0.5);
+                        _flutterTts.speak(_currentQuestion);
+                      },
+                      child: Container(
+                        width: double.infinity,
+                        padding: const EdgeInsets.all(20),
+                        decoration: BoxDecoration(
+                          color: Colors.indigo[100],
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        child: Text(
+                          _currentQuestion,
+                          style: const TextStyle(
+                            fontSize: 20,
+                            color: Color(0xFF2C2C2C),
+                            height: 1.5,
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                    ),
+
+                    const SizedBox(height: 16),
+
+                    // ✅ 사용자 확정 메시지 말풍선 형태로
+                    ..._messages.map(
+                      (msg) => Align(
+                        alignment: Alignment.centerRight,
+                        child: Container(
+                          margin: const EdgeInsets.symmetric(vertical: 6),
+                          padding: const EdgeInsets.all(12),
+                          constraints: const BoxConstraints(maxWidth: 300),
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(16),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black12,
+                                blurRadius: 4,
+                                offset: Offset(2, 2),
+                              )
+                            ],
+                          ),
+                          child: Text(
+                            msg['message']!,
+                            style: const TextStyle(
+                                fontSize: 16, color: Colors.black87),
+                          ),
+                        ),
+                      ),
+                    ),
+
+                    // ✅ 실시간 사용자 중간 메시지
+                    if (_interimText.isNotEmpty)
+                      Align(
+                        alignment: Alignment.centerRight,
+                        child: Container(
+                          margin: const EdgeInsets.symmetric(vertical: 6),
+                          padding: const EdgeInsets.all(12),
+                          constraints: const BoxConstraints(maxWidth: 300),
+                          decoration: BoxDecoration(
+                            color: Colors.white70,
+                            borderRadius: BorderRadius.circular(16),
+                          ),
+                          child: Text(
+                            _interimText,
+                            style: const TextStyle(
+                                fontSize: 16, color: Colors.black54),
+                          ),
+                        ),
+                      ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+
+          // 하단 마이크 버튼
           Container(
             height: 100,
             decoration: BoxDecoration(
