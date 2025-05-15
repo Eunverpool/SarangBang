@@ -21,11 +21,11 @@ class MyApp extends StatelessWidget {
       theme: AppTheme.defaultTheme,
       onGenerateRoute: RouteGenerator.onGenerate,
       
-      // 메인페이지 경로
+      // 메인페이지 경로  
       // initialRoute: AppRoutes.entryPoint,
 
       // 테스트용 작업중
-      initialRoute: AppRoutes.colab_test,
+      initialRoute: AppRoutes.colab_test2,
     );
   }
 }
