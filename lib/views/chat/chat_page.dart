@@ -15,9 +15,17 @@ class ChatPage extends StatefulWidget {
 class _ChatPageState extends State<ChatPage> {
   final TextEditingController _controller =
       TextEditingController(); // 텍스트 입력 필드 제어용
-  bool _isListeningLoading = false;
+
   bool _isListening = false; // 마이크 활성 상태
-  List<String> _messages = [];
+
+  String _interimText = ""; // 중간 인식 텍스트
+  List<Map<String, String>> _messages = []; // {message, time}
+
+  String _currentTime() {
+    final now = DateTime.now();
+    return "${now.hour.toString().padLeft(2, '0')}:${now.minute.toString().padLeft(2, '0')}";
+  }
+
   // STT, TTS 객체 생성
   final stt.SpeechToText _speechToText = stt.SpeechToText();
   final FlutterTts _flutterTts = FlutterTts();
@@ -47,30 +55,37 @@ class _ChatPageState extends State<ChatPage> {
       setState(() {
         print("✅ 녹음상태 on");
         _isListening = true; // 녹음 상태 true
-        // _isListeningLoading = true; // 로딩 인디케이터를 시작합니다
+        _interimText = "";
       });
       _speechToText.listen(
         localeId: 'ko_KR',
         onResult: (result) {
           print(
               "📝 인식 중: ${result.recognizedWords} (final: ${result.finalResult})");
-          setState(() {
-            _controller.text = result.recognizedWords;
-          });
-          if (result.finalResult) {
-            print("최종 결과 반영: ${result.recognizedWords}");
+
+          if (!result.finalResult) {
+            // 중간 결과는 계속 업데이트
             setState(() {
-              _isListening = false;
-              _isListeningLoading = false;
-              _controller.text = result.recognizedWords;
+              _interimText = result.recognizedWords;
             });
+          } else {
+            // 말이 끝났을 때 메시지 확정
+            setState(() {
+              _messages.add({
+                'message': result.recognizedWords,
+                'time': _currentTime(),
+              });
+              _interimText = ""; // 중간 텍스트 제거
+              _isListening = false; // 마이크 상태 OFF
+            });
+            _speechToText.stop(); // 명시적으로 STT 종료
           }
         },
       );
     } else {
       setState(() {
         _isListening = false;
-        _isListeningLoading = false;
+        _interimText = "";
       });
     }
   }
@@ -80,16 +95,12 @@ class _ChatPageState extends State<ChatPage> {
     _speechToText.stop();
     setState(() {
       _isListening = false;
-      _isListeningLoading = false;
+      _interimText = "";
     });
   }
 
   void _toggleListening() async {
-    if (_isListening) {
-      _stopListening();
-    } else {
-      _startListening();
-    }
+    _isListening ? _stopListening() : _startListening();
   }
 
   @override
@@ -112,51 +123,66 @@ class _ChatPageState extends State<ChatPage> {
         children: [
           Expanded(
             child: ListView(
-              padding: const EdgeInsets.all(16.0),
+              padding: const EdgeInsets.all(16),
               children: [
-                const ChatBubble(
-                  message: "오늘 일어났던 일들 중에서 기억에 가장 많이 남는 일은 어떤 것인가요?",
+                // ✅ 첫 AI 말풍선 고정
+                ChatBubble(
+                  //LLaMA API에서 받아온 응답을 _aiMessages 리스트에 추가하면서:
+
+                  // _aiMessages.add({
+                  //   'message': llamaResponse,
+                  //   'time': _currentTime(),
+                  // });
+
+                  // _flutterTts.speak(llamaResponse); // 자동 읽기
+                  // 그리고 ChatBubble에서 그 메시지를 클릭하면 다시 들을 수 있게 유지
+                  message: "오늘 일어났던 일 중 가장 기억에 남는 일은 무엇인가요?",
                   isMe: false,
-                  time: "9:41",
+                  time: "오전 9:00",
+                  onTap: () {
+                    _flutterTts.setLanguage('ko-KR');
+                    _flutterTts.setPitch(1.0);
+                    _flutterTts.setSpeechRate(0.5);
+                    _flutterTts.speak("오늘 일어났던 일 중 가장 기억에 남는 일은 무엇인가요?");
+                  },
                 ),
-                // ..._chatList,
+
+                // ✅ 확정된 사용자 메시지 출력
+                ..._messages.map(
+                  (msg) => ChatBubble(
+                    message: msg['message']!,
+                    time: msg['time']!,
+                    isMe: true,
+                  ),
+                ),
+
+                // ✅ 실시간 중간 인식 메시지
+                if (_interimText.isNotEmpty)
+                  ChatBubble(
+                    message: _interimText,
+                    time: _currentTime(),
+                    isMe: true,
+                  ),
               ],
             ),
           ),
+
+          // ✅ 하단 마이크 버튼 UI
           Container(
-            height: 140,
+            height: 100,
             decoration: BoxDecoration(
               color: Colors.green[50],
               border: const Border(top: BorderSide(color: Colors.grey)),
             ),
-            child: Column(
-              children: [
-                const SizedBox(height: 16),
-                Row(
-                  children: [
-                    const SizedBox(width: 16),
-                    Expanded(
-                      child: TextField(
-                        controller: _controller,
-                        decoration: InputDecoration(
-                          hintText: _isListening ? '말씀해 주세요..' : '메시지를 입력하세요',
-                          border: const OutlineInputBorder(),
-                        ),
-                      ),
-                    ),
-                    const SizedBox(width: 8),
-                    IconButton(
-                      icon: Icon(
-                        _isListening ? Icons.mic : Icons.mic_none,
-                        color: _isListening ? Colors.red : Colors.green,
-                        size: 36,
-                      ),
-                      onPressed: _toggleListening,
-                    ),
-                    const SizedBox(width: 16),
-                  ],
+            child: Center(
+              child: FloatingActionButton(
+                onPressed: _toggleListening,
+                backgroundColor: _isListening ? Colors.red : Colors.green,
+                child: Icon(
+                  _isListening ? Icons.mic : Icons.mic_none,
+                  size: 32,
                 ),
-              ],
+              ),
             ),
           ),
         ],
