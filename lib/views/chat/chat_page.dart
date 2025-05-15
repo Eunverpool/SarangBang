@@ -5,6 +5,9 @@ import 'package:speech_to_text/speech_to_text.dart' as stt;
 import 'package:flutter_tts/flutter_tts.dart';
 import 'package:permission_handler/permission_handler.dart';
 
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+
 class ChatPage extends StatefulWidget {
   const ChatPage({super.key});
 
@@ -30,21 +33,67 @@ class _ChatPageState extends State<ChatPage> {
   final stt.SpeechToText _speechToText = stt.SpeechToText();
   final FlutterTts _flutterTts = FlutterTts();
 
-  // List<ChatBubble> _chatList = []; // 대화 내역 저장
+  // Future<String> _getLlamaResponse(String prompt) async {
+  //   final url = Uri.parse('https://a3f9-35-197-23-221.ngrok-free.app/chat');
+
+  //   try {
+  //     final response = await http.post(
+  //       url,
+  //       headers: {'Content-Type': 'application/json'},
+  //       body: jsonEncode({'prompt': prompt}),
+  //     );
+
+  //     if (response.statusCode == 200) {
+  //       final json = jsonDecode(response.body);
+  //       return json['response'] ?? '응답이 없습니다.';
+  //     } else {
+  //       return '서버 오류: ${response.statusCode}';
+  //     }
+  //   } catch (e) {
+  //     return '오류 발생: $e';
+  //   }
+  // }
+
+  Future<String> _getLlamaResponse(String prompt) async {
+    final url = Uri.parse('https://88d9-34-53-107-134.ngrok-free.app/chat');
+    try {
+      final response = await http.post(
+        url,
+        headers: {'Content-Type': 'application/json'},
+        // body: jsonEncode({'input': prompt}),
+
+        // body: jsonEncode({
+        //   'input': prompt, // 사용자 입력
+        //   'session_id': 'user1234' // 유저 세션 ID (임시/고정/UUID 등 사용 가능)
+        // }),
+      );
+      print('서버 응답: ${response.body}');
+
+      if (response.statusCode == 200) {
+        final decoded = utf8.decode(response.bodyBytes);
+
+        final json = jsonDecode(decoded);
+        print('응답txt: ${json['response']}');
+        return json['response'] ?? '응답이 없습니다.';
+      } else {
+        return '서버 오류: ${response.statusCode}';
+      }
+    } catch (e) {
+      return '오류 발생: $e';
+    }
+  }
 
   Future<void> _startListening() async {
     final microphoneStatus = await Permission.microphone.request();
-    final speechStatus = await Permission.speech.request(); // 일부 기기에서 필요
+    final speechStatus = await Permission.speech.request();
 
     if (microphoneStatus.isDenied || speechStatus.isDenied) {
-      // 사용자가 거절한 경우 처리
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('음성 인식 및 마이크 권한이 필요합니다.')),
       );
       return;
     }
 
-    // STT 초기화
     bool available = await _speechToText.initialize(
       onError: (error) => print('❌ STT 오류: ${error.errorMsg}'),
       onStatus: (status) => print('🎤 상태: $status'),
@@ -53,32 +102,51 @@ class _ChatPageState extends State<ChatPage> {
     if (available) {
       print("✅ STT 사용 가능");
       setState(() {
-        print("✅ 녹음상태 on");
-        _isListening = true; // 녹음 상태 true
+        _isListening = true;
         _interimText = "";
       });
+
       _speechToText.listen(
         localeId: 'ko_KR',
-        onResult: (result) {
+        onResult: (result) async {
           print(
               "📝 인식 중: ${result.recognizedWords} (final: ${result.finalResult})");
 
           if (!result.finalResult) {
-            // 중간 결과는 계속 업데이트
             setState(() {
               _interimText = result.recognizedWords;
             });
           } else {
-            // 말이 끝났을 때 메시지 확정
+            final userText = result.recognizedWords;
+
             setState(() {
               _messages.add({
-                'message': result.recognizedWords,
+                'message': userText,
                 'time': _currentTime(),
+                'isMe': 'true'
               });
-              _interimText = ""; // 중간 텍스트 제거
-              _isListening = false; // 마이크 상태 OFF
+              _interimText = "";
+              _isListening = false;
             });
-            _speechToText.stop(); // 명시적으로 STT 종료
+
+            _speechToText.stop();
+
+            // ✅ LLaMA API 연동
+            final llamaResponse = await _getLlamaResponse(userText);
+
+            // ✅ LLaMA 응답 저장 및 TTS 재생
+            setState(() {
+              _messages.add({
+                'message': llamaResponse,
+                'time': _currentTime(),
+                'isMe': 'false'
+              });
+            });
+
+            _flutterTts.setLanguage('ko-KR');
+            _flutterTts.setPitch(1.0);
+            _flutterTts.setSpeechRate(0.5);
+            await _flutterTts.speak(llamaResponse);
           }
         },
       );
@@ -177,28 +245,79 @@ class _ChatPageState extends State<ChatPage> {
                     const SizedBox(height: 16),
 
                     // ✅ 사용자 확정 메시지 말풍선 형태로
+                    // ..._messages.map(
+                    //   (msg) => Align(
+                    //     alignment: Alignment.centerRight,
+                    //     child: Container(
+                    //       margin: const EdgeInsets.symmetric(vertical: 6),
+                    //       padding: const EdgeInsets.all(12),
+                    //       constraints: const BoxConstraints(maxWidth: 300),
+                    //       decoration: BoxDecoration(
+                    //         color: Colors.white,
+                    //         borderRadius: BorderRadius.circular(16),
+                    //         boxShadow: [
+                    //           BoxShadow(
+                    //             color: Colors.black12,
+                    //             blurRadius: 4,
+                    //             offset: Offset(2, 2),
+                    //           )
+                    //         ],
+                    //       ),
+                    //       child: Text(
+                    //         msg['message']!,
+                    //         style: const TextStyle(
+                    //             fontSize: 16, color: Colors.black87),
+                    //       ),
+                    //     ),
+                    //   ),
+                    // ),
                     ..._messages.map(
                       (msg) => Align(
-                        alignment: Alignment.centerRight,
-                        child: Container(
-                          margin: const EdgeInsets.symmetric(vertical: 6),
-                          padding: const EdgeInsets.all(12),
-                          constraints: const BoxConstraints(maxWidth: 300),
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(16),
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.black12,
-                                blurRadius: 4,
-                                offset: Offset(2, 2),
-                              )
-                            ],
-                          ),
-                          child: Text(
-                            msg['message']!,
-                            style: const TextStyle(
-                                fontSize: 16, color: Colors.black87),
+                        alignment: msg['isMe'] == 'false'
+                            ? Alignment.centerLeft
+                            : Alignment.centerRight,
+                        child: GestureDetector(
+                          // ✅ 클릭 이벤트 추가
+                          onTap: msg['isMe'] == 'false'
+                              ? () {
+                                  _flutterTts.setLanguage('ko-KR');
+                                  _flutterTts.setPitch(1.0);
+                                  _flutterTts.setSpeechRate(0.5);
+                                  _flutterTts
+                                      .speak(msg['message']!); // AI 응답 읽기
+                                }
+                              : null, // 사용자는 클릭해도 아무 동작 없음
+
+                          child: Container(
+                            margin: const EdgeInsets.symmetric(vertical: 6),
+                            padding: const EdgeInsets.all(12),
+                            constraints: const BoxConstraints(maxWidth: 300),
+                            decoration: BoxDecoration(
+                              color: msg['isMe'] == 'false'
+                                  ? Colors.indigo[100]
+                                  : Colors.white,
+                              borderRadius: BorderRadius.circular(16),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.black12,
+                                  blurRadius: 4,
+                                  offset: Offset(2, 2),
+                                )
+                              ],
+                            ),
+                            child: Text(
+                              msg['message']!,
+                              style: TextStyle(
+                                //     fontSize: 20,
+                                // color: Color(0xFF2C2C2C),
+                                // height: 1.5,
+                                height: msg['isMe'] == 'false' ? 1.5 : 1,
+                                fontSize: msg['isMe'] == 'false' ? 20 : 16,
+                                color: msg['isMe'] == 'false'
+                                    ? Color(0xFF2C2C2C)
+                                    : Colors.black87,
+                              ),
+                            ),
                           ),
                         ),
                       ),
