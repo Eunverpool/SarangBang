@@ -21,7 +21,8 @@ class DeviceIdManager {
   static Future<String> generateAndSaveDeviceId() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     const uuid = Uuid();
-    final String deviceId = uuid.v4();
+    //final String deviceId = uuid.v4(); 이거 테스트하는동안 uuid-1234로 고정
+    const String deviceId = 'uuid-1234';
     await prefs.setString(_deviceIdKey, deviceId);
     return deviceId;
   }
@@ -36,7 +37,8 @@ class DeviceIdManager {
   }
 
   static Future<void> printDeviceId() async {
-    final String deviceId = await getOrCreateDeviceId();
+    //final String deviceId = await getOrCreateDeviceId();
+    const String deviceId = 'uuid-1234';
     print('Device ID: $deviceId');
   }
 }
