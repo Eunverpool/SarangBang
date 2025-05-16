@@ -33,27 +33,6 @@ class _ChatPageState extends State<ChatPage> {
   final stt.SpeechToText _speechToText = stt.SpeechToText();
   final FlutterTts _flutterTts = FlutterTts();
 
-  // Future<String> _getLlamaResponse(String prompt) async {
-  //   final url = Uri.parse('https://a3f9-35-197-23-221.ngrok-free.app/chat');
-
-  //   try {
-  //     final response = await http.post(
-  //       url,
-  //       headers: {'Content-Type': 'application/json'},
-  //       body: jsonEncode({'prompt': prompt}),
-  //     );
-
-  //     if (response.statusCode == 200) {
-  //       final json = jsonDecode(response.body);
-  //       return json['response'] ?? '응답이 없습니다.';
-  //     } else {
-  //       return '서버 오류: ${response.statusCode}';
-  //     }
-  //   } catch (e) {
-  //     return '오류 발생: $e';
-  //   }
-  // }
-
   Future<String> _getLlamaResponse(String prompt) async {
     final url = Uri.parse('https://88d9-34-53-107-134.ngrok-free.app/chat');
     try {
@@ -62,10 +41,10 @@ class _ChatPageState extends State<ChatPage> {
         headers: {'Content-Type': 'application/json'},
         // body: jsonEncode({'input': prompt}),
 
-        // body: jsonEncode({
-        //   'input': prompt, // 사용자 입력
-        //   'session_id': 'user1234' // 유저 세션 ID (임시/고정/UUID 등 사용 가능)
-        // }),
+        body: jsonEncode({
+          'input': prompt, // 사용자 입력
+          'session_id': 'user1234' // 유저 세션 ID (임시/고정/UUID 등 사용 가능)
+        }),
       );
       print('서버 응답: ${response.body}');
 
@@ -244,33 +223,6 @@ class _ChatPageState extends State<ChatPage> {
 
                     const SizedBox(height: 16),
 
-                    // ✅ 사용자 확정 메시지 말풍선 형태로
-                    // ..._messages.map(
-                    //   (msg) => Align(
-                    //     alignment: Alignment.centerRight,
-                    //     child: Container(
-                    //       margin: const EdgeInsets.symmetric(vertical: 6),
-                    //       padding: const EdgeInsets.all(12),
-                    //       constraints: const BoxConstraints(maxWidth: 300),
-                    //       decoration: BoxDecoration(
-                    //         color: Colors.white,
-                    //         borderRadius: BorderRadius.circular(16),
-                    //         boxShadow: [
-                    //           BoxShadow(
-                    //             color: Colors.black12,
-                    //             blurRadius: 4,
-                    //             offset: Offset(2, 2),
-                    //           )
-                    //         ],
-                    //       ),
-                    //       child: Text(
-                    //         msg['message']!,
-                    //         style: const TextStyle(
-                    //             fontSize: 16, color: Colors.black87),
-                    //       ),
-                    //     ),
-                    //   ),
-                    // ),
                     ..._messages.map(
                       (msg) => Align(
                         alignment: msg['isMe'] == 'false'
