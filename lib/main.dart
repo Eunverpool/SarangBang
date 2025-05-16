@@ -45,8 +45,8 @@ class DeviceIdManager {
   }
 
   static Future<void> sendDeviceIdToServer() async {
-    final String deviceId = await getOrCreateDeviceId();
-
+    //final String deviceId = await getOrCreateDeviceId();
+    const String deviceId = 'uuid-1234';
     // 서버에 전송할 데이터
     final Map<String, dynamic> data = {
       'user_uuid': deviceId,
@@ -55,7 +55,7 @@ class DeviceIdManager {
     };
 
     // 서버 URL
-    final String url = 'http://localhost:3000/users';
+    const String url = 'http://localhost:3000/users';
 
     try {
       final response = await http.post(
