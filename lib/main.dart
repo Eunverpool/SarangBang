@@ -53,7 +53,7 @@ class DeviceIdManager {
     };
 
     // 서버 URL
-    final String url = 'http://localhost:3000/users'; // 서버의 URL로 바꿔주세요
+    final String url = 'http://localhost:3000/users';
 
     try {
       final response = await http.post(

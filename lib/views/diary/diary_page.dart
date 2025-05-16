@@ -16,10 +16,8 @@ class _DiaryPageState extends State<DiaryPage> {
         title: const Text('일기장'),
       ),
       body: const Center(
-      
         child: DiaryCalendar(), // 컴포넌트 사용
       ),
-      
     );
   }
 }
