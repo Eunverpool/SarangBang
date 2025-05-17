@@ -1,10 +1,60 @@
 import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
-
+import 'dart:convert';
 import '../../../data/report_data.dart';
-
+import 'package:http/http.dart' as http;
 //grocery는 내 프로젝트 이름, pubspec.yaml 파일에서 찾아볼 수 있음
 import 'package:grocery/core/routes/app_routes.dart';
+
+class Dairy {
+  final String userUuid;
+  final String emoji;
+  final String title;
+  final DateTime date;
+  final String summary;
+  final String cognitiveResult;
+  final Map<String, double> emotionRatio;
+
+  Dairy({
+    required this.userUuid,
+    required this.emoji,
+    required this.title,
+    required this.date,
+    required this.summary,
+    required this.cognitiveResult,
+    required this.emotionRatio,
+  });
+
+  factory Dairy.fromJson(Map<String, dynamic> json) {
+    Map<String, double> emotionMap = {};
+    if (json['emotionRatio'] != null) {
+      json['emotionRatio'].forEach((key, value) {
+        emotionMap[key] = (value as num).toDouble();
+      });
+    }
+
+    return Dairy(
+      userUuid: json['user_uuid'] ?? '',
+      emoji: json['emoji'] ?? '',
+      title: json['title'] ?? '',
+      date: DateTime.parse(json['date']),
+      summary: json['summary'] ?? '',
+      cognitiveResult: json['cognitiveResult'] ?? '',
+      emotionRatio: emotionMap,
+    );
+  }
+}
+
+Future<List<Dairy>> fetchDairies() async {
+  final response = await http.get(Uri.parse('http://localhost:3000/dairy'));
+
+  if (response.statusCode == 200) {
+    List<dynamic> jsonList = json.decode(response.body);
+    return jsonList.map((json) => Dairy.fromJson(json)).toList();
+  } else {
+    throw Exception('Failed to load dairies');
+  }
+}
 
 class DiaryCalendar extends StatefulWidget {
   const DiaryCalendar({super.key});
@@ -16,7 +66,7 @@ class DiaryCalendar extends StatefulWidget {
 class _DiaryCalendarState extends State<DiaryCalendar> {
   // 현재 보고 있는 날짜
   DateTime _focusedDay = DateTime.now();
-
+  List<Dairy> _dairies = [];
   // 유저가 선택한 날짜 (터치 시 변경)
   DateTime? _selectedDay;
 
@@ -171,12 +221,45 @@ class _DiaryCalendarState extends State<DiaryCalendar> {
   }
 
   @override
+  void initState() {
+    super.initState();
+
+    fetchDairies().then((dairies) {
+      setState(() {
+        _dairies = dairies; // 수정됨: 데이터 fetch 후 상태 변경
+      });
+    }).catchError((error) {
+      print('Error fetching dairies: $error');
+    });
+  }
+
+  Dairy? _getDairyByDate(DateTime date) {
+    // 수정됨: 날짜별 일기 찾기 함수
+    try {
+      return _dairies.firstWhere(
+        (dairy) =>
+            dairy.date.year == date.year &&
+            dairy.date.month == date.month &&
+            dairy.date.day == date.day,
+      );
+    } catch (e) {
+      return null;
+    }
+  }
+
+  Dairy? get selectedDairy {
+    // 수정됨: 선택된 날짜의 일기 반환
+    if (_selectedDay == null) return null;
+    return _getDairyByDate(_selectedDay!);
+  }
+
+  @override
   Widget build(BuildContext context) {
-    final selectedKey = _selectedDay != null
-        ? DateTime.utc(
-            _selectedDay!.year, _selectedDay!.month, _selectedDay!.day)
-        : null;
-    final selectedReport = selectedKey != null ? reportDB[selectedKey] : null;
+    //final selectedKey = _selectedDay != null
+    // ? DateTime.utc(
+    //      _selectedDay!.year, _selectedDay!.month, _selectedDay!.day)
+//: null;
+    //final selectedReport = selectedKey != null ? reportDB[selectedKey] : null;
     return Column(
       children: [
         Row(
@@ -263,7 +346,7 @@ class _DiaryCalendarState extends State<DiaryCalendar> {
               shape: BoxShape.circle,
               border: Border.all(color: Colors.green, width: 1.5),
             ),
-            todayTextStyle: TextStyle(
+            todayTextStyle: const TextStyle(
               fontWeight: FontWeight.bold,
               color: Colors.grey,
             ),
@@ -273,22 +356,19 @@ class _DiaryCalendarState extends State<DiaryCalendar> {
           calendarBuilders: CalendarBuilders(
             // 일반 날짜
             defaultBuilder: (context, day, _) {
-              final report =
-                  reportDB[DateTime.utc(day.year, day.month, day.day)];
+              final report = _getDairyByDate(day);
               return _buildEmojiDay(day.day, report?.emoji);
             },
 
             // 오늘 날짜
             todayBuilder: (context, day, _) {
-              final report =
-                  reportDB[DateTime.utc(day.year, day.month, day.day)];
+              final report = _getDairyByDate(day);
               return _buildEmojiDay(day.day, report?.emoji, today: true);
             },
 
             // 선택된 날짜
             selectedBuilder: (context, day, _) {
-              final report =
-                  reportDB[DateTime.utc(day.year, day.month, day.day)];
+              final report = _getDairyByDate(day);
               return _buildEmojiDay(day.day, report?.emoji, selected: true);
             },
           ),
@@ -315,7 +395,7 @@ class _DiaryCalendarState extends State<DiaryCalendar> {
         //       ),
         //     ),
         //   ),
-        ...(_selectedDay != null && selectedReport != null
+        ...(_selectedDay != null && selectedDairy != null
             ? [
                 GestureDetector(
                   onTap: () {
@@ -328,7 +408,7 @@ class _DiaryCalendarState extends State<DiaryCalendar> {
                   child: Padding(
                     padding: const EdgeInsets.all(12.0),
                     child: Text(
-                      '${selectedReport.emoji} ${selectedReport.title}',
+                      '${selectedDairy!.emoji} ${selectedDairy!.title}',
                       style: const TextStyle(
                           fontSize: 16, fontWeight: FontWeight.bold),
                     ),
