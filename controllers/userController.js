@@ -7,7 +7,7 @@ exports.createUser = async (req, res) => {
       _id: user_uuid,
       user_uuid,
       user_family_email,
-      user_date: new Date(user_date),
+      user_date,
     });
     await newUser.save();
     res.status(200).json({ message: "User saved successfully" });

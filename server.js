@@ -3,8 +3,11 @@ const dotenv = require("dotenv");
 const cors = require("cors");
 const bodyParser = require("body-parser");
 const connectDB = require("./config/db");
+
+//Routes 상수 생성
 const userRoutes = require("./routes/userRoutes");
 const dairyRoutes = require("./routes/dairyRoutes");
+const chatRoutes = require("./routes/chatRoutes");
 
 dotenv.config();
 const app = express();
@@ -20,6 +23,10 @@ app.get("/", (req, res) => {
 });
 app.use("/users", userRoutes);
 app.use("/dairy", dairyRoutes);
-app.listen(port, () => {
+app.use("/chat", chatRoutes);
+app.listen(port, "0.0.0.0", () => {
   console.log(`🚀 Server running at http://localhost:${port}`);
 });
+// app.listen(3000, "0.0.0.0", () => {
+//   console.log(`🚀 Server running at http://localhost:3000`);
+// });
