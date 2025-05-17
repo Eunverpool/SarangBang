@@ -8,6 +8,10 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
+// 기기 ID 관리
+import '/utils/device_id_manager.dart';
+import 'package:intl/intl.dart';
+
 class ChatPage extends StatefulWidget {
   const ChatPage({super.key});
 
@@ -25,7 +29,7 @@ class _ChatPageState extends State<ChatPage> {
   List<Map<String, String>> _messages = []; // {message, time}
 
   String _currentTime() {
-    final now = DateTime.now();
+    final now = DateTime.now().toLocal();
     return "${now.hour.toString().padLeft(2, '0')}:${now.minute.toString().padLeft(2, '0')}";
   }
 
@@ -33,8 +37,48 @@ class _ChatPageState extends State<ChatPage> {
   final stt.SpeechToText _speechToText = stt.SpeechToText();
   final FlutterTts _flutterTts = FlutterTts();
 
+  // UUID 변수
+  String? _deviceId;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadDeviceId();
+  }
+
+  Future<void> _loadDeviceId() async {
+    final id = await DeviceIdManager.getOrCreateDeviceId();
+    setState(() {
+      _deviceId = id;
+    });
+  }
+
+  Future<void> saveChatToServer(
+      String uuId, String userMsg, String botMsg) async {
+    // final saveUrl = Uri.parse("http://localhost:3000/chat");
+    final saveUrl = Uri.parse("http://192.168.0.13:3000/chat");
+
+    try {
+      final response = await http.post(
+        saveUrl,
+        headers: {'Content-Type': 'application/json'},
+        body: jsonEncode({
+          'user_uuid': uuId,
+          'user_message': userMsg,
+          'bot_response': botMsg,
+          // 'chat_date': DateTime.now().toLocal().toIso8601String(),
+          'chat_date': DateFormat("yyyy-MM-dd HH:mm:ss")
+              .format(DateTime.now().toLocal()),
+        }),
+      );
+      print("💾 Chat 저장 응답: ${response.body}");
+    } catch (e) {
+      print("❌ Chat 저장 오류: $e");
+    }
+  }
+
   Future<String> _getLlamaResponse(String prompt) async {
-    final url = Uri.parse('https://88d9-34-53-107-134.ngrok-free.app/chat');
+    final url = Uri.parse('https://71e5-34-16-176-101.ngrok-free.app/chat');
     try {
       final response = await http.post(
         url,
@@ -112,6 +156,12 @@ class _ChatPageState extends State<ChatPage> {
 
             // ✅ LLaMA API 연동
             final llamaResponse = await _getLlamaResponse(userText);
+            // ✅ MongoDB에 대화 저장하기
+            if (_deviceId != null) {
+              await saveChatToServer(_deviceId!, userText, llamaResponse);
+            } else {
+              print("❗ 디바이스 ID가 아직 초기화되지 않았습니다.");
+            }
 
             // ✅ LLaMA 응답 저장 및 TTS 재생
             setState(() {
