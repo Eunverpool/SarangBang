@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class ReportEmotion extends StatelessWidget {
-  final Map<String, int> emotionRatio;
+  final Map<String, double> emotionRatio;
   const ReportEmotion({super.key, required this.emotionRatio});
 
   @override
@@ -22,7 +22,7 @@ class ReportEmotion extends StatelessWidget {
         Row(
           children: List.generate(values.length, (i) {
             return Expanded(
-              flex: values[i],
+              flex: values[i].toInt(),
               child: Container(
                 height: 20,
                 color: colors[i % colors.length],

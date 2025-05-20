@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 import '../../../data/report_data.dart';
-
 //grocery는 내 프로젝트 이름, pubspec.yaml 파일에서 찾아볼 수 있음
 import 'package:grocery/core/routes/app_routes.dart';
 
@@ -19,6 +18,13 @@ class _DiaryCalendarState extends State<DiaryCalendar> {
 
   // 유저가 선택한 날짜 (터치 시 변경)
   DateTime? _selectedDay;
+  @override
+  void initState() {
+    super.initState();
+    fetchAndStoreReports().then((_) {
+      setState(() {}); // 데이터 불러오면 캘린더 새로고침
+    });
+  }
 
   void _showYearMonthPicker(BuildContext context) async {
     int selectedYearIndex = _focusedDay.year - 2020;
@@ -263,7 +269,7 @@ class _DiaryCalendarState extends State<DiaryCalendar> {
               shape: BoxShape.circle,
               border: Border.all(color: Colors.green, width: 1.5),
             ),
-            todayTextStyle: TextStyle(
+            todayTextStyle: const TextStyle(
               fontWeight: FontWeight.bold,
               color: Colors.grey,
             ),
