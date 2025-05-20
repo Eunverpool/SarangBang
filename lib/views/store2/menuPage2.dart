@@ -15,8 +15,20 @@ class menuPage2 extends StatelessWidget {
         title: const Text('상점 페이지'),
       ),
       body: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const SizedBox(height: 100.0), // 제목과 스크롤 뷰 사이의 간격
+          const SizedBox(height: 40.0),
+          Padding(
+            padding:
+                const EdgeInsets.symmetric(horizontal: AppDefaults.padding),
+            child: Text(
+              '구매하고 싶은 캐릭터를 선택하세요',
+              style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                    fontWeight: FontWeight.bold,
+                  ),
+            ),
+          ),
+          const SizedBox(height: 16.0),
           SingleChildScrollView(
             padding: const EdgeInsets.only(left: AppDefaults.padding),
             scrollDirection: Axis.horizontal,
@@ -25,25 +37,36 @@ class menuPage2 extends StatelessWidget {
                 Dummy.bundles.length,
                 (index) => Padding(
                   padding: const EdgeInsets.only(right: AppDefaults.padding),
-                  child: BundleTileSquare(data: Dummy.bundles[index]),
+                  child: BundleTileSquare(
+                    data: Dummy.bundles[index],
+                    onTap: () {
+                      // 원하는 동작을 여기에 작성하세요. 예시: 다이얼로그 표시
+                      showDialog(
+                        context: context,
+                        builder: (context) => AlertDialog(
+                          title: Text('${Dummy.bundles[index].name} 선택'),
+                          content: const Text('캐릭터를 선택하셨습니다.'),
+                          actions: [
+                            TextButton(
+                              onPressed: () => Navigator.pop(context),
+                              child: const Text('확인'),
+                            ),
+                          ],
+                        ),
+                      );
+                    },
+                  ),
                 ),
               ),
             ),
           ),
-          const SizedBox(height: 20.0), // 캐릭터와 목소리 선택 간의 간격
-          Expanded(
-            child: ListView.builder(
-              padding: const EdgeInsets.all(AppDefaults.padding),
-              itemCount: Dummy.voices.length,
-              itemBuilder: (context, index) {
-                return VoiceTile(
-                  title: Dummy.voices[index],
-                  onTap: () {
-                    // 목소리 선택 시 기능 추가 가능
-                    print('${Dummy.voices[index]} 선택됨');
-                  },
-                );
-              },
+          const SizedBox(height: 32.0),
+          Padding(
+            padding:
+                const EdgeInsets.symmetric(horizontal: AppDefaults.padding),
+            child: Text(
+              '원하는 캐릭터를 선택해 다양한 목소리와 함께 대화를 시작해보세요!',
+              style: Theme.of(context).textTheme.bodyMedium,
             ),
           ),
         ],
