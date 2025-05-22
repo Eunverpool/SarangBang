@@ -56,7 +56,7 @@ class _EntryPointUIState extends State<EntryPointUI> {
             animation: primaryAnimation,
             secondaryAnimation: secondaryAnimation,
             transitionType: SharedAxisTransitionType.horizontal,
-            fillColor: AppColors.scaffoldBackground,
+            fillColor: const Color.fromARGB(255, 209, 97, 97),
             child: child,
           );
         },
@@ -64,7 +64,7 @@ class _EntryPointUIState extends State<EntryPointUI> {
         child: pages[currentIndex],
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {
+        onPressed: () {   
           Navigator.push(
             context,
             MaterialPageRoute(builder: (context) => const ChatPage()),

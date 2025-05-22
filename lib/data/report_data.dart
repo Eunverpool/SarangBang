@@ -44,8 +44,8 @@ final Map<DateTime, Report> reportDB = {};
 
 // 서버에서 받아와 reportDB에 저장
 Future<void> fetchAndStoreReports() async {
-  final userUuid = (await DeviceIdManager.getDeviceId()).toString();
-  // final userUuid = 'uuid-1234';
+  //final userUuid = (await DeviceIdManager.getDeviceId()).toString();
+  final userUuid = 'uuid-1234';
   final response = await http
       // .get(Uri.parse('http://localhost:3000/dairy?user_uuid=$userUuid'));
       .get(Uri.parse('http://10.20.25.237:3000/dairy?user_uuid=$userUuid'));
