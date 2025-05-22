@@ -68,19 +68,19 @@ class BundleTileSquare extends StatelessWidget {
               Row(
                 children: [
                   Text(
-                    '\$${data.price.toInt()}',
+                    '${data.price.toInt()}원',
                     style: Theme.of(context)
                         .textTheme
                         .titleLarge
                         ?.copyWith(color: Colors.black),
                   ),
                   const SizedBox(width: 4),
-                  Text(
-                    '\$${data.mainPrice}',
-                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                          decoration: TextDecoration.lineThrough,
-                        ),
-                  ),
+                  // Text(
+                  //   '\$${data.mainPrice}',
+                  //   style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                  //         decoration: TextDecoration.lineThrough,
+                  //       ),
+                  // ),
                   const Spacer(),
                 ],
               ),
