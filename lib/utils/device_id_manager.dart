@@ -18,9 +18,9 @@ class DeviceIdManager {
   static Future<String> generateAndSaveDeviceId() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     const uuid = Uuid();
-    final String deviceId = uuid.v4();
+    //final String deviceId = uuid.v4();
     // 이거 테스트하는동안 uuid-1234로 고정
-    // const String deviceId = 'uuid-1234';
+    const String deviceId = 'uuid-1234';
     await prefs.setString(_deviceIdKey, deviceId);
     return deviceId;
   }
@@ -37,15 +37,15 @@ class DeviceIdManager {
 
   // 디버그 용도로 device ID 출력
   static Future<void> printDeviceId() async {
-    final String deviceId = await getOrCreateDeviceId();
-    // const String deviceId = 'uuid-1234';
+    //final String deviceId = await getOrCreateDeviceId();
+    const String deviceId = 'uuid-1234';
     print('Device ID: $deviceId');
   }
 
   // 앱 시작 시 서버로 UUID 전송
   static Future<void> sendDeviceIdToServer() async {
-    final String deviceId = await getOrCreateDeviceId();
-    // const String deviceId = 'uuid-1234';
+    //final String deviceId = await getOrCreateDeviceId();
+    const String deviceId = 'uuid-1234';
 
     // 서버에 전송할 데이터
     final Map<String, dynamic> data = {

@@ -1,8 +1,10 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import '/utils/device_id_manager.dart';
 
 // Report 모델
 class Report {
+  final String user_uuid;
   final String emoji;
   final String title;
   final String summary;
@@ -10,6 +12,7 @@ class Report {
   final Map<String, double> emotionRatio;
 
   Report({
+    required this.user_uuid,
     required this.emoji,
     required this.title,
     required this.summary,
@@ -26,6 +29,7 @@ class Report {
     }
 
     return Report(
+      user_uuid: json['user_uuid'] ?? '',
       emoji: json['emoji'] ?? '',
       title: json['title'] ?? '',
       summary: json['summary'] ?? '',
@@ -40,7 +44,10 @@ final Map<DateTime, Report> reportDB = {};
 
 // 서버에서 받아와 reportDB에 저장
 Future<void> fetchAndStoreReports() async {
-  final response = await http.get(Uri.parse('http://localhost:3000/dairy'));
+  //final userUuid = (await DeviceIdManager.getDeviceId()).toString();
+  final userUuid = 'uuid-1234';
+  final response = await http
+      .get(Uri.parse('http://localhost:3000/dairy?user_uuid=$userUuid'));
 
   if (response.statusCode == 200) {
     List<dynamic> jsonList = json.decode(response.body);
