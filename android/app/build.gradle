@@ -25,7 +25,8 @@ if (flutterVersionName == null) {
 android {
     namespace "com.example.flutter_upgrde_app"
     // compileSdkVersion flutter.compileSdkVersion
-    compileSdkVersion 34
+    // compileSdkVersion 34
+    compileSdkVersion 35
     ndkVersion flutter.ndkVersion
 
     compileOptions {
@@ -49,7 +50,10 @@ android {
         // minSdkVersion flutter.minSdkVersion
         // targetSdkVersion flutter.targetSdkVersion
         minSdkVersion 21
-        targetSdkVersion 34
+        // targetSdkVersion 34
+
+        // minSdkVersion 23
+        targetSdkVersion 35
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
     }
