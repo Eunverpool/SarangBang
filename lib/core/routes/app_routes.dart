@@ -88,7 +88,7 @@ class AppRoutes {
   /* colab 통신 테스트용 */
   static const colab_test = '/colab_test';
   static const colab_test2 = '/colab_test2';
-
+  static const colab_chat = '/colab_chat';
 
 
 }

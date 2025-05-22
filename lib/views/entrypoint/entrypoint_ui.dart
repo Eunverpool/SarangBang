@@ -63,16 +63,16 @@ class _EntryPointUIState extends State<EntryPointUI> {
         duration: AppDefaults.duration,
         child: pages[currentIndex],
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => const ChatPage()),
-          );
-        },
-        backgroundColor: AppColors.primary,
-        child: const Icon(Icons.mic, color: Colors.white),
-      ),
+      // floatingActionButton: FloatingActionButton(
+      //   onPressed: () {          라마 테스트때문에 잠깐 주석처리 해둠
+      //     Navigator.push(
+      //       context,
+      //       MaterialPageRoute(builder: (context) => const ChatPage()),
+      //     );
+      //   },
+      //   backgroundColor: AppColors.primary,
+      //   child: const Icon(Icons.mic, color: Colors.white),
+      // ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       bottomNavigationBar: AppBottomNavigationBar(
         currentIndex: currentIndex,
