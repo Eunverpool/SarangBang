@@ -53,10 +53,61 @@ class _ChatPageState extends State<ChatPage> {
     });
   }
 
+// GPT
+  Future<String> _getGptResponse(String prompt) async {
+    final url = Uri.parse('http://10.20.35.222:3000/gpt');
+    try {
+      print("탕야지 GPT API 요청 전송 시작");
+      final response = await http.post(
+        url,
+        headers: {'Content-Type': 'application/json'},
+        body: jsonEncode({
+          'user_uuid': _deviceId, // <-- 디바이스 UUID 추가
+          'input': prompt, // 사용자 입력
+        }),
+      );
+      print("잘 받와야지 GPT 응답 statusCode: ${response.statusCode}");
+      if (response.statusCode == 200) {
+        final decoded = jsonDecode(utf8.decode(response.bodyBytes));
+        print("✅ GPT 응답 : ${decoded['response']}");
+        return decoded['response'] ?? '응답 없음';
+      } else {
+        print("❌ GPT 서버 응답 에러: ${response.statusCode}");
+        return '서버 오류';
+      }
+    } catch (e) {
+      print("❌ GPT 호출 실패: $e");
+      return '오류 발생';
+    }
+  }
+
+// // 대화저장
+//   Future<void> saveChatToServer(
+//       String uuId, String userMsg, String botMsg) async {
+//     // final saveUrl = Uri.parse("http://localhost:3000/chat");
+//     final saveUrl = Uri.parse("http://10.20.26.169:3000/chat");
+
+//     try {
+//       final response = await http.post(
+//         saveUrl,
+//         headers: {'Content-Type': 'application/json'},
+//         body: jsonEncode({
+//           'user_uuid': uuId,
+//           'user_message': userMsg,
+//           'bot_response': botMsg,
+//           // 'chat_date': DateTime.now().toLocal().toIso8601String(),
+//           'chat_date': DateFormat("yyyy-MM-dd HH:mm:ss")
+//               .format(DateTime.now().toLocal()),
+//         }),
+//       );
+//       print("💾 Chat 저장 응답: ${response.body}");
+//     } catch (e) {
+//       print("❌ Chat 저장 오류: $e");
+//     }
+//   }
   Future<void> saveChatToServer(
       String uuId, String userMsg, String botMsg) async {
-    // final saveUrl = Uri.parse("http://localhost:3000/chat");
-    final saveUrl = Uri.parse("http://192.168.0.13:3000/chat");
+    final saveUrl = Uri.parse("http://10.20.35.222:3000/chat");
 
     try {
       final response = await http.post(
@@ -64,45 +115,17 @@ class _ChatPageState extends State<ChatPage> {
         headers: {'Content-Type': 'application/json'},
         body: jsonEncode({
           'user_uuid': uuId,
-          'user_message': userMsg,
-          'bot_response': botMsg,
-          // 'chat_date': DateTime.now().toLocal().toIso8601String(),
           'chat_date': DateFormat("yyyy-MM-dd HH:mm:ss")
               .format(DateTime.now().toLocal()),
+          'messages': [
+            {'role': 'user', 'content': userMsg},
+            {'role': 'assistant', 'content': botMsg}
+          ],
         }),
       );
       print("💾 Chat 저장 응답: ${response.body}");
     } catch (e) {
       print("❌ Chat 저장 오류: $e");
-    }
-  }
-
-  Future<String> _getLlamaResponse(String prompt) async {
-    final url = Uri.parse('https://71e5-34-16-176-101.ngrok-free.app/chat');
-    try {
-      final response = await http.post(
-        url,
-        headers: {'Content-Type': 'application/json'},
-        // body: jsonEncode({'input': prompt}),
-
-        body: jsonEncode({
-          'input': prompt, // 사용자 입력
-          'session_id': 'user1234' // 유저 세션 ID (임시/고정/UUID 등 사용 가능)
-        }),
-      );
-      print('서버 응답: ${response.body}');
-
-      if (response.statusCode == 200) {
-        final decoded = utf8.decode(response.bodyBytes);
-
-        final json = jsonDecode(decoded);
-        print('응답txt: ${json['response']}');
-        return json['response'] ?? '응답이 없습니다.';
-      } else {
-        return '서버 오류: ${response.statusCode}';
-      }
-    } catch (e) {
-      return '오류 발생: $e';
     }
   }
 
@@ -154,19 +177,19 @@ class _ChatPageState extends State<ChatPage> {
 
             _speechToText.stop();
 
-            // ✅ LLaMA API 연동
-            final llamaResponse = await _getLlamaResponse(userText);
+            // ✅ GPT API 연동
+            final gptResponse = await _getGptResponse(userText);
             // ✅ MongoDB에 대화 저장하기
-            if (_deviceId != null) {
-              await saveChatToServer(_deviceId!, userText, llamaResponse);
-            } else {
-              print("❗ 디바이스 ID가 아직 초기화되지 않았습니다.");
-            }
+            // if (_deviceId != null) {
+            //   await saveChatToServer(_deviceId!, userText, gptResponse);
+            // } else {
+            //   print("❗ 디바이스 ID가 아직 초기화되지 않았습니다.");
+            // }
 
-            // ✅ LLaMA 응답 저장 및 TTS 재생
+            // ✅ GPT 응답 저장 및 TTS 재생
             setState(() {
               _messages.add({
-                'message': llamaResponse,
+                'message': gptResponse,
                 'time': _currentTime(),
                 'isMe': 'false'
               });
@@ -175,7 +198,7 @@ class _ChatPageState extends State<ChatPage> {
             _flutterTts.setLanguage('ko-KR');
             _flutterTts.setPitch(1.0);
             _flutterTts.setSpeechRate(0.5);
-            await _flutterTts.speak(llamaResponse);
+            await _flutterTts.speak(gptResponse);
           }
         },
       );

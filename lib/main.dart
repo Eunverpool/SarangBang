@@ -18,13 +18,21 @@ void main() async {
   // initializeDateFormatting().then((_) => runApp(const MyApp()));
   // DeviceIdManager.sendDeviceIdToServer(); // 앱 시작 시 서버에 UUID 전송
   // DeviceIdManager.printDeviceId();
-  WidgetsFlutterBinding.ensureInitialized(); // 🔑 필수 초기화
+
+  // WidgetsFlutterBinding.ensureInitialized(); // 🔑 필수 초기화
+  // await initializeDateFormatting();
+
+  // await DeviceIdManager.sendDeviceIdToServer(); // UUID 서버 전송
+  // await DeviceIdManager.printDeviceId(); // UUID 콘솔 출력n
+  // runApp(const MyApp());
+
+  WidgetsFlutterBinding.ensureInitialized();
   await initializeDateFormatting();
-
-  await DeviceIdManager.sendDeviceIdToServer(); // UUID 서버 전송
-  await DeviceIdManager.printDeviceId(); // UUID 콘솔 출력
-
   runApp(const MyApp());
+
+  // runApp 이후 백그라운드로 비동기 작업
+  DeviceIdManager.sendDeviceIdToServer();
+  DeviceIdManager.printDeviceId();
 }
 
 class MyApp extends StatelessWidget {
