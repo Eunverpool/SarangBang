@@ -8,6 +8,7 @@ const connectDB = require("./config/db");
 const userRoutes = require("./routes/userRoutes");
 const dairyRoutes = require("./routes/dairyRoutes");
 const chatRoutes = require("./routes/chatRoutes");
+const gptRoutes = require("./routes/gptRoutes");
 
 dotenv.config();
 const app = express();
@@ -24,6 +25,7 @@ app.get("/", (req, res) => {
 app.use("/users", userRoutes);
 app.use("/dairy", dairyRoutes);
 app.use("/chat", chatRoutes);
+app.use("/gpt", gptRoutes);
 app.listen(port, "0.0.0.0", () => {
   console.log(`🚀 Server running at http://localhost:${port}`);
 });

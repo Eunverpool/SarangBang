@@ -7,10 +7,16 @@ const mongoose = require("mongoose");
 //   chat_content: String,
 //   chat_date: Date,
 // });
+
+const messageSchema = new mongoose.Schema({
+  role: String,
+  content: String,
+});
+
 const chatSchema = new mongoose.Schema({
   user_uuid: String,
-  user_message: String,
-  bot_response: String,
+  session_id: String,
+  messages: [messageSchema],
   chat_date: String,
 });
 
