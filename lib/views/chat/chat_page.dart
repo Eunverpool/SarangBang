@@ -237,11 +237,39 @@ class _ChatPageState extends State<ChatPage> {
         foregroundColor: Colors.black,
         actions: [
           IconButton(
-            icon: const Icon(Icons.check),
-            onPressed: () {
-              // 기록 완료 액션
-            },
-          ),
+              icon: const Icon(Icons.check),
+              onPressed: () async {
+                if (_deviceId == null) return;
+
+                final url = Uri.parse("http://10.20.35.222:3000/dairy");
+                final response = await http.post(
+                  url,
+                  headers: {'Content-Type': 'application/json'},
+                  body: jsonEncode({'user_uuid': _deviceId}),
+                );
+
+                final decoded = jsonDecode(utf8.decode(response.bodyBytes));
+                if (decoded['alreadyExists'] == true) {
+                  showDialog(
+                    context: context,
+                    builder: (context) => AlertDialog(
+                      title: const Text("알림"),
+                      content: const Text(
+                          "오늘의 일기는 이미 작성되었습니다.\n이후 대화는 일기에 반영되지 않습니다."),
+                      actions: [
+                        TextButton(
+                          onPressed: () => Navigator.of(context).pop(),
+                          child: const Text("확인"),
+                        ),
+                      ],
+                    ),
+                  );
+                } else {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text("✅ 오늘의 일기가 저장되었습니다.")),
+                  );
+                }
+              }),
         ],
       ),
       body: Column(

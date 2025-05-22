@@ -22,7 +22,7 @@ class ReportPage extends StatelessWidget {
     return Scaffold(
       appBar: ReportHeader(date: selectedDate),
       body: Padding(
-        padding: EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -31,16 +31,16 @@ class ReportPage extends StatelessWidget {
               child: Column(
                 children: [
                   ReportSummary(summary: report.summary),
-                  SizedBox(height: 50),
+                  const SizedBox(height: 50),
                   ReportEmotion(emotionRatio: report.emotionRatio),
                 ],
               ),
             ),
-            Expanded(
+            const Expanded(
               flex: 1,
               child: ReportCognitive(),
             ),
-            ReprotButton(),
+            const ReprotButton(),
           ],
         ),
       ),

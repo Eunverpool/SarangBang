@@ -15,17 +15,6 @@ import 'package:intl/date_symbol_data_local.dart';
 import '/utils/device_id_manager.dart';
 
 void main() async {
-  // initializeDateFormatting().then((_) => runApp(const MyApp()));
-  // DeviceIdManager.sendDeviceIdToServer(); // 앱 시작 시 서버에 UUID 전송
-  // DeviceIdManager.printDeviceId();
-
-  // WidgetsFlutterBinding.ensureInitialized(); // 🔑 필수 초기화
-  // await initializeDateFormatting();
-
-  // await DeviceIdManager.sendDeviceIdToServer(); // UUID 서버 전송
-  // await DeviceIdManager.printDeviceId(); // UUID 콘솔 출력n
-  // runApp(const MyApp());
-
   WidgetsFlutterBinding.ensureInitialized();
   await initializeDateFormatting();
   runApp(const MyApp());
