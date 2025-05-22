@@ -48,7 +48,7 @@ Future<void> fetchAndStoreReports() async {
   // final userUuid = 'uuid-1234';
   final response = await http
       // .get(Uri.parse('http://localhost:3000/dairy?user_uuid=$userUuid'));
-      .get(Uri.parse('http://10.20.35.222:3000/dairy?user_uuid=$userUuid'));
+      .get(Uri.parse('http://10.20.25.237:3000/dairy?user_uuid=$userUuid'));
 
   if (response.statusCode == 200) {
     List<dynamic> jsonList = json.decode(response.body);
