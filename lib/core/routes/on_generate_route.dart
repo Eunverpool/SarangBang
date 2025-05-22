@@ -1,4 +1,7 @@
 import 'package:flutter/cupertino.dart';
+import 'package:grocery/views/chat/chat2.dart';
+import 'package:grocery/views/chat/colab.dart';
+import 'package:grocery/views/chat/colab_test2.dart';
 import 'package:grocery/views/menu/menu_page.dart';
 
 import '../../views/auth/forget_password_page.dart';
@@ -218,10 +221,19 @@ class RouteGenerator {
 
       // 우리가 따로 작성한거 여기 밑에 쓰셈
       case AppRoutes.chat_page:
-        return CupertinoPageRoute(builder: (_) => const ChatPage());
+        // return CupertinoPageRoute(builder: (_) => const ChatPage());
 
       case AppRoutes.test_page:
         return CupertinoPageRoute(builder: (_) => const TestPage());
+
+      case AppRoutes.colab_test:
+        return CupertinoPageRoute(builder: (_) => const Colab());
+
+      case AppRoutes.colab_test2:
+        return CupertinoPageRoute(builder: (_) => const Colab2());
+
+      case AppRoutes.colab_chat:
+        return CupertinoPageRoute(builder: (_) => const chat2());
 
       default:
         return errorRoute();

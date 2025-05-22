@@ -11,73 +11,17 @@ import 'dart:convert';
 // 국제화 기능
 import 'package:intl/date_symbol_data_local.dart';
 
-// 기기 ID 관리 함수
-class DeviceIdManager {
-  static const String _deviceIdKey = 'device_id';
+// 기기 ID 관리
+import '/utils/device_id_manager.dart';
 
-  static Future<String?> getDeviceId() async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    return prefs.getString(_deviceIdKey);
-  }
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await initializeDateFormatting();
+  runApp(const MyApp());
 
-  static Future<String> generateAndSaveDeviceId() async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    const uuid = Uuid();
-    //final String deviceId = uuid.v4(); 이거 테스트하는동안 uuid-1234로 고정
-    const String deviceId = 'uuid-1234';
-    await prefs.setString(_deviceIdKey, deviceId);
-    return deviceId;
-  }
-
-  static Future<String> getOrCreateDeviceId() async {
-    final String? storedDeviceId = await getDeviceId();
-    if (storedDeviceId != null) {
-      return storedDeviceId;
-    } else {
-      return await generateAndSaveDeviceId();
-    }
-  }
-
-  static Future<void> printDeviceId() async {
-    //final String deviceId = await getOrCreateDeviceId();
-    const String deviceId = 'uuid-1234';
-    print('Device ID: $deviceId');
-  }
-
-  static Future<void> sendDeviceIdToServer() async {
-    //final String deviceId = await getOrCreateDeviceId();
-    const String deviceId = 'uuid-1234';
-    // 서버에 전송할 데이터
-    final Map<String, dynamic> data = {
-      'user_uuid': deviceId,
-      'user_family_email': 'family@example.com', // 예시 이메일
-      'user_date': DateTime.now().toIso8601String(),
-    };
-
-    // 서버 URL
-    const String url = 'http://localhost:3000/users';
-
-    try {
-      final response = await http.post(
-        Uri.parse(url),
-        headers: {'Content-Type': 'application/json'},
-        body: jsonEncode(data),
-      );
-
-      if (response.statusCode == 200) {
-        print('Successfully sent data to server');
-      } else {
-        print('Failed to send data: ${response.statusCode}');
-      }
-    } catch (e) {
-      print('Error: $e');
-    }
-  }
-}
-
-void main() {
-  initializeDateFormatting().then((_) => runApp(const MyApp()));
+  // runApp 이후 백그라운드로 비동기 작업
   DeviceIdManager.sendDeviceIdToServer();
+  DeviceIdManager.printDeviceId();
 }
 
 class MyApp extends StatelessWidget {
@@ -89,7 +33,12 @@ class MyApp extends StatelessWidget {
       title: 'SarangBang',
       theme: AppTheme.defaultTheme,
       onGenerateRoute: RouteGenerator.onGenerate,
+      
+      // 메인페이지 경로  
       initialRoute: AppRoutes.entryPoint,
+
+      // 테스트용 작업중
+      // initialRoute: AppRoutes.colab_chat,
     );
   }
 }
