@@ -1,13 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
-import '../../core/constants/app_icons.dart';
-
-import '../../core/constants/app_defaults.dart';
-import '../../core/routes/app_routes.dart';
-import 'components/ad_space.dart';
-import 'components/our_new_item.dart';
-import 'components/popular_packs.dart';
-import '../../../core/components/network_image.dart';
+import '../../core/constants/app_colors.dart';
+import '../chat/chat_page.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -15,64 +8,103 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SafeArea(
-        child: CustomScrollView(
-          slivers: [
-            SliverAppBar(
-              automaticallyImplyLeading: false,
-              // leading: Padding(
-              //   padding: const EdgeInsets.only(left: 8),
-              //   child: ElevatedButton(
-              //     onPressed: () {
-              //       Navigator.pushNamed(context, AppRoutes.drawerPage);
-              //     },
-              //     style: ElevatedButton.styleFrom(
-              //       backgroundColor: const Color(0xFFF2F6F3),
-              //       shape: const CircleBorder(),
-              //     ),
-              //     child: SvgPicture.asset(AppIcons.sidebarIcon),
-              //   ),
-              // ),
-              //floating: true,
-              title: SizedBox(
-                height: 50,
-                width: 150,
-                child: NetworkImageWithLoader('https://i.imgur.com/oWH9HAk.png',
-                    fit: BoxFit.contain),
-              ),
-              // actions: [
-              //   Padding(
-              //     padding: const EdgeInsets.only(right: 8, top: 4, bottom: 4),
-              //     child: ElevatedButton(
-              //       onPressed: () {
-              //         Navigator.pushNamed(context, AppRoutes.search);
-              //       },
-              //       style: ElevatedButton.styleFrom(
-              //         backgroundColor: const Color(0xFFF2F6F3),
-              //         shape: const CircleBorder(),
-              //       ),
-              //       child: SvgPicture.asset(AppIcons.search),
-              //     ),
-              //   ),
-              //],
+      backgroundColor: const Color(0xFFFFFBF7),
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        centerTitle: true,
+        title: const Text(
+          '사랑방',
+          style: TextStyle(
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
+            color: Colors.deepOrange,
+          ),
+        ),
+      ),
+      body: ListView(
+        padding: const EdgeInsets.all(16),
+        children: [
+          ClipRRect(
+            borderRadius: BorderRadius.circular(16),
+            child: Image.asset(
+              'assets/images/elderly_banner.png', // 실제 프로젝트에 맞게 경로 조정
+              fit: BoxFit.cover,
+              height: 160,
+              width: double.infinity,
             ),
-            const SliverToBoxAdapter(
-              child: AdSpace(),
+          ),
+          const SizedBox(height: 24),
+          _buildCardItem(context, Icons.insert_chart, "종합 보고서"),
+          const SizedBox(height: 12),
+          _buildCardItem(context, Icons.chat, "대화하기", onTap: () {
+            Navigator.push(context, MaterialPageRoute(builder: (_) => const ChatPage()));
+          }),
+          const SizedBox(height: 12),
+          _buildCardItem(context, Icons.book, "어제의 일기"),
+          const SizedBox(height: 24),
+          const Text("오늘의 활동", style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+          const SizedBox(height: 12),
+          _buildActivityItem("오전", "건강 체크 완료", "09:30에 완료됨"),
+          const SizedBox(height: 8),
+          _buildActivityItem("오후", "산책 시간", "14:00 예정"),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildCardItem(BuildContext context, IconData icon, String title, {VoidCallback? onTap}) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        padding: const EdgeInsets.symmetric(vertical: 18, horizontal: 16),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(16),
+          color: Colors.white,
+          boxShadow: [
+            BoxShadow(
+              color: Colors.grey.withOpacity(0.2),
+              blurRadius: 8,
+              offset: const Offset(0, 4),
             ),
-            // const SliverToBoxAdapter(
-            //   child: SizedBox(height: AppDefaults.padding * 8),
-            // ),
-            const SliverToBoxAdapter(
-              child: PopularPacks(),
-            ),
-            // const SliverPadding(
-            //   padding: EdgeInsets.symmetric(vertical: AppDefaults.padding),
-            //   sliver: SliverToBoxAdapter(
-            //     child: OurNewItem(),
-            //   ),
-            // ),
           ],
         ),
+        child: Row(
+          children: [
+            Icon(icon, color: Colors.deepOrange),
+            const SizedBox(width: 16),
+            Text(title, style: const TextStyle(fontSize: 16)),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildActivityItem(String time, String title, String subtitle) {
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: const Color(0xFFF9F9F9),
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: Colors.grey.shade300),
+      ),
+      child: Row(
+        children: [
+          CircleAvatar(
+            radius: 22,
+            backgroundColor: time == "오전" ? Colors.orange.shade100 : Colors.green.shade100,
+            child: Text(time, style: const TextStyle(fontWeight: FontWeight.bold)),
+          ),
+          const SizedBox(width: 16),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(title, style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w500)),
+              const SizedBox(height: 4),
+              Text(subtitle, style: const TextStyle(color: Colors.grey)),
+            ],
+          ),
+        ],
       ),
     );
   }
