@@ -21,8 +21,9 @@ class BundleTileSquare extends StatelessWidget {
       color: AppColors.scaffoldBackground,
       borderRadius: AppDefaults.borderRadius,
       child: InkWell(
+        // 잠겨있을 때만 결제창(onTap) 실행, 잠금 해제된 경우 상세페이지 이동
         onTap: data.isLocked
-            ? null // 잠겨있으면 탭 비활성화
+            ? onTap // 잠겨있으면 상점페이지에서 전달한 결제창 띄우기
             : () {
                 Navigator.pushNamed(context, AppRoutes.bundleProduct);
               },
