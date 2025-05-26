@@ -28,7 +28,7 @@ class HomePage extends StatelessWidget {
           ClipRRect(
             borderRadius: BorderRadius.circular(16),
             child: Image.asset(
-              'assets/images/elderly_banner.png', // 실제 프로젝트에 맞게 경로 조정
+              'assets/images/sarangbang_main_img.png',
               fit: BoxFit.cover,
               height: 160,
               width: double.infinity,
