@@ -288,7 +288,7 @@ class _ChatPageState extends State<ChatPage> {
           Expanded(
             child: Container(
               width: double.infinity,
-              color: const Color.fromARGB(255, 197, 225, 165),
+              color: const Color(0xFFFFFBF7),
               padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
               child: SingleChildScrollView(
                 reverse: true,
