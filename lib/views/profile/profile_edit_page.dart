@@ -39,9 +39,7 @@ class ProfileEditPage extends StatelessWidget {
                 textInputAction: TextInputAction.next,
               ),
               const SizedBox(height: AppDefaults.padding),
-
               
-
               /* <---- Submit -----> */
               const SizedBox(height: AppDefaults.padding),
               SizedBox(

@@ -29,7 +29,6 @@ class ProfileHeader extends StatelessWidget {
                   ),
             ),
             const _UserData(),
-            const ProfileHeaderOptions()
           ],
         ),
       ],

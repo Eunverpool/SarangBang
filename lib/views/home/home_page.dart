@@ -1,9 +1,27 @@
 import 'package:flutter/material.dart';
 import '../../core/constants/app_colors.dart';
 import '../chat/chat_page.dart';
+import 'package:grocery/core/routes/app_routes.dart';
+import '../../../data/report_data.dart';
+import 'package:http/http.dart' as http;
+import '/utils/device_id_manager.dart';
+import 'dart:convert';
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
   const HomePage({super.key});
+
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  @override
+  void initState() {
+    super.initState();
+    fetchAndStoreReports().then((_) {
+      setState(() {}); // 데이터 불러오면 UI 새로고침
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +36,7 @@ class HomePage extends StatelessWidget {
           style: TextStyle(
             fontSize: 20,
             fontWeight: FontWeight.bold,
-            color: Colors.deepOrange,
+            color: Colors.black,
           ),
         ),
       ),
@@ -38,12 +56,32 @@ class HomePage extends StatelessWidget {
           _buildCardItem(context, Icons.person, "보호자 등록하기"),
           const SizedBox(height: 12),
           _buildCardItem(context, Icons.chat, "대화하기", onTap: () {
-            Navigator.push(context, MaterialPageRoute(builder: (_) => const ChatPage()));
+            Navigator.push(
+                context, MaterialPageRoute(builder: (_) => const ChatPage()));
           }),
           const SizedBox(height: 12),
-          _buildCardItem(context, Icons.auto_stories, "어제의 일기"),
+          _buildCardItem(context, Icons.book, "랜덤 일기", onTap: () async {
+            final userUuid = "uuid-1234"; // 사용자 ID 가져오기
+
+            final response = await http.get(Uri.parse(
+                'http://localhost:3000/dairy/random-diary?user_uuid=$userUuid'));
+
+            if (response.statusCode == 200) {
+              final data = jsonDecode(response.body);
+              final randomDate = DateTime.parse(data['date']);
+
+              Navigator.pushNamed(
+                context,
+                AppRoutes.reportPage,
+                arguments: randomDate,
+              );
+            } else {
+              print("에러 발생인듯?");
+            }
+          }),
           const SizedBox(height: 24),
-          const Text("오늘의 일정", style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+          const Text("오늘의 일정",
+              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
           const SizedBox(height: 12),
           _buildActivityItem("오전", "치과 예약", "11:30"),
           const SizedBox(height: 8),
@@ -53,7 +91,8 @@ class HomePage extends StatelessWidget {
     );
   }
 
-  Widget _buildCardItem(BuildContext context, IconData icon, String title, {VoidCallback? onTap}) {
+  Widget _buildCardItem(BuildContext context, IconData icon, String title,
+      {VoidCallback? onTap}) {
     return GestureDetector(
       onTap: onTap,
       child: Container(
@@ -73,7 +112,8 @@ class HomePage extends StatelessWidget {
           children: [
             Icon(icon, color: Colors.deepOrange),
             const SizedBox(width: 16),
-            Text(title, style: const TextStyle(fontSize: 16)),
+            Text(title,
+                style: const TextStyle(fontSize: 16, color: Colors.black)),
           ],
         ),
       ),
@@ -92,16 +132,22 @@ class HomePage extends StatelessWidget {
         children: [
           CircleAvatar(
             radius: 22,
-            backgroundColor: time == "오전" ? Colors.orange.shade100 : Colors.green.shade100,
-            child: Text(time, style: const TextStyle(fontWeight: FontWeight.bold)),
+            backgroundColor:
+                time == "오전" ? Colors.orange.shade100 : Colors.green.shade100,
+            child:
+                Text(time, style: const TextStyle(fontWeight: FontWeight.bold)),
           ),
           const SizedBox(width: 16),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(title, style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w500)),
+              Text(title,
+                  style: const TextStyle(
+                      fontSize: 15,
+                      fontWeight: FontWeight.w500,
+                      color: Colors.black)),
               const SizedBox(height: 4),
-              Text(subtitle, style: const TextStyle(color: Colors.grey)),
+              Text(subtitle, style: const TextStyle(color: Colors.black)),
             ],
           ),
         ],
