@@ -35,89 +35,20 @@ exports.getDairy = async (req, res) => {
   }
 };
 
-// 프롬프트 생성 함수
-function createDiaryPrompt(messages) {
-  const chatText = messages
-    .filter((msg) => msg.role === "user" || msg.role === "assistant")
-    .map((msg) => `${msg.role === "user" ? "사용자" : "AI"}: ${msg.content}`)
-    .join("\n");
-
-  return `
-다음은 사용자와 AI의 하루 대화입니다. 이를 바탕으로 아래 3가지를 생성해주세요:
-
-1. 📘 일기 요약: 3~5줄로 하루를 요약
-2. 🎭 감정 분석: 다음 7가지 감정의 백분율 비율 (기쁨, 슬픔, 놀람, 분노, 공포, 혐오, 중립)
-3. 🏷️ 제목: 위 요약을 바탕으로 1줄짜리 일기 제목 생성
-
-대화 내용:
-${chatText}
-
-결과 형식 예시:
-일기 요약: 오늘은 친구와 통화를 하며 기분이 좋아졌고, 날씨도 맑아서 산책을 즐겼다. 전반적으로 긍정적인 감정이 우세한 하루였다.
-감정 분석: 기쁨 50%, 슬픔 10%, 놀람 5%, 분노 10%, 공포 5%, 혐오 5%, 중립 15%
-제목: 친구와의 대화로 따뜻했던 하루
-`;
-}
-
-// 감정 분석 결과 문자열 → 상위 3개만 Map 변환
-function parseTop3Emotions(str) {
-  const parts = str.split(",").map((p) => p.trim());
-  const fullMap = {};
-
-  parts.forEach((p) => {
-    const [emotion, percent] = p.split(" ");
-    if (ALLOWED_EMOTIONS.includes(emotion)) {
-      fullMap[emotion] = parseFloat(percent.replace("%", "")) || 0;
-    }
-  });
-
-  // 상위 3개 감정만 추출
-  const top3 = Object.entries(fullMap)
-    .sort((a, b) => b[1] - a[1])
-    .slice(0, 3);
-
-  const result = {};
-  top3.forEach(([emotion, percent]) => {
-    result[emotion] = percent;
-  });
-
-  return result;
-}
-
-// 가장 높은 감정 추출 → 이모지
-function getDominantEmotionEmoji(emotionRatio) {
-  let max = -1;
-  let dominant = "중립"; // 기본값
-  for (const [emotion, value] of Object.entries(emotionRatio)) {
-    if (value > max && EMOTION_EMOJI_MAP[emotion]) {
-      max = value;
-      dominant = emotion;
-    }
-  }
-  return EMOTION_EMOJI_MAP[dominant] || "😐";
-}
-
-// 요약에서 제목 추출 (첫 문장 or 20자 이내)
-function extractTitle(summary) {
-  return summary.split(".")[0].trim().slice(0, 20); // 마침표 전까지 or 20자
-}
-
-exports.generateDairy = async (req, res) => {
-  const { user_uuid } = req.body;
-
-  if (!user_uuid)
-    return res.status(400).json({ error: "user_uuid가 필요합니다." });
-
-  const today = new Date().toISOString().slice(0, 10);
-  const sessionId = `${today}-${user_uuid}`;
-
+exports.getRandomDairy = async (req, res) => {
   try {
-    // 1. 기존 일기 확인
-    const existingDiary = await Dairy.findOne({
-      user_uuid,
-      date: new Date(today),
-    });
+    const { user_uuid } = req.query;
 
+    const diaries = await Dairy.find({ user_uuid });
+
+    if (diaries.length === 0) {
+      return res.status(404).json({ message: "No diary entries found." });
+    }
+
+    const randomIndex = Math.floor(Math.random() * diaries.length);
+    const randomDiary = diaries[randomIndex];
+
+    res.json(randomDiary);
     if (existingDiary) {
       return res.status(200).json({
         alreadyExists: true,
@@ -182,7 +113,6 @@ exports.generateDairy = async (req, res) => {
 
     res.status(201).json({ message: "일기 저장 완료", diary });
   } catch (err) {
-    console.error("❌ 일기 생성 오류:", err.response?.data || err.message);
-    res.status(500).json({ error: "일기 생성 실패" });
+    res.status(500).json({ message: err.message });
   }
 };
