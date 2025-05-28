@@ -22,7 +22,7 @@ class ProfileMenuOptions extends StatelessWidget {
       child: Column(
         children: [
           ProfileListTile(
-            title: '내 정보',
+            title: '보호자 등록',
             icon: AppIcons.profilePerson,
             onTap: () => Navigator.pushNamed(context, AppRoutes.profileEdit),
           ),

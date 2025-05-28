@@ -18,6 +18,7 @@ class menuPage2 extends StatelessWidget {
       appBar: AppBar(
         title: const Text('상점 페이지'),
       ),
+      backgroundColor: const Color(0xFFFFFBF7),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [

@@ -64,7 +64,7 @@ class _UserData extends StatelessWidget {
             children: [
               Row(children: [
                 Text(
-                  '박선문',
+                  '이말자',
                   style: Theme.of(context).textTheme.titleLarge?.copyWith(
                       fontWeight: FontWeight.bold, color: Colors.black),
                 ),

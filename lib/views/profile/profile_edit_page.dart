@@ -32,7 +32,7 @@ class ProfileEditPage extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               /* <----  First Name -----> */
-              const Text("이름"),
+              const Text("보호자 이메일"),
               const SizedBox(height: 8),
               TextFormField(
                 keyboardType: TextInputType.text,
@@ -40,53 +40,7 @@ class ProfileEditPage extends StatelessWidget {
               ),
               const SizedBox(height: AppDefaults.padding),
 
-              /* <---- Last Name -----> */
-              const Text("성"),
-              const SizedBox(height: 8),
-              TextFormField(
-                keyboardType: TextInputType.text,
-                textInputAction: TextInputAction.next,
-              ),
-              const SizedBox(height: AppDefaults.padding),
-
-              /* <---- Phone Number -----> */
-              const Text("전화번호"),
-              const SizedBox(height: 8),
-              TextFormField(
-                keyboardType: TextInputType.number,
-                textInputAction: TextInputAction.next,
-              ),
-              const SizedBox(height: AppDefaults.padding),
-
-              /* <---- Gender -----> */
-              const Text("성별"),
-              const SizedBox(height: 8),
-              TextFormField(
-                keyboardType: TextInputType.emailAddress,
-                textInputAction: TextInputAction.next,
-              ),
-              const SizedBox(height: AppDefaults.padding),
-
-              /* <---- Birthday -----> */
-              const Text("생일"),
-              const SizedBox(height: 8),
-              TextFormField(
-                keyboardType: TextInputType.text,
-                textInputAction: TextInputAction.next,
-              ),
-              const SizedBox(height: AppDefaults.padding),
-
-              /* <---- Password -----> */
-
-              /* <---- Birthday -----> */
-              const Text("비밀번호"),
-              const SizedBox(height: 8),
-              TextFormField(
-                keyboardType: TextInputType.visiblePassword,
-                textInputAction: TextInputAction.next,
-                obscureText: true,
-              ),
-              const SizedBox(height: AppDefaults.padding),
+              
 
               /* <---- Submit -----> */
               const SizedBox(height: AppDefaults.padding),

@@ -35,13 +35,13 @@ class HomePage extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 24),
-          _buildCardItem(context, Icons.insert_chart, "종합 보고서"),
+          _buildCardItem(context, Icons.person, "보호자 등록하기"),
           const SizedBox(height: 12),
           _buildCardItem(context, Icons.chat, "대화하기", onTap: () {
             Navigator.push(context, MaterialPageRoute(builder: (_) => const ChatPage()));
           }),
           const SizedBox(height: 12),
-          _buildCardItem(context, Icons.book, "어제의 일기"),
+          _buildCardItem(context, Icons.auto_stories, "어제의 일기"),
           const SizedBox(height: 24),
           const Text("오늘의 일정", style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
           const SizedBox(height: 12),
