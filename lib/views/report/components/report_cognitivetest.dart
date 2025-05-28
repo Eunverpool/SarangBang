@@ -1,13 +1,9 @@
 import 'package:flutter/material.dart';
 
 class ReportCognitive extends StatelessWidget {
-  const ReportCognitive({super.key});
+  final List<Map<String, String>> results;
 
-  final List<Map<String, dynamic>> results = const [
-    {"label": "날짜 인식", "result": "정확", "color": Colors.green},
-    {"label": "최근 식사 회상", "result": "정확", "color": Colors.green},
-    {"label": "기억력 회상", "result": "부정확", "color": Colors.red},
-  ];
+  const ReportCognitive({super.key, required this.results});
 
   @override
   Widget build(BuildContext context) {
@@ -73,7 +69,10 @@ class ReportCognitive extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: List.generate(results.length, (index) {
                   final e = results[index];
-                  final Color resultColor = e["color"];
+                  // 삼항연산자를 사용해 정확성에 따른 색상 결정
+                  final String accuracy = e["accuracy"] ?? "부정확";
+                  final Color resultColor =
+                      (accuracy == "정확") ? Colors.green : Colors.red;
 
                   return Column(
                     children: [
@@ -96,7 +95,7 @@ class ReportCognitive extends StatelessWidget {
                             // 라벨 텍스트
                             Expanded(
                               child: Text(
-                                e["label"],
+                                e["area"] ?? "알 수 없음",
                                 style: const TextStyle(
                                   fontSize: 18,
                                   color: Colors.black,
@@ -113,7 +112,7 @@ class ReportCognitive extends StatelessWidget {
                                 borderRadius: BorderRadius.circular(20),
                               ),
                               child: Text(
-                                e["result"],
+                                accuracy,
                                 style: TextStyle(
                                   fontSize: 16,
                                   fontWeight: FontWeight.bold,
