@@ -6,11 +6,17 @@ const dairySchema = new mongoose.Schema({
   title: String,
   date: Date,
   summary: String,
-  cognitiveResult: String,
   emotionRatio: {
     type: Map,
     of: Number,
   },
+  cognitiveResult: [
+    {
+      question: String, // 질문
+      area: String, // 인지 영역
+      accuracy: String, // 정확성
+    },
+  ],
 });
 
 const Dairy = mongoose.model("Dairy", dairySchema, "Dairy");

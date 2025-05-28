@@ -121,3 +121,25 @@ exports.getGptResponse = async (req, res) => {
     res.status(500).json({ error: "GPT API 호출 실패" });
   }
 };
+
+// cognitiveUtils 불러오기([인지] 태그가 붙은 질문과 대답만 추출하기)
+const { extractCognitivePairs } = require("../utils/cognitiveUtils");
+
+exports.getCognitivePairs = async (req, res) => {
+  const { user_uuid } = req.query;
+  const sessionId = getTodaySessionId(user_uuid);
+
+  try {
+    const chat = await Chat.findOne({ session_id: sessionId });
+
+    if (!chat || !chat.messages.length) {
+      return res.status(404).json({ error: "세션 대화 없음" });
+    }
+    const pairs = extractCognitivePairs(chat.messages);
+
+    res.json({ count: pairs.length, pairs });
+  } catch (err) {
+    console.error("❌ 인지 쌍 추출 실패:", err);
+    res.status(500).json({ error: "서버 오류" });
+  }
+};
