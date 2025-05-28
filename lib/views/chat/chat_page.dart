@@ -405,7 +405,7 @@ class _ChatPageState extends State<ChatPage> {
           Container(
             height: 100,
             decoration: BoxDecoration(
-              color: Colors.green[50],
+              color: const Color.fromARGB(255, 255, 255, 255),
               border: const Border(top: BorderSide(color: Colors.grey)),
             ),
             child: Center(
