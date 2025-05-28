@@ -4,8 +4,10 @@ import 'package:grocery/views/report/components/report_button.dart';
 import 'package:grocery/views/report/components/report_summary.dart';
 import 'package:grocery/views/report/components/report_emotion.dart';
 import 'package:grocery/views/report/components/report_cognitivetest.dart';
+import 'package:grocery/views/report/components/report_mentalstatus.dart';
 import '../../core/constants/constants.dart';
 
+import 'dart:convert';
 import '../../data/report_data.dart';
 
 class ReportPage extends StatelessWidget {
@@ -19,27 +21,31 @@ class ReportPage extends StatelessWidget {
     if (report == null) {
       return const Center(child: Text('해당 날짜의 보고서가 없습니다.'));
     }
+
+    // 👇 여기서 cognitiveResult를 디코딩하고 출력
+    final List<Map<String, dynamic>> cognitiveList = report.cognitiveResult;
+
+    print("🧠 Cognitive Results: $cognitiveList");
+
     return Scaffold(
       appBar: ReportHeader(date: selectedDate),
-      body: Padding(
+      body: SingleChildScrollView(
+        // ✅ 스크롤 가능하게 변경
         padding: const EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Expanded(
-              flex: 2,
-              child: Column(
-                children: [
-                  ReportSummary(summary: report.summary),
-                  const SizedBox(height: 50),
-                  ReportEmotion(emotionRatio: report.emotionRatio),
-                ],
-              ),
+            ReportSummary(summary: report.summary),
+            const SizedBox(height: 50),
+            ReportEmotion(emotionRatio: report.emotionRatio),
+            const SizedBox(height: 20),
+            ReportMentalStatus(
+              cognitiveResult: '정상',
+              depressionScore: 0.65,
             ),
-            const Expanded(
-              flex: 1,
-              child: ReportCognitive(),
-            ),
+            const SizedBox(height: 20),
+            ReportCognitive(results: report.cognitiveResult),
+            const SizedBox(height: 20),
             const ReprotButton(),
           ],
         ),
