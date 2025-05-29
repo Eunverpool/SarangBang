@@ -55,7 +55,7 @@ class _ChatPageState extends State<ChatPage> {
 
 // GPT
   Future<String> _getGptResponse(String prompt) async {
-    final url = Uri.parse('http://10.20.35.222:3000/gpt');
+    final url = Uri.parse('http://10.20.21.175:3000/gpt');
     try {
       print("탕야지 GPT API 요청 전송 시작");
       final response = await http.post(
@@ -107,7 +107,7 @@ class _ChatPageState extends State<ChatPage> {
 //   }
   Future<void> saveChatToServer(
       String uuId, String userMsg, String botMsg) async {
-    final saveUrl = Uri.parse("http://10.20.35.222:3000/chat");
+    final saveUrl = Uri.parse("http://10.20.21.175:3000/chat");
 
     try {
       final response = await http.post(
@@ -241,7 +241,7 @@ class _ChatPageState extends State<ChatPage> {
               onPressed: () async {
                 if (_deviceId == null) return;
 
-                final url = Uri.parse("http://10.20.35.222:3000/dairy");
+                final url = Uri.parse("http://10.20.21.175:3000/dairy");
                 final response = await http.post(
                   url,
                   headers: {'Content-Type': 'application/json'},
