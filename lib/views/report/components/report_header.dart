@@ -7,8 +7,10 @@ class ReportHeader extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
+      backgroundColor: Colors.white,
+      elevation: 0,
       leading: IconButton(
-        icon: const Icon(Icons.arrow_back),
+        icon: const Icon(Icons.arrow_back, color: Colors.black),
         onPressed: () {
           Navigator.pop(context);
         },
@@ -16,19 +18,21 @@ class ReportHeader extends StatelessWidget implements PreferredSizeWidget {
       title: const Text(
         '오늘의 일기',
         style: TextStyle(
-          fontSize: 24,
+          fontSize: 22,
           fontWeight: FontWeight.bold,
+          color: Color(0xFF00A572),
         ),
       ),
       actions: [
         Padding(
-          padding: EdgeInsets.all(8.0),
+          padding: const EdgeInsets.only(right: 16.0),
           child: Center(
             child: Text(
               _formatKoreanDate(date),
-              style: TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
+              style: const TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.w500,
+                color: Colors.black,
               ),
             ),
           ),
@@ -40,7 +44,6 @@ class ReportHeader extends StatelessWidget implements PreferredSizeWidget {
   @override
   Size get preferredSize => const Size.fromHeight(kToolbarHeight);
 
-  // 한국어 날짜 포맷 함수
   String _formatKoreanDate(DateTime date) {
     const weekdays = ['월', '화', '수', '목', '금', '토', '일'];
     final year = date.year;

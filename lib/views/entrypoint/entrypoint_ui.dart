@@ -50,13 +50,14 @@ class _EntryPointUIState extends State<EntryPointUI> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Color.fromARGB(255, 255, 255, 255),
       body: PageTransitionSwitcher(
         transitionBuilder: (child, primaryAnimation, secondaryAnimation) {
           return SharedAxisTransition(
             animation: primaryAnimation,
             secondaryAnimation: secondaryAnimation,
             transitionType: SharedAxisTransitionType.horizontal,
-            fillColor: const Color.fromARGB(255, 209, 97, 97),
+            fillColor: const Color.fromARGB(255, 255, 255, 255),
             child: child,
           );
         },

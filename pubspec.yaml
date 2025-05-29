@@ -37,8 +37,6 @@ dependencies:
   # 토스페이먼츠 결제 위젯 SDK
   tosspayments_widget_sdk_flutter: ^2.1.1
 
-
-  
   # colab 통신용
   path_provider: ^2.1.1
   file_picker: ^10.1.9

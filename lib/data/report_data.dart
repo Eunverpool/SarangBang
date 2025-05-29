@@ -8,7 +8,7 @@ class Report {
   final String emoji;
   final String title;
   final String summary;
-  final String cognitiveResult;
+  final List<Map<String, String>> cognitiveResult;
   final Map<String, double> emotionRatio;
 
   Report({
@@ -28,12 +28,23 @@ class Report {
       });
     }
 
+    List<Map<String, String>> cognitiveList = [];
+    if (json['cognitiveResult'] != null && json['cognitiveResult'] is List) {
+      for (var entry in json['cognitiveResult']) {
+        cognitiveList.add({
+          "question": entry["질문"] ?? "",
+          "area": entry["영역"] ?? "",
+          "accuracy": entry["정확성"] ?? "",
+        });
+      }
+    }
+
     return Report(
       user_uuid: json['user_uuid'] ?? '',
       emoji: json['emoji'] ?? '',
       title: json['title'] ?? '',
       summary: json['summary'] ?? '',
-      cognitiveResult: json['cognitiveResult'] ?? '',
+      cognitiveResult: cognitiveList,
       emotionRatio: emotionMap,
     );
   }

@@ -81,30 +81,6 @@ class _ChatPageState extends State<ChatPage> {
     }
   }
 
-// // 대화저장
-//   Future<void> saveChatToServer(
-//       String uuId, String userMsg, String botMsg) async {
-//     // final saveUrl = Uri.parse("http://localhost:3000/chat");
-//     final saveUrl = Uri.parse("http://10.20.26.169:3000/chat");
-
-//     try {
-//       final response = await http.post(
-//         saveUrl,
-//         headers: {'Content-Type': 'application/json'},
-//         body: jsonEncode({
-//           'user_uuid': uuId,
-//           'user_message': userMsg,
-//           'bot_response': botMsg,
-//           // 'chat_date': DateTime.now().toLocal().toIso8601String(),
-//           'chat_date': DateFormat("yyyy-MM-dd HH:mm:ss")
-//               .format(DateTime.now().toLocal()),
-//         }),
-//       );
-//       print("💾 Chat 저장 응답: ${response.body}");
-//     } catch (e) {
-//       print("❌ Chat 저장 오류: $e");
-//     }
-//   }
   Future<void> saveChatToServer(
       String uuId, String userMsg, String botMsg) async {
     final saveUrl = Uri.parse("http://10.20.22.219:3000/chat");
@@ -219,7 +195,7 @@ class _ChatPageState extends State<ChatPage> {
     });
   }
 
-  String _currentQuestion = "오늘 일어났던 일 중에서 기억에 가장 많이 남는 일은 어떤 것인가요?";
+  String _currentQuestion = "오늘은 어떤 일이 있으셨나요? 당신의 하루 이야기를 들려주세요.";
 
   void _toggleListening() async {
     _isListening ? _stopListening() : _startListening();
@@ -288,7 +264,7 @@ class _ChatPageState extends State<ChatPage> {
           Expanded(
             child: Container(
               width: double.infinity,
-              color: const Color.fromARGB(255, 197, 225, 165),
+              color: const Color(0xFFFFFBF7),
               padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
               child: SingleChildScrollView(
                 reverse: true,
@@ -405,7 +381,7 @@ class _ChatPageState extends State<ChatPage> {
           Container(
             height: 100,
             decoration: BoxDecoration(
-              color: Colors.green[50],
+              color: const Color.fromARGB(255, 255, 255, 255),
               border: const Border(top: BorderSide(color: Colors.grey)),
             ),
             child: Center(

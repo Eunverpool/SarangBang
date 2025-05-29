@@ -23,7 +23,8 @@ class _chat2State extends State<chat2> {
 
     try {
       final response = await http.post(
-        Uri.parse('https://b42f-35-223-9-116.ngrok-free.app/chat'),  // 추후 ngrok 주소로 교체
+        Uri.parse(
+            'https://b42f-35-223-9-116.ngrok-free.app/chat'), // 추후 ngrok 주소로 교체
         headers: {"Content-Type": "application/json"},
         body: jsonEncode({"input": inputText}),
       );
@@ -66,12 +67,16 @@ class _chat2State extends State<chat2> {
               ),
               const SizedBox(height: 12),
               CupertinoButton.filled(
-                child: _isLoading ? const CupertinoActivityIndicator() : const Text('전송'),
-                onPressed: _isLoading ? null : () {
-                  if (_controller.text.trim().isNotEmpty) {
-                    sendQuestionToColab(_controller.text.trim());
-                  }
-                },
+                child: _isLoading
+                    ? const CupertinoActivityIndicator()
+                    : const Text('전송'),
+                onPressed: _isLoading
+                    ? null
+                    : () {
+                        if (_controller.text.trim().isNotEmpty) {
+                          sendQuestionToColab(_controller.text.trim());
+                        }
+                      },
               ),
               const SizedBox(height: 24),
               Expanded(

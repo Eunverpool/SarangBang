@@ -13,7 +13,7 @@ class UnknownPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         leading: const AppBackButton(),
-        title: const Text('Unknown Page'),
+        title: const Text('에러 페이지'),
       ),
       body: Column(
         children: [
@@ -36,7 +36,7 @@ class UnknownPage extends StatelessWidget {
             child: Column(
               children: [
                 Text(
-                  'oppss!! something wrong',
+                  '문제가 생겼습니다',
                   style: Theme.of(context).textTheme.titleLarge?.copyWith(
                         fontWeight: FontWeight.bold,
                         color: Colors.black,
@@ -48,7 +48,7 @@ class UnknownPage extends StatelessWidget {
                   padding:
                       EdgeInsets.symmetric(horizontal: AppDefaults.padding),
                   child: Text(
-                    'Sorry, something went wrong\nplease try again .',
+                    '다시 시도해주세요',
                     textAlign: TextAlign.center,
                   ),
                 ),

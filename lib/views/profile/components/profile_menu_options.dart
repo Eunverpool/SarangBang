@@ -22,7 +22,7 @@ class ProfileMenuOptions extends StatelessWidget {
       child: Column(
         children: [
           ProfileListTile(
-            title: '내 정보',
+            title: '보호자 등록',
             icon: AppIcons.profilePerson,
             onTap: () => Navigator.pushNamed(context, AppRoutes.profileEdit),
           ),
@@ -46,7 +46,7 @@ class ProfileMenuOptions extends StatelessWidget {
           ),
           const Divider(thickness: 0.1),
           ProfileListTile(
-            title: '로그아웃',
+            title: '로그인하기',
             icon: AppIcons.profileLogout,
             onTap: () => Navigator.pushNamed(context, AppRoutes.login),
           ),
