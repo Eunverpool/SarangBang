@@ -85,13 +85,8 @@ class DeviceIdManager {
     };
 
     // 서버 URL
-<<<<<<< HEAD
     const String url = 'http://10.20.22.219:3000/users'; // 실제 사용 시 IP로 변경 필요
-=======
     // const String url = 'http://localhost:3000/users'; // 실제 사용 시 IP로 변경 필요
->>>>>>> eb737255d6a8eb26fd11f32bb8958e6a80639cd8
-    // 호식 URL
-    const String url = 'http://10.20.34.150:3000/users';
 
     try {
       final response = await http.post(

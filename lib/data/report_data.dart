@@ -32,9 +32,9 @@ class Report {
     if (json['cognitiveResult'] != null && json['cognitiveResult'] is List) {
       for (var entry in json['cognitiveResult']) {
         cognitiveList.add({
-          "question": entry["질문"] ?? "",
-          "area": entry["영역"] ?? "",
-          "accuracy": entry["정확성"] ?? "",
+          "question": entry["question"] ?? "",
+          "area": entry["area"] ?? "",
+          "accuracy": entry["accuracy"] ?? "",
         });
       }
     }
