@@ -28,8 +28,19 @@ environment:
 # the latest version available on pub.dev. To see which dependencies have newer
 # versions available, run `flutter pub outdated`.
 dependencies:
+  flutter_riverpod: ^2.4.9
   flutter:
     sdk: flutter
+  uuid: ^4.2.1
+  shared_preferences: ^2.2.0
+  http: ^1.2.2
+  # 토스페이먼츠 결제 위젯 SDK
+  tosspayments_widget_sdk_flutter: ^2.1.1
+
+  # colab 통신용
+  path_provider: ^2.1.1
+  # file_picker: ^6.1.1
+  file_picker: ^10.1.9
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
@@ -39,6 +50,12 @@ dependencies:
   form_field_validator: ^1.1.0
   animations: ^2.0.11
   flutter_credit_card: ^3.0.3
+  table_calendar: ^3.2.0
+
+  # STT, TTS
+  speech_to_text: ^7.0.0
+  flutter_tts: ^3.5.0
+  permission_handler: ^12.0.0+1
 
 dev_dependencies:
   flutter_test:

@@ -22,33 +22,33 @@ class ProfileMenuOptions extends StatelessWidget {
       child: Column(
         children: [
           ProfileListTile(
-            title: 'My Profile',
+            title: '보호자 등록',
             icon: AppIcons.profilePerson,
             onTap: () => Navigator.pushNamed(context, AppRoutes.profileEdit),
           ),
+          // const Divider(thickness: 0.1),
+          // ProfileListTile(
+          //   title: '알림',
+          //   icon: AppIcons.profileNotification,
+          //   onTap: () => Navigator.pushNamed(context, AppRoutes.notifications),
+          // ),
           const Divider(thickness: 0.1),
           ProfileListTile(
-            title: 'Notification',
-            icon: AppIcons.profileNotification,
-            onTap: () => Navigator.pushNamed(context, AppRoutes.notifications),
-          ),
-          const Divider(thickness: 0.1),
-          ProfileListTile(
-            title: 'Setting',
+            title: '설정',
             icon: AppIcons.profileSetting,
             onTap: () => Navigator.pushNamed(context, AppRoutes.settings),
           ),
           const Divider(thickness: 0.1),
           ProfileListTile(
-            title: 'Payment',
+            title: '결제수단',
             icon: AppIcons.profilePayment,
             onTap: () => Navigator.pushNamed(context, AppRoutes.paymentMethod),
           ),
           const Divider(thickness: 0.1),
           ProfileListTile(
-            title: 'Logout',
+            title: '로그인하기',
             icon: AppIcons.profileLogout,
-            onTap: () => Navigator.pushNamed(context, AppRoutes.loginOrSignup),
+            onTap: () => Navigator.pushNamed(context, AppRoutes.login),
           ),
         ],
       ),

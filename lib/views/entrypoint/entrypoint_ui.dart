@@ -1,6 +1,7 @@
 import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:grocery/views/store2/menuPage2.dart';
 import '../../core/constants/app_icons.dart';
 
 import '../../core/constants/app_colors.dart';
@@ -11,6 +12,13 @@ import '../menu/menu_page.dart';
 import '../profile/profile_page.dart';
 import '../save/save_page.dart';
 import 'components/app_navigation_bar.dart';
+import '../../views/store2/menuPage2.dart';
+
+import '../diary/diary_page.dart';
+
+// 우리가 작업한거
+import '../../views/chat/chat_page.dart';
+import 'package:flutter/material.dart';
 
 /// This page will contain all the bottom navigation tabs
 class EntryPointUI extends StatefulWidget {
@@ -33,22 +41,23 @@ class _EntryPointUIState extends State<EntryPointUI> {
   /// All the pages
   List<Widget> pages = [
     const HomePage(),
-    const MenuPage(),
+    const DiaryPage(),
     const CartPage(isHomePage: true),
-    const SavePage(isHomePage: false),
+    const menuPage2(),
     const ProfilePage(),
   ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Color.fromARGB(255, 255, 255, 255),
       body: PageTransitionSwitcher(
         transitionBuilder: (child, primaryAnimation, secondaryAnimation) {
           return SharedAxisTransition(
             animation: primaryAnimation,
             secondaryAnimation: secondaryAnimation,
             transitionType: SharedAxisTransitionType.horizontal,
-            fillColor: AppColors.scaffoldBackground,
+            fillColor: const Color.fromARGB(255, 255, 255, 255),
             child: child,
           );
         },
@@ -56,11 +65,14 @@ class _EntryPointUIState extends State<EntryPointUI> {
         child: pages[currentIndex],
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          onBottomNavigationTap(2);
+        onPressed: () {   
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => const ChatPage()),
+          );
         },
         backgroundColor: AppColors.primary,
-        child: SvgPicture.asset(AppIcons.cart),
+        child: const Icon(Icons.mic, color: Colors.white),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       bottomNavigationBar: AppBottomNavigationBar(

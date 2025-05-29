@@ -12,10 +12,10 @@ class AlreadyHaveAnAccount extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        const Text('Already Have Account?'),
+        const Text('계정이 있으신가요?'),
         TextButton(
           onPressed: () => Navigator.pushNamed(context, AppRoutes.login),
-          child: const Text('Log In'),
+          child: const Text('로그인'),
         ),
       ],
     );

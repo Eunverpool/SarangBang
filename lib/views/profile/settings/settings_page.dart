@@ -15,7 +15,7 @@ class SettingsPage extends StatelessWidget {
       appBar: AppBar(
         leading: const AppBackButton(),
         title: const Text(
-          'Settings',
+          '설정',
         ),
       ),
       backgroundColor: AppColors.cardColor,
@@ -32,49 +32,41 @@ class SettingsPage extends StatelessWidget {
         child: Column(
           children: [
             AppSettingsListTile(
-              label: 'Language',
-              trailing: SvgPicture.asset(AppIcons.right),
-              onTap: () =>
-                  Navigator.pushNamed(context, AppRoutes.settingsLanguage),
-            ),
-            AppSettingsListTile(
-              label: 'Notification',
+              label: '알림 설정',
               trailing: SvgPicture.asset(AppIcons.right),
               onTap: () =>
                   Navigator.pushNamed(context, AppRoutes.settingsNotifications),
             ),
             AppSettingsListTile(
-              label: 'Change Password',
+              label: '비밀번호 변경',
               trailing: SvgPicture.asset(AppIcons.right),
               onTap: () =>
                   Navigator.pushNamed(context, AppRoutes.changePassword),
             ),
             AppSettingsListTile(
-              label: 'Change Phone Number',
+              label: '전화번호 변경',
               trailing: SvgPicture.asset(AppIcons.right),
               onTap: () =>
                   Navigator.pushNamed(context, AppRoutes.changePhoneNumber),
             ),
+
+            // 집주소 변경은 제외
+            // AppSettingsListTile(
+            //   label: 'Edit Home Address',
+            //   trailing: SvgPicture.asset(AppIcons.right),
+            //   onTap: () =>
+            //       Navigator.pushNamed(context, AppRoutes.deliveryAddress),
+            // ),
             AppSettingsListTile(
-              label: 'Edit Home Address',
+              label: '종합 보고서 기록 확인',
               trailing: SvgPicture.asset(AppIcons.right),
-              onTap: () =>
-                  Navigator.pushNamed(context, AppRoutes.deliveryAddress),
+              onTap: () => Navigator.pushNamed(
+                  context, AppRoutes.deliveryAddress), // 종합보고서 페이지 라우트
             ),
             AppSettingsListTile(
-              label: 'Location',
-              trailing: SvgPicture.asset(AppIcons.right),
-              onTap: () {},
-            ),
-            AppSettingsListTile(
-              label: 'Profile Setting',
+              label: '프로필 설정',
               trailing: SvgPicture.asset(AppIcons.right),
               onTap: () => Navigator.pushNamed(context, AppRoutes.profileEdit),
-            ),
-            AppSettingsListTile(
-              label: 'Deactivate Account',
-              trailing: SvgPicture.asset(AppIcons.right),
-              onTap: () => Navigator.pushNamed(context, AppRoutes.introLogin),
             ),
           ],
         ),

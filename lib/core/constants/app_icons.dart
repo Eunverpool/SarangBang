@@ -56,4 +56,9 @@ class AppIcons {
   static const contactMap = 'assets/icons/contact_map.svg';
 
   static const cardAdd = 'assets/icons/card_add.svg';
+
+
+
+  // 따로 한거
+  static const diary = 'assets/icons/diary_icon.svg';
 }

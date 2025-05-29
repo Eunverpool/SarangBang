@@ -20,28 +20,35 @@ class ProfileHeaderOptions extends StatelessWidget {
         boxShadow: AppDefaults.boxShadow,
       ),
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        // mainAxisAlignment: MainAxisAlignment.spaceAround,
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          ProfileSqureTile(
-            label: 'All Order',
-            icon: AppIcons.truckIcon,
-            onTap: () {
-              Navigator.pushNamed(context, AppRoutes.myOrder);
-            },
+          Expanded(
+            child: ProfileSqureTile(
+              label: '종합보고서',
+              icon: AppIcons.truckIcon,
+              onTap: () {
+                Navigator.pushNamed(context, AppRoutes.myOrder);
+              },
+            ),
           ),
-          ProfileSqureTile(
-            label: 'Voucher',
-            icon: AppIcons.voucher,
-            onTap: () {
-              Navigator.pushNamed(context, AppRoutes.coupon);
-            },
+          Expanded(
+            child: ProfileSqureTile(
+              label: '쿠폰',
+              icon: AppIcons.voucher,
+              onTap: () {
+                Navigator.pushNamed(context, AppRoutes.coupon);
+              },
+            ),
           ),
-          ProfileSqureTile(
-            label: 'Address',
-            icon: AppIcons.homeProfile,
-            onTap: () {
-              Navigator.pushNamed(context, AppRoutes.deliveryAddress);
-            },
+          Expanded(
+            child: ProfileSqureTile(
+              label: '공지사항',
+              icon: AppIcons.homeProfile,
+              onTap: () {
+                Navigator.pushNamed(context, AppRoutes.deliveryAddress);
+              },
+            ),
           ),
         ],
       ),

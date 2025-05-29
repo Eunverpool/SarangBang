@@ -1,4 +1,8 @@
 import 'package:flutter/cupertino.dart';
+import 'package:grocery/views/chat/chat2.dart';
+import 'package:grocery/views/chat/colab.dart';
+import 'package:grocery/views/chat/colab_test2.dart';
+import 'package:grocery/views/menu/menu_page.dart';
 
 import '../../views/auth/forget_password_page.dart';
 import '../../views/auth/intro_login_page.dart';
@@ -46,14 +50,32 @@ import '../../views/profile/settings/settings_page.dart';
 import '../../views/review/review_page.dart';
 import '../../views/review/submit_review_page.dart';
 import '../../views/save/save_page.dart';
+
+import '../../views/diary/diary_page.dart';
+import '../../views/report/report_page.dart';
+
 import 'app_routes.dart';
 import 'unknown_page.dart';
+
+import '../../views/store2/menuPage2.dart';
+import '../../views/chat/chat_page.dart';
+import '../../views/chat/test.dart';
 
 class RouteGenerator {
   static Route? onGenerate(RouteSettings settings) {
     final route = settings.name;
 
     switch (route) {
+      case AppRoutes.diaryPage:
+        return CupertinoPageRoute(builder: (_) => const DiaryPage());
+      case AppRoutes.reportPage:
+        final selectedDate = settings.arguments as DateTime;
+        return CupertinoPageRoute(
+            builder: (_) => ReportPage(selectedDate: selectedDate));
+      //상점 페이지
+      case AppRoutes.store2:
+        return CupertinoPageRoute(builder: (_) => const menuPage2());
+
       case AppRoutes.introLogin:
         return CupertinoPageRoute(builder: (_) => const IntroLoginPage());
 
@@ -196,6 +218,22 @@ class RouteGenerator {
 
       case AppRoutes.paymentCardAdd:
         return CupertinoPageRoute(builder: (_) => const AddNewCardPage());
+
+      // 우리가 따로 작성한거 여기 밑에 쓰셈
+      case AppRoutes.chat_page:
+        // return CupertinoPageRoute(builder: (_) => const ChatPage());
+
+      case AppRoutes.test_page:
+        return CupertinoPageRoute(builder: (_) => const TestPage());
+
+      case AppRoutes.colab_test:
+        return CupertinoPageRoute(builder: (_) => const Colab());
+
+      case AppRoutes.colab_test2:
+        return CupertinoPageRoute(builder: (_) => const Colab2());
+
+      case AppRoutes.colab_chat:
+        return CupertinoPageRoute(builder: (_) => const chat2());
 
       default:
         return errorRoute();
