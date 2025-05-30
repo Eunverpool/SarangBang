@@ -57,6 +57,9 @@ dependencies:
   flutter_tts: ^3.5.0
   permission_handler: ^12.0.0+1
 
+  # 녹음
+  record: ^6.0.0
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
