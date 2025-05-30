@@ -18,9 +18,9 @@ class DeviceIdManager {
   static Future<String> generateAndSaveDeviceId() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     const uuid = Uuid();
-    final String deviceId = uuid.v4();
+    //final String deviceId = uuid.v4();
     // 이거 테스트하는동안 uuid-1234로 고정
-    // const String deviceId = 'uuid-1234';
+    const String deviceId = 'uuid-1234';
     await prefs.setString(_deviceIdKey, deviceId);
     return deviceId;
   }
@@ -37,15 +37,43 @@ class DeviceIdManager {
 
   // 디버그 용도로 device ID 출력
   static Future<void> printDeviceId() async {
-    final String deviceId = await getOrCreateDeviceId();
-    // const String deviceId = 'uuid-1234';
+    //final String deviceId = await getOrCreateDeviceId();
+    const String deviceId = 'uuid-1234';
     print('Device ID: $deviceId');
+  }
+
+  static Future<void> updateFamilyEmail(String email) async {
+    const String deviceId = 'uuid-1234'; // 테스트용 UUID
+    // final String deviceId = await getOrCreateDeviceId(); // 실제 적용 시
+
+    final Map<String, dynamic> data = {
+      'user_uuid': deviceId,
+      'user_family_email': email,
+    };
+
+    const String url = 'http://localhost:3000/users/update_email'; // 서버에 맞게 변경
+
+    try {
+      final response = await http.put(
+        Uri.parse(url),
+        headers: {'Content-Type': 'application/json'},
+        body: jsonEncode(data),
+      );
+
+      if (response.statusCode == 200) {
+        print('이메일 업데이트 성공');
+      } else {
+        print('이메일 업데이트 실패: ${response.statusCode}');
+      }
+    } catch (e) {
+      print('이메일 업데이트 중 오류 발생: $e');
+    }
   }
 
   // 앱 시작 시 서버로 UUID 전송
   static Future<void> sendDeviceIdToServer() async {
-    final String deviceId = await getOrCreateDeviceId();
-    // const String deviceId = 'uuid-1234';
+    //final String deviceId = await getOrCreateDeviceId();
+    const String deviceId = 'uuid-1234';
 
     // 서버에 전송할 데이터
     final Map<String, dynamic> data = {
@@ -56,9 +84,9 @@ class DeviceIdManager {
     };
 
     // 서버 URL
-    // const String url = 'http://localhost:3000/users'; // 실제 사용 시 IP로 변경 필요
+    const String url = 'http://localhost:3000/users'; // 실제 사용 시 IP로 변경 필요
     // 호식 URL
-    const String url = 'http://10.20.25.237:3000/users';
+    //const String url = 'http://10.20.26.51:3000/users';
 
     try {
       final response = await http.post(

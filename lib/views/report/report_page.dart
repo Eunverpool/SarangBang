@@ -7,6 +7,7 @@ import 'package:grocery/views/report/components/report_cognitivetest.dart';
 import 'package:grocery/views/report/components/report_mentalstatus.dart';
 import '../../core/constants/constants.dart';
 
+import 'dart:convert';
 import '../../data/report_data.dart';
 
 class ReportPage extends StatelessWidget {
@@ -20,6 +21,11 @@ class ReportPage extends StatelessWidget {
     if (report == null) {
       return const Center(child: Text('해당 날짜의 보고서가 없습니다.'));
     }
+
+    // 👇 여기서 cognitiveResult를 디코딩하고 출력
+    final List<Map<String, dynamic>> cognitiveList = report.cognitiveResult;
+
+    print(report.cognitiveResult);
 
     return Scaffold(
       appBar: ReportHeader(date: selectedDate),
@@ -38,7 +44,7 @@ class ReportPage extends StatelessWidget {
               depressionScore: 0.65,
             ),
             const SizedBox(height: 20),
-            const ReportCognitive(),
+            ReportCognitive(results: report.cognitiveResult),
             const SizedBox(height: 20),
             const ReprotButton(),
           ],
