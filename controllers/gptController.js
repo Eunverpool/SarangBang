@@ -86,8 +86,10 @@ exports.getGptResponse = async (req, res) => {
     // 3. 사용자 입력 추가
     chat.messages.push({ role: "user", content: input });
 
-    const recentMessages = chat.messages.slice(-20);
-
+    // ✅ 항상 system 메시지를 포함하고 최근 19개만 추가로 전송
+    const systemMessage = chat.messages.find((msg) => msg.role === "system");
+    const otherMessages = chat.messages.filter((msg) => msg.role !== "system");
+    const recentMessages = [systemMessage, ...otherMessages.slice(-19)];
     // 4. GPT 호출
     const gptResponse = await axios.post(
       "https://api.openai.com/v1/chat/completions",
