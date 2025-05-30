@@ -65,7 +65,7 @@ class _HomePageState extends State<HomePage> {
                 (await DeviceIdManager.getDeviceId()).toString(); // 사용자 ID 가져오기
 
             final response = await http.get(Uri.parse(
-                'http://10.20.34.150:3000/dairy/random-diary?user_uuid=$userUuid'));
+                'http://10.20.26.220:3000/dairy/random-diary?user_uuid=$userUuid'));
 
             if (response.statusCode == 200) {
               final data = jsonDecode(response.body);

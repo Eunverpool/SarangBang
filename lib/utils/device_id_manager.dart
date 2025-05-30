@@ -52,7 +52,7 @@ class DeviceIdManager {
     };
 
     const String url =
-        'http://10.20.34.150:3000/users/update_email'; // 서버에 맞게 변경
+        'http://10.20.26.220:3000/users/update_email'; // 서버에 맞게 변경
 
     try {
       final response = await http.put(

@@ -4,6 +4,10 @@ import '../chat/components/chat_bubble.dart';
 import 'package:speech_to_text/speech_to_text.dart' as stt;
 import 'package:flutter_tts/flutter_tts.dart';
 import 'package:permission_handler/permission_handler.dart';
+// 녹음
+import 'package:record/record.dart';
+import 'package:path_provider/path_provider.dart';
+import 'dart:io';
 
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -37,6 +41,13 @@ class _ChatPageState extends State<ChatPage> {
   final stt.SpeechToText _speechToText = stt.SpeechToText();
   final FlutterTts _flutterTts = FlutterTts();
 
+  // 녹음 변수
+  final AudioRecorder _recorder = AudioRecorder();
+  String? _recordFilePath;
+
+  bool _isCognitiveMode = false; //인지 질문 여부
+  bool _isRecording = false; // 녹음 진행 여부
+
   // UUID 변수
   String? _deviceId;
 
@@ -57,7 +68,7 @@ class _ChatPageState extends State<ChatPage> {
   Future<String> _getGptResponse(String prompt) async {
     final url = Uri.parse('http://10.20.22.219:3000/gpt');
     try {
-      print("탕야지 GPT API 요청 전송 시작");
+      print("GPT API 요청 전송 시작");
       final response = await http.post(
         url,
         headers: {'Content-Type': 'application/json'},
@@ -66,7 +77,7 @@ class _ChatPageState extends State<ChatPage> {
           'input': prompt, // 사용자 입력
         }),
       );
-      print("잘 받와야지 GPT 응답 statusCode: ${response.statusCode}");
+      print("GPT 응답 statusCode: ${response.statusCode}");
       if (response.statusCode == 200) {
         final decoded = jsonDecode(utf8.decode(response.bodyBytes));
         print("✅ GPT 응답 : ${decoded['response']}");
@@ -79,6 +90,122 @@ class _ChatPageState extends State<ChatPage> {
       print("❌ GPT 호출 실패: $e");
       return '오류 발생';
     }
+  }
+
+// 녹음 시작 함수
+  Future<void> _startRecording() async {
+    final status = await Permission.microphone.request();
+    if (!status.isGranted) {
+      print('❌ 마이크 권한 거부됨');
+      return;
+    }
+
+    final dir = await getApplicationDocumentsDirectory();
+    final filePath =
+        '${dir.path}/${_deviceId}_cognitive_${DateTime.now().millisecondsSinceEpoch}.wav';
+
+    // ✅ 1. 녹음 시작
+    await _recorder.start(
+      const RecordConfig(
+        encoder: AudioEncoder.wav,
+        sampleRate: 16000, // 안정적인 측정을 위해 설정
+        numChannels: 1,
+      ),
+      path: filePath,
+    );
+
+    setState(() {
+      _recordFilePath = filePath;
+      _isRecording = true;
+    });
+
+    print('🎙️ 녹음 시작: $filePath');
+
+    // ✅ 2. 무음 감지 시작
+    int silenceCount = 0;
+
+    _recorder
+        .onAmplitudeChanged(const Duration(milliseconds: 300))
+        .listen((amp) async {
+      if (amp != null && amp.current != null) {
+        print('🎧 데시벨: ${amp.current}');
+        if (amp.current <= -20) {
+          silenceCount++;
+          if (silenceCount * 300 >= 3000) {
+            print('🤫 3초 이상 무음 감지 → 녹음 종료');
+            await _stopRecording();
+            setState(() {
+              _isRecording = false;
+              _isCognitiveMode = false;
+            });
+          }
+        } else {
+          silenceCount = 0; // 소리 있음
+        }
+      } else {
+        print('⚠️ amplitude null 또는 측정 안 됨');
+      }
+    });
+  }
+  // Future<void> _startRecording() async {
+  //   final status = await Permission.microphone.request();
+  //   if (!status.isGranted) {
+  //     print('❌ 마이크 권한 거부됨');
+  //     return;
+  //   }
+
+  //   final dir = await getApplicationDocumentsDirectory();
+  //   final filePath =
+  //       '${dir.path}/${_deviceId}_cognitive_${DateTime.now().millisecondsSinceEpoch}.wav';
+
+  //   await _recorder.start(const RecordConfig(encoder: AudioEncoder.wav),
+  //       path: filePath);
+
+  //   setState(() {
+  //     _recordFilePath = filePath;
+  //     _isRecording = true; // 녹음 시작 시 상태 true
+  //   });
+
+  //   print('🎙️ 녹음 시작: $filePath');
+
+  //   // // 🔔 일정 시간 후 자동 종료 (예: 10초)
+  //   // Future.delayed(const Duration(seconds: 5), () async {
+  //   //   await _stopRecording(); // 타이머 종료
+  //   //   setState(() {
+  //   //     _isRecording = false;
+  //   //     _isCognitiveMode = false; // 자동 종료 시 인지모드 해제
+  //   //   });
+  //   // ✅ 무음 감지용 스트림 시작
+  //   int silenceCount = 0;
+  //   _recorder
+  //       .onAmplitudeChanged(const Duration(milliseconds: 300))
+  //       .listen((amp) async {
+  //     // 🔊 데시벨 값이 낮으면 무음으로 판단
+  //     if (amp.current <= -40) {
+  //       silenceCount++;
+  //       if (silenceCount * 300 >= 3000) {
+  //         print('🤫 3초 이상 무음 감지 → 녹음 종료');
+  //         await _stopRecording();
+  //         setState(() {
+  //           _isRecording = false;
+  //           _isCognitiveMode = false;
+  //         });
+  //       }
+  //     } else {
+  //       silenceCount = 0; // 소리 있으면 리셋
+  //     }
+  //   });
+  // }
+
+  Future<void> _stopRecording() async {
+    final path = await _recorder.stop();
+    print('✅ 녹음 완료: $path');
+  }
+
+  @override
+  void dispose() {
+    _recorder.dispose();
+    super.dispose();
   }
 
   Future<void> saveChatToServer(
@@ -155,12 +282,6 @@ class _ChatPageState extends State<ChatPage> {
 
             // ✅ GPT API 연동
             final gptResponse = await _getGptResponse(userText);
-            // ✅ MongoDB에 대화 저장하기
-            // if (_deviceId != null) {
-            //   await saveChatToServer(_deviceId!, userText, gptResponse);
-            // } else {
-            //   print("❗ 디바이스 ID가 아직 초기화되지 않았습니다.");
-            // }
 
             // ✅ GPT 응답 저장 및 TTS 재생
             setState(() {
@@ -175,6 +296,13 @@ class _ChatPageState extends State<ChatPage> {
             _flutterTts.setPitch(1.0);
             _flutterTts.setSpeechRate(0.5);
             await _flutterTts.speak(gptResponse);
+
+            if (gptResponse.contains("[인지]")) {
+              setState(() {
+                _isCognitiveMode = true;
+              });
+              print("🧠 인지 질문 탐지됨. 다음 입력은 녹음 모드.");
+            }
           }
         },
       );
@@ -186,7 +314,7 @@ class _ChatPageState extends State<ChatPage> {
     }
   }
 
-  //녹음 중지
+  //STT 중지
   void _stopListening() {
     _speechToText.stop();
     setState(() {
@@ -198,7 +326,25 @@ class _ChatPageState extends State<ChatPage> {
   String _currentQuestion = "오늘은 어떤 일이 있으셨나요? 당신의 하루 이야기를 들려주세요.";
 
   void _toggleListening() async {
-    _isListening ? _stopListening() : _startListening();
+    // _isListening ? _stopListening() : _startListening();
+    if (_isCognitiveMode) {
+      //  인지 모드에서는 마이크 버튼이 녹음으로 동작
+      if (_isRecording) {
+        await _stopRecording();
+        setState(() {
+          _isRecording = false;
+          _isCognitiveMode = false; //녹음 종료시 인지 모드 해제
+        });
+      } else {
+        // 🔥 상태 먼저 업데이트해서 버튼 색 먼저 바뀌도록
+        setState(() {
+          _isRecording = true;
+        });
+        await _startRecording();
+      }
+    } else {
+      _isListening ? _stopListening() : _startListening();
+    }
   }
 
   @override
@@ -387,9 +533,12 @@ class _ChatPageState extends State<ChatPage> {
             child: Center(
               child: FloatingActionButton(
                 onPressed: _toggleListening,
-                backgroundColor: _isListening ? Colors.red : Colors.green,
+                backgroundColor:
+                    (_isCognitiveMode && _isRecording) || _isListening
+                        ? Colors.red
+                        : Colors.green,
                 child: Icon(
-                  _isListening ? Icons.mic : Icons.mic_none,
+                  _isCognitiveMode && _isRecording ? Icons.mic : Icons.mic_none,
                   size: 32,
                 ),
               ),
