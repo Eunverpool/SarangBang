@@ -1,6 +1,8 @@
 require("dotenv").config();
 const Chat = require("../models/Chat");
+const User = require("../models/User");
 const Dairy = require("../models/Dairy");
+const nodemailer = require("nodemailer");
 
 const { extractCognitivePairs } = require("../utils/cognitiveUtils");
 const {
@@ -177,7 +179,68 @@ exports.generateDairy = async (req, res) => {
     });
 
     await diary.save();
+    const user = await User.findOne({ user_uuid });
+    if (user && user.user_family_email) {
+      // 이메일 있을 때만 전송
+      const transporter = nodemailer.createTransport({
+        service: "gmail",
+        auth: {
+          user: process.env.EMAIL_USER,
+          pass: process.env.EMAIL_PASS,
+        },
+      });
 
+      const mailOptions = {
+        from: process.env.EMAIL_USER,
+        to: user.user_family_email,
+        subject: `📘 오늘의 일기 저장 알림 - ${today}`,
+        text: `
+    <div style="font-family: Arial, sans-serif; max-width: 600px; margin: auto; border:1px solid #ddd; padding:20px; border-radius: 10px;">
+      <h2 style="color: #1A8917;">오늘의 일기</h2>
+      <p><strong>📅 날짜:</strong> ${today}</p>
+
+      <h3>💬 대화 내용 요약</h3>
+      <div style="border-left: 4px solid #1A8917; padding-left: 12px; background: #f9f9f9; border-radius: 5px; margin-bottom: 20px;">
+        ${summary}
+      </div>
+
+      <h3>📊 감정 분석</h3>
+      <ul style="list-style:none; padding:0;">
+        ${Object.entries(emotionRatio)
+          .map(
+            ([emotion, percent]) =>
+              `<li><strong>${emotion}:</strong> ${percent}%</li>`
+          )
+          .join("")}
+      </ul>
+
+      <h3>🧠 정신 건강 상태</h3>
+      <p>우울증 검사: <strong>${
+        cognitiveResult?.depressionScore || "N/A"
+      }%</strong></p>
+      <p>결과: <strong>${
+        cognitiveResult?.depressionScore > 60 ? "높음" : "정상"
+      }</strong></p>
+
+      <h3>📝 인지 테스트 결과</h3>
+      <ul>
+        ${(cognitiveResult?.tests || [])
+          .map(
+            (test) =>
+              `<li>${test.label}: <strong style="color: ${
+                test.result === "정상" ? "green" : "red"
+              };">${test.result}</strong></li>`
+          )
+          .join("")}
+      </ul>
+
+      <hr>
+    </div>
+  `,
+      };
+
+      await transporter.sendMail(mailOptions);
+    }
     res.status(201).json({ message: "일기 저장 완료", diary });
   } catch (err) {
     console.error("❌ 일기 생성 오류:", err.response?.data || err.message);
