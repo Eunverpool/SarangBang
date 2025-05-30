@@ -10,6 +10,8 @@ const dairySchema = new mongoose.Schema({
     type: Map,
     of: Number,
   },
+  cognitiveAnalysis: String, // 예: "Negative (0.21)"
+  depressionResult: String, // 예: "Normal"
   cognitiveResult: [
     {
       question: String, // 질문
