@@ -9,11 +9,11 @@ class ProfileEditPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.cardColor,
+      backgroundColor: const Color(0xFFFFFBF7),
       appBar: AppBar(
         leading: const AppBackButton(),
         title: const Text(
-          '내 정보 수정',
+          '보호자 이메일 등록',
         ),
       ),
       body: SingleChildScrollView(

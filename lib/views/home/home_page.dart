@@ -53,7 +53,9 @@ class _HomePageState extends State<HomePage> {
             ),
           ),
           const SizedBox(height: 24),
-          _buildCardItem(context, Icons.person, "보호자 등록하기"),
+          _buildCardItem(context, Icons.person, "보호자 등록하기", onTap: () {
+            Navigator.pushNamed(context, AppRoutes.profileEdit);
+          }),
           const SizedBox(height: 12),
           _buildCardItem(context, Icons.chat, "대화하기", onTap: () {
             Navigator.push(
