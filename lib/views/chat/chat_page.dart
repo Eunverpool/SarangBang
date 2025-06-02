@@ -152,7 +152,37 @@ class _ChatPageState extends State<ChatPage> {
     final path = await _recorder.stop();
     print('✅ 녹음 완료: $path');
     if (path != null) {
-      sendWavFile(path); // 🔁 여기서 모델에게 wav 파일 전송
+      // Whisper에 텍스트 요청
+      final whisperText = await sendWavToWhisper(path);
+      if (whisperText != null && whisperText.isNotEmpty) {
+        // GPT 대화 흐름 연결
+        setState(() {
+          _messages.add({
+            'message': whisperText,
+            'time': _currentTime(),
+            'isMe': 'true',
+          });
+        });
+
+        final gptResponse = await _getGptResponse(whisperText);
+
+        setState(() {
+          _messages.add({
+            'message': gptResponse,
+            'time': _currentTime(),
+            'isMe': 'false',
+          });
+        });
+
+        sendWavFile(path); // 🔁 여기서 모델에게 wav 파일 전송
+
+        _flutterTts.setLanguage('ko-KR');
+        _flutterTts.setPitch(1.0);
+        _flutterTts.setSpeechRate(0.5);
+        await _flutterTts.speak(gptResponse);
+      } else {
+        print("❗ Whisper로부터 텍스트를 받지 못함");
+      }
     } else {
       print('❌ 녹음 파일 경로가 null입니다.');
     }
@@ -165,7 +195,7 @@ class _ChatPageState extends State<ChatPage> {
   }
 
   Future<void> sendWavFile(String filePath) async {
-    final uri = Uri.parse('https://993e-35-240-235-156.ngrok-free.app/predict');
+    final uri = Uri.parse('https://7ed7-34-16-208-141.ngrok-free.app/predict');
     final file = File(filePath);
 
     var request = http.MultipartRequest('POST', uri)
@@ -227,29 +257,53 @@ class _ChatPageState extends State<ChatPage> {
     }
   }
 
-  Future<void> saveChatToServer(
-      String uuId, String userMsg, String botMsg) async {
-    final saveUrl = Uri.parse("http://192.168.0.12:3000/chat");
+  Future<String?> sendWavToWhisper(String path) async {
+    final uri = Uri.parse("https://8359-34-59-147-193.ngrok-free.app/stt");
+    final file = File(path);
+
+    var request = http.MultipartRequest('POST', uri)
+      ..files.add(await http.MultipartFile.fromPath('audio', file.path));
 
     try {
-      final response = await http.post(
-        saveUrl,
-        headers: {'Content-Type': 'application/json'},
-        body: jsonEncode({
-          'user_uuid': uuId,
-          'chat_date': DateFormat("yyyy-MM-dd HH:mm:ss")
-              .format(DateTime.now().toLocal()),
-          'messages': [
-            {'role': 'user', 'content': userMsg},
-            {'role': 'assistant', 'content': botMsg}
-          ],
-        }),
-      );
-      print("💾 Chat 저장 응답: ${response.body}");
+      final response = await request.send();
+      final result = await response.stream.bytesToString();
+
+      if (response.statusCode == 200) {
+        final decoded = jsonDecode(result);
+        return decoded['text'];
+      } else {
+        print("❌ Whisper 응답 오류: $result");
+        return null;
+      }
     } catch (e) {
-      print("❌ Chat 저장 오류: $e");
+      print("❌ Whisper 요청 실패: $e");
+      return null;
     }
   }
+
+  // Future<void> saveChatToServer(
+  //     String uuId, String userMsg, String botMsg) async {
+  //   final saveUrl = Uri.parse("http://192.168.0.12:3000/chat");
+
+  //   try {
+  //     final response = await http.post(
+  //       saveUrl,
+  //       headers: {'Content-Type': 'application/json'},
+  //       body: jsonEncode({
+  //         'user_uuid': uuId,
+  //         'chat_date': DateFormat("yyyy-MM-dd HH:mm:ss")
+  //             .format(DateTime.now().toLocal()),
+  //         'messages': [
+  //           {'role': 'user', 'content': userMsg},
+  //           {'role': 'assistant', 'content': botMsg}
+  //         ],
+  //       }),
+  //     );
+  //     print("💾 Chat 저장 응답: ${response.body}");
+  //   } catch (e) {
+  //     print("❌ Chat 저장 오류: $e");
+  //   }
+  // }
 
   Future<void> _startListening() async {
     final microphoneStatus = await Permission.microphone.request();
