@@ -25,7 +25,7 @@ class ReportPage extends StatelessWidget {
     // 👇 여기서 cognitiveResult를 디코딩하고 출력
     final List<Map<String, dynamic>> cognitiveList = report.cognitiveResult;
 
-    print("🧠 Cognitive Results: $cognitiveList");
+    print(report.cognitiveResult);
 
     return Scaffold(
       appBar: ReportHeader(date: selectedDate),
@@ -46,7 +46,6 @@ class ReportPage extends StatelessWidget {
             const SizedBox(height: 20),
             ReportCognitive(results: report.cognitiveResult),
             const SizedBox(height: 20),
-            const ReprotButton(),
           ],
         ),
       ),

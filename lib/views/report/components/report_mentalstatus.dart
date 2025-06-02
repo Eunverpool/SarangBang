@@ -12,6 +12,10 @@ class ReportMentalStatus extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final double score = double.tryParse(cognitiveResult) ?? 0.0;
+    final bool isHighCognitive = score >= 0.5;
+    final String cognitivePercent = (score * 100).toStringAsFixed(1);
+
     // 🟩 우울 상태 색상 로직
     Color getDepressionColor(String result) {
       switch (result) {

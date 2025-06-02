@@ -85,7 +85,7 @@ class DeviceIdManager {
     };
 
     // 서버 URL
-    // const String url = 'http://localhost:3000/users'; // 실제 사용 시 IP로 변경 필요
+    const String url = 'http://localhost:3000/users'; // 실제 사용 시 IP로 변경 필요
     // 호식 URL
     const String url = 'http://192.168.0.12:3000/users';
 
