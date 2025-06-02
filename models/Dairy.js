@@ -10,8 +10,8 @@ const dairySchema = new mongoose.Schema({
     type: Map,
     of: Number,
   },
-  cognitiveAnalysis: String, // 예: "Negative (0.21)"
-  depressionResult: String, // 예: "Normal"
+  cognitiveAnalysis: String, // 예: "의심, 정상"
+  depressionResult: String, // 예: "의심, 정상"
   cognitiveResult: [
     {
       question: String, // 질문
@@ -19,6 +19,10 @@ const dairySchema = new mongoose.Schema({
       accuracy: String, // 정확성
     },
   ],
+  isFinalized: {
+    type: Boolean,
+    default: false,
+  },
 });
 
 const Dairy = mongoose.model("Dairy", dairySchema, "Dairy");

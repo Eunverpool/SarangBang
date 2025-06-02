@@ -117,6 +117,7 @@ exports.generateDairy = async (req, res) => {
     const existingDiary = await Dairy.findOne({
       user_uuid,
       date: new Date(today),
+      isFinalized: true,
     });
     if (existingDiary) {
       return res.status(200).json({
@@ -168,17 +169,22 @@ exports.generateDairy = async (req, res) => {
     );
 
     // 6. DB 저장
-    const diary = new Dairy({
-      user_uuid,
-      title,
-      summary,
-      emoji,
-      emotionRatio,
-      date: new Date(today),
-      cognitiveResult,
-    });
+    const todayDate = new Date(today);
+    const updated = await Dairy.updateOne(
+      { user_uuid, date: todayDate },
+      {
+        $set: {
+          title,
+          summary,
+          emoji,
+          emotionRatio,
+          cognitiveResult,
+          isFinalized: true,
+        },
+      },
+      { upsert: true }
+    );
 
-    await diary.save();
     const user = await User.findOne({ user_uuid });
     if (user && user.user_family_email) {
       // 이메일 있을 때만 전송
@@ -241,7 +247,7 @@ exports.generateDairy = async (req, res) => {
 
       await transporter.sendMail(mailOptions);
     }
-    res.status(201).json({ message: "일기 저장 완료", diary });
+    res.status(201).json({ message: "일기 저장 완료", updated });
   } catch (err) {
     console.error("❌ 일기 생성 오류:", err.response?.data || err.message);
     res.status(500).json({ error: "일기 생성 실패" });
@@ -274,10 +280,21 @@ exports.updateAnalysisResult = async (req, res) => {
     return res.status(400).json({ error: "필수 항목 누락" });
   }
 
-  const today = new Date.toISOString().slice(0, 10);
-  const todayDate = new Date(today);
+  const today = new Date().toISOString().slice(0, 10); // YYYY-MM-DD (string)
+  const todayDate = new Date(today); // Date 객체로 변환
 
   try {
+    // 📌 먼저 기존 일기 조회
+    const diary = await Dairy.findOne({ user_uuid, date: todayDate });
+
+    // ✅ 일기가 이미 확정된 경우 수정 불가
+    if (diary?.isFinalized) {
+      return res.status(403).json({
+        message: "일기가 이미 확정되어 분석 결과를 수정할 수 없습니다.",
+      });
+    }
+
+    // 🔁 일기가 없거나 아직 확정되지 않은 경우 → 분석 결과 저장
     const result = await Dairy.updateOne(
       { user_uuid, date: todayDate },
       {
@@ -288,6 +305,7 @@ exports.updateAnalysisResult = async (req, res) => {
       },
       { upsert: true }
     );
+
     res.status(200).json({
       message: "✅ 분석 결과 저장 성공",
       result,
