@@ -1,22 +1,46 @@
 import 'package:flutter/material.dart';
-
 import '../../../core/components/network_image.dart';
 import '../../../core/constants/constants.dart';
 import 'profile_header_options.dart';
+import 'package:shared_preferences/shared_preferences.dart'; // shared_preferences 패키지 추가
+import 'package:uuid/uuid.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+import 'package:intl/intl.dart';
+import '../../../utils/device_id_manager.dart';
 
-class ProfileHeader extends StatelessWidget {
-  const ProfileHeader({
-    super.key,
-  });
+class ProfileHeader extends StatefulWidget {
+  const ProfileHeader({super.key});
+
+  @override
+  _ProfileHeaderState createState() => _ProfileHeaderState();
+}
+
+class _ProfileHeaderState extends State<ProfileHeader> {
+  String? deviceId;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadDeviceId();
+  }
+
+  // deviceId를 비동기적으로 로드하는 메서드
+  Future<void> _loadDeviceId() async {
+    final String id = await DeviceIdManager.getOrCreateDeviceId();
+    setState(() {
+      deviceId = id;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return Stack(
       children: [
-        /// Background
+        // Background
         // Image.asset('assets/images/profile_page_background.png'),
 
-        /// Content
+        // Content
         Column(
           children: [
             AppBar(
@@ -28,7 +52,7 @@ class ProfileHeader extends StatelessWidget {
                     fontWeight: FontWeight.bold,
                   ),
             ),
-            const _UserData(),
+            _UserData(deviceId: deviceId),
           ],
         ),
       ],
@@ -37,7 +61,9 @@ class ProfileHeader extends StatelessWidget {
 }
 
 class _UserData extends StatelessWidget {
-  const _UserData();
+  final String? deviceId;
+
+  const _UserData({super.key, this.deviceId});
 
   @override
   Widget build(BuildContext context) {
@@ -61,18 +87,20 @@ class _UserData extends StatelessWidget {
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Row(children: [
-                Text(
-                  '이말자',
-                  style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                      fontWeight: FontWeight.bold, color: Colors.black),
-                ),
-                Text(
-                  '님',
-                  style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                      fontWeight: FontWeight.bold, color: Colors.grey),
-                ),
-              ]),
+              Row(
+                children: [
+                  Text(
+                    deviceId ?? '익명', // deviceId가 로드되면 UUID로 출력
+                    style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                        fontWeight: FontWeight.bold, color: Colors.black),
+                  ),
+                  Text(
+                    '님',
+                    style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                        fontWeight: FontWeight.bold, color: Colors.grey),
+                  ),
+                ],
+              ),
               const SizedBox(height: 8),
               Text(
                 '오늘 하루는 어떠셨나요? ',
@@ -82,7 +110,7 @@ class _UserData extends StatelessWidget {
                     ?.copyWith(color: Colors.black),
               ),
             ],
-          )
+          ),
         ],
       ),
     );
