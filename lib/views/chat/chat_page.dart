@@ -66,7 +66,7 @@ class _ChatPageState extends State<ChatPage> {
 
 // GPT
   Future<String> _getGptResponse(String prompt) async {
-    final url = Uri.parse('http://10.20.26.220:3000/gpt');
+    final url = Uri.parse('http://192.168.0.12:3000/gpt');
     try {
       print("GPT API 요청 전송 시작");
       final response = await http.post(
@@ -147,59 +147,15 @@ class _ChatPageState extends State<ChatPage> {
       }
     });
   }
-  // Future<void> _startRecording() async {
-  //   final status = await Permission.microphone.request();
-  //   if (!status.isGranted) {
-  //     print('❌ 마이크 권한 거부됨');
-  //     return;
-  //   }
-
-  //   final dir = await getApplicationDocumentsDirectory();
-  //   final filePath =
-  //       '${dir.path}/${_deviceId}_cognitive_${DateTime.now().millisecondsSinceEpoch}.wav';
-
-  //   await _recorder.start(const RecordConfig(encoder: AudioEncoder.wav),
-  //       path: filePath);
-
-  //   setState(() {
-  //     _recordFilePath = filePath;
-  //     _isRecording = true; // 녹음 시작 시 상태 true
-  //   });
-
-  //   print('🎙️ 녹음 시작: $filePath');
-
-  //   // // 🔔 일정 시간 후 자동 종료 (예: 10초)
-  //   // Future.delayed(const Duration(seconds: 5), () async {
-  //   //   await _stopRecording(); // 타이머 종료
-  //   //   setState(() {
-  //   //     _isRecording = false;
-  //   //     _isCognitiveMode = false; // 자동 종료 시 인지모드 해제
-  //   //   });
-  //   // ✅ 무음 감지용 스트림 시작
-  //   int silenceCount = 0;
-  //   _recorder
-  //       .onAmplitudeChanged(const Duration(milliseconds: 300))
-  //       .listen((amp) async {
-  //     // 🔊 데시벨 값이 낮으면 무음으로 판단
-  //     if (amp.current <= -40) {
-  //       silenceCount++;
-  //       if (silenceCount * 300 >= 3000) {
-  //         print('🤫 3초 이상 무음 감지 → 녹음 종료');
-  //         await _stopRecording();
-  //         setState(() {
-  //           _isRecording = false;
-  //           _isCognitiveMode = false;
-  //         });
-  //       }
-  //     } else {
-  //       silenceCount = 0; // 소리 있으면 리셋
-  //     }
-  //   });
-  // }
 
   Future<void> _stopRecording() async {
     final path = await _recorder.stop();
     print('✅ 녹음 완료: $path');
+    if (path != null) {
+      sendWavFile(path); // 🔁 여기서 모델에게 wav 파일 전송
+    } else {
+      print('❌ 녹음 파일 경로가 null입니다.');
+    }
   }
 
   @override
@@ -208,9 +164,72 @@ class _ChatPageState extends State<ChatPage> {
     super.dispose();
   }
 
+  Future<void> sendWavFile(String filePath) async {
+    final uri = Uri.parse('https://993e-35-240-235-156.ngrok-free.app/predict');
+    final file = File(filePath);
+
+    var request = http.MultipartRequest('POST', uri)
+      ..files.add(await http.MultipartFile.fromPath('audio', file.path));
+
+    try {
+      final response = await request.send();
+      final result = await response.stream.bytesToString();
+
+      if (response.statusCode == 200) {
+        print('✅ 모델 응답: $result');
+        final jsonResult = jsonDecode(result);
+
+        // 원본 값
+        final dementiaRaw = jsonResult['dementia']; // "Positive" 또는 "Negative"
+        final depressionRaw =
+            jsonResult['depression']; // e.g., "Depressed" 또는 "Normal"
+
+        print('🧠 치매 분석 결과: $dementiaRaw');
+        print('😔 우울 분석 결과: $depressionRaw');
+
+        // 한글 텍스트로 변환
+        final String dementiaResult = (dementiaRaw == "Positive") ? "의심" : "정상";
+        final String depressionResult =
+            (depressionRaw == "Depressed") ? "의심" : "정상";
+
+        print('🧠 치매 분석 결과: $dementiaResult');
+        print('😔 우울 분석 결과: $depressionResult');
+
+        // 응답 결과 파싱해서 MongoDB 저장 등 처리
+        await sendAnalysisToServer(
+            _deviceId ?? "unknown", dementiaResult, depressionResult);
+      } else {
+        print('❌ 실패: ${response.statusCode}');
+      }
+    } catch (e) {
+      print('❌ 오류 발생: $e');
+    }
+  }
+
+  Future<void> sendAnalysisToServer(
+      String uuid, String dementia, String depression) async {
+    print("📡 서버에 분석 결과 전송 중...");
+    final uri = Uri.parse('http://192.168.0.12:3000/dairy/analysis');
+    final response = await http.post(
+      uri,
+      headers: {"Content-Type": "application/json"},
+      body: jsonEncode({
+        "user_uuid": uuid,
+        "dementiaResult": dementia,
+        "depressionResult": depression,
+      }),
+    );
+
+    if (response.statusCode == 200) {
+      print("✅ 저장 성공: ${response.body}");
+    } else {
+      print("❌ 저장 실패: ${response.body}");
+    }
+  }
+
   Future<void> saveChatToServer(
       String uuId, String userMsg, String botMsg) async {
-    final saveUrl = Uri.parse("http://10.20.26.220:3000/chat");
+    final saveUrl = Uri.parse("http://192.168.0.12:3000/chat");
 
     try {
       final response = await http.post(
@@ -363,7 +382,7 @@ class _ChatPageState extends State<ChatPage> {
               onPressed: () async {
                 if (_deviceId == null) return;
 
-                final url = Uri.parse("http://10.20.26.220:3000/dairy");
+                final url = Uri.parse("http://192.168.0.12:3000/dairy");
                 final response = await http.post(
                   url,
                   headers: {'Content-Type': 'application/json'},

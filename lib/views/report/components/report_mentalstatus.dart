@@ -1,25 +1,33 @@
 import 'package:flutter/material.dart';
 
 class ReportMentalStatus extends StatelessWidget {
-  final String cognitiveResult; // 예: '정상'
-  final double depressionScore; // 예: 0.65
+  final String depressionResult; // 예: '정상' 또는 '의심'
+  final String cognitiveResult; // 예: "0.65"
 
   const ReportMentalStatus({
     super.key,
     required this.cognitiveResult,
-    required this.depressionScore,
+    required this.depressionResult,
   });
 
   @override
   Widget build(BuildContext context) {
-    final isHighDepression = depressionScore >= 0.6;
-    final depressionPercent = (depressionScore * 100).toStringAsFixed(1);
-    final depressionColor = isHighDepression ? Colors.red : Colors.green;
+    // 🟩 우울 상태 색상 로직
+    Color getDepressionColor(String result) {
+      switch (result) {
+        case '정상':
+          return Colors.green;
+        case '의심':
+          return Colors.orange;
+        default:
+          return Colors.grey;
+      }
+    }
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        // 제목 + 세로 라인
+        // 제목
         Row(
           children: [
             Container(
@@ -34,19 +42,20 @@ class ReportMentalStatus extends StatelessWidget {
             const Text(
               '정신 건강 상태',
               style: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.black),
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+                color: Colors.black,
+              ),
             ),
           ],
         ),
         const SizedBox(height: 16),
 
-        // Row로 인지 상태 박스와 우울증 상태 박스를 나란히 배치
+        // 상태 박스들
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            // 🟩 인지 상태 박스
+            // 우울 상태 박스
             Expanded(
               child: Container(
                 margin: const EdgeInsets.only(right: 8),
@@ -54,7 +63,55 @@ class ReportMentalStatus extends StatelessWidget {
                 decoration: BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.circular(12),
-                  boxShadow: [
+                  boxShadow: const [
+                    BoxShadow(
+                      color: Colors.black12,
+                      blurRadius: 6,
+                      offset: Offset(0, 3),
+                    ),
+                  ],
+                ),
+                child: Column(
+                  children: [
+                    const Text(
+                      '우울 테스트 결과',
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                    const SizedBox(height: 12),
+                    CircleAvatar(
+                      backgroundColor:
+                          getDepressionColor(depressionResult).withOpacity(0.2),
+                      radius: 24,
+                      child: Icon(
+                        Icons.check_circle,
+                        color: getDepressionColor(depressionResult),
+                        size: 30,
+                      ),
+                    ),
+                    const SizedBox(height: 8),
+                    Text(
+                      depressionResult,
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                        color: getDepressionColor(depressionResult),
+                      ),
+                    ),
+                    const Text('우울 상태'),
+                  ],
+                ),
+              ),
+            ),
+
+            // 인지 상태 박스
+            Expanded(
+              child: Container(
+                margin: const EdgeInsets.only(right: 8),
+                padding: const EdgeInsets.all(16),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(12),
+                  boxShadow: const [
                     BoxShadow(
                       color: Colors.black12,
                       blurRadius: 6,
@@ -70,70 +127,24 @@ class ReportMentalStatus extends StatelessWidget {
                     ),
                     const SizedBox(height: 12),
                     CircleAvatar(
-                      backgroundColor: Colors.green[100],
+                      backgroundColor: getDepressionColor(cognitiveResult),
                       radius: 24,
-                      child: const Icon(Icons.check_circle,
-                          color: Colors.green, size: 30),
+                      child: Icon(
+                        Icons.check_circle,
+                        color: getDepressionColor(cognitiveResult),
+                        size: 30,
+                      ),
                     ),
                     const SizedBox(height: 8),
                     Text(
                       cognitiveResult,
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
-                        color: Colors.green,
+                        color: getDepressionColor(cognitiveResult),
                       ),
                     ),
-                    const Text('인지 기능 상태'),
-                  ],
-                ),
-              ),
-            ),
-
-            // 🟥 우울증 상태 박스
-            Expanded(
-              child: Container(
-                margin: const EdgeInsets.only(left: 8),
-                padding: const EdgeInsets.all(16),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(12),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black12,
-                      blurRadius: 6,
-                      offset: Offset(0, 3),
-                    ),
-                  ],
-                ),
-                child: Column(
-                  children: [
-                    const Text(
-                      '우울증 검사',
-                      style: TextStyle(fontWeight: FontWeight.bold),
-                    ),
-                    const SizedBox(height: 12),
-                    Text(
-                      '$depressionPercent%',
-                      style: const TextStyle(
-                        fontSize: 26,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    const SizedBox(height: 8),
-                    LinearProgressIndicator(
-                      value: depressionScore,
-                      color: depressionColor,
-                      backgroundColor: Colors.grey[300],
-                    ),
-                    const SizedBox(height: 8),
-                    Text(
-                      isHighDepression ? '높음 (0.0 - 1.0)' : '낮음 (0.0 - 1.0)',
-                      style: TextStyle(
-                        color: depressionColor,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
+                    const Text('인지 상태'),
                   ],
                 ),
               ),
