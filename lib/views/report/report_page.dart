@@ -41,7 +41,7 @@ class ReportPage extends StatelessWidget {
             const SizedBox(height: 20),
             const ReportMentalStatus(
               cognitiveResult: '정상',
-              depressionScore: 0.65,
+              depressionResult: '의심',
             ),
             const SizedBox(height: 20),
             ReportCognitive(results: report.cognitiveResult),
