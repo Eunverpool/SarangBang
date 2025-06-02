@@ -45,7 +45,9 @@ class _Colab2State extends State<Colab2> {
         var body = await response.stream.bytesToString();
         var decoded = jsonDecode(body);
         setState(() {
-          resultText = "🧠 치매 예측: ${decoded['dementia']}\n😔 우울 예측: ${decoded['depression']}";
+          resultText = 
+            "🧠 치매 예측: ${decoded['dementia']} (확률: ${(decoded['dementia_prob'] * 100).toStringAsFixed(1)}%)\n"
+            "😔 우울 예측: ${decoded['depression']} (확률: ${(decoded['depression_prob'] * 100).toStringAsFixed(1)}%)";
         });
       } else {
         setState(() {
