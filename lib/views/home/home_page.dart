@@ -4,7 +4,7 @@ import '../chat/chat_page.dart';
 import 'package:grocery/core/routes/app_routes.dart';
 import '../../../data/report_data.dart';
 import 'package:http/http.dart' as http;
-import '/utils/device_id_manager.dart';
+import '../../utils/device_id_manager.dart';
 import 'dart:convert';
 import '../profile/profile_edit_page.dart'; // 실제 경로로 수정
 
@@ -72,10 +72,11 @@ class _HomePageState extends State<HomePage> {
           }),
           const SizedBox(height: 12),
           _buildCardItem(context, Icons.book, "랜덤 일기", onTap: () async {
-            final userUuid = "uuid-1234"; // 사용자 ID 가져오기
+            final userUuid =
+                (await DeviceIdManager.getDeviceId()).toString(); // 사용자 ID 가져오기
 
             final response = await http.get(Uri.parse(
-                'http://localhost:3000/dairy/random-diary?user_uuid=$userUuid'));
+                'http://192.168.0.12:3000/dairy/random-diary?user_uuid=$userUuid'));
 
             if (response.statusCode == 200) {
               final data = jsonDecode(response.body);
