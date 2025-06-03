@@ -184,7 +184,13 @@ exports.generateDairy = async (req, res) => {
       },
       { upsert: true }
     );
+    const todayDiary = await Dairy.findOne(
+      { user_uuid, date: todayDate },
+      { depressionResult: 1, dementiaResult: 1 } // 필요한 필드만 선택
+    );
 
+    const depressionResult = todayDiary?.depressionResult || "N/A";
+    const dementiaResult = todayDiary?.dementiaResult || "N/A";
     const user = await User.findOne({ user_uuid });
     if (user && user.user_family_email) {
       // 이메일 있을 때만 전송
@@ -221,21 +227,21 @@ exports.generateDairy = async (req, res) => {
       </ul>
 
       <h3>🧠 정신 건강 상태</h3>
-      <p>우울증 검사: <strong>${
-        cognitiveResult?.depressionScore || "N/A"
-      }%</strong></p>
-      <p>결과: <strong>${
-        cognitiveResult?.depressionScore > 60 ? "높음" : "정상"
-      }</strong></p>
+      <p>우울증 검사: <strong style="color: ${
+        depressionResult === "정상" ? "green" : "orange"
+      };">${depressionResult || "N/A"}</strong></p>
+      <p>인지기능  검사: <strong style="color: ${
+        dementiaResult === "정상" ? "green" : "orange"
+      };">${dementiaResult || "N/A"}</strong></p>
 
       <h3>📝 인지 테스트 결과</h3>
       <ul>
-        ${(cognitiveResult?.tests || [])
+        ${(cognitiveResult || [])
           .map(
             (test) =>
-              `<li>${test.label}: <strong style="color: ${
-                test.result === "정상" ? "green" : "red"
-              };">${test.result}</strong></li>`
+              `<li>${test.area}: <strong style="color: ${
+                test.accuracy === "정상" ? "green" : "orange"
+              };">${test.accuracy}</strong></li>`
           )
           .join("")}
       </ul>
