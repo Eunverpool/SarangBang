@@ -6,6 +6,7 @@ import '../../../data/report_data.dart';
 import 'package:http/http.dart' as http;
 import '../../utils/device_id_manager.dart';
 import 'dart:convert';
+import '../profile/profile_edit_page.dart'; // 실제 경로로 수정
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -53,7 +54,17 @@ class _HomePageState extends State<HomePage> {
             ),
           ),
           const SizedBox(height: 24),
-          _buildCardItem(context, Icons.person, "보호자 등록하기"),
+          _buildCardItem(
+            context,
+            Icons.person,
+            "보호자 등록하기",
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (_) => const ProfileEditPage()),
+              );
+            },
+          ),
           const SizedBox(height: 12),
           _buildCardItem(context, Icons.chat, "대화하기", onTap: () {
             Navigator.push(
@@ -65,7 +76,7 @@ class _HomePageState extends State<HomePage> {
                 (await DeviceIdManager.getDeviceId()).toString(); // 사용자 ID 가져오기
 
             final response = await http.get(Uri.parse(
-                'http://10.20.34.150:3000/dairy/random-diary?user_uuid=$userUuid'));
+                'http://10.20.26.125:3000/dairy/random-diary?user_uuid=$userUuid'));
 
             if (response.statusCode == 200) {
               final data = jsonDecode(response.body);

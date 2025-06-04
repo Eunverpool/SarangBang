@@ -7,6 +7,7 @@ class ReportCognitive extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print(results);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
