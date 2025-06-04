@@ -186,11 +186,11 @@ exports.generateDairy = async (req, res) => {
     );
     const todayDiary = await Dairy.findOne(
       { user_uuid, date: todayDate },
-      { depressionResult: 1, dementiaResult: 1 } // 필요한 필드만 선택
+      { depressionResult: 1, cognitiveAnalysis: 1 } // 필요한 필드만 선택
     );
 
     const depressionResult = todayDiary?.depressionResult || "N/A";
-    const dementiaResult = todayDiary?.dementiaResult || "N/A";
+    const dementiaResult = todayDiary?.cognitiveAnalysis || "N/A";
     const user = await User.findOne({ user_uuid });
     if (user && user.user_family_email) {
       // 이메일 있을 때만 전송
@@ -206,7 +206,7 @@ exports.generateDairy = async (req, res) => {
         from: process.env.EMAIL_USER,
         to: user.user_family_email,
         subject: `📘 오늘의 일기 저장 알림 - ${today}`,
-        text: `
+        html: `
     <div style="font-family: Arial, sans-serif; max-width: 600px; margin: auto; border:1px solid #ddd; padding:20px; border-radius: 10px;">
       <h2 style="color: #1A8917;">오늘의 일기</h2>
       <p><strong>📅 날짜:</strong> ${today}</p>
@@ -240,7 +240,7 @@ exports.generateDairy = async (req, res) => {
           .map(
             (test) =>
               `<li>${test.area}: <strong style="color: ${
-                test.accuracy === "정상" ? "green" : "orange"
+                test.accuracy === "정확" ? "green" : "orange"
               };">${test.accuracy}</strong></li>`
           )
           .join("")}
