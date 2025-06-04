@@ -90,14 +90,18 @@ class _UserData extends StatelessWidget {
               Row(
                 children: [
                   Text(
-                    deviceId ?? '익명', // deviceId가 로드되면 UUID로 출력
+                    (deviceId != null && deviceId!.length >= 4
+                        ? deviceId!.substring(deviceId!.length - 4)
+                        : '익명'), // 마지막 4글자
                     style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                        fontWeight: FontWeight.bold, color: Colors.black),
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black,
+                        ),
                   ),
                   Text(
                     '님',
                     style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                        fontWeight: FontWeight.bold, color: Colors.grey),
+                        fontWeight: FontWeight.bold, color: Colors.black),
                   ),
                 ],
               ),

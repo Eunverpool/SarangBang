@@ -52,7 +52,7 @@ class DeviceIdManager {
     };
 
     const String url =
-        'http://192.168.0.12:3000/users/update_email'; // 서버에 맞게 변경
+        'http://10.20.26.125:3000/users/update_email'; // 서버에 맞게 변경
 
     try {
       final response = await http.put(
@@ -85,9 +85,9 @@ class DeviceIdManager {
     };
 
     // 서버 URL
-    const String url = 'http://localhost:3000/users'; // 실제 사용 시 IP로 변경 필요
+    // const String url = 'http://localhost:3000/users'; // 실제 사용 시 IP로 변경 필요
     // 호식 URL
-    const String url = 'http://192.168.0.12:3000/users';
+    const String url = 'http://10.20.26.125:3000/users';
 
     try {
       final response = await http.post(

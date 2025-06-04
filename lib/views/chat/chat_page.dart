@@ -66,7 +66,7 @@ class _ChatPageState extends State<ChatPage> {
 
 // GPT
   Future<String> _getGptResponse(String prompt) async {
-    final url = Uri.parse('http://192.168.0.12:3000/gpt');
+    final url = Uri.parse('http://10.20.26.125:3000/gpt');
     try {
       print("GPT API 요청 전송 시작");
       final response = await http.post(
@@ -195,7 +195,7 @@ class _ChatPageState extends State<ChatPage> {
   }
 
   Future<void> sendWavFile(String filePath) async {
-    final uri = Uri.parse('https://7ed7-34-16-208-141.ngrok-free.app/predict');
+    final uri = Uri.parse('https://27fc-34-16-168-127.ngrok-free.app/predict');
     final file = File(filePath);
 
     var request = http.MultipartRequest('POST', uri)
@@ -239,7 +239,7 @@ class _ChatPageState extends State<ChatPage> {
   Future<void> sendAnalysisToServer(
       String uuid, String dementia, String depression) async {
     print("📡 서버에 분석 결과 전송 중...");
-    final uri = Uri.parse('http://192.168.0.12:3000/dairy/analysis');
+    final uri = Uri.parse('http://10.20.26.125:3000/dairy/analysis');
     final response = await http.post(
       uri,
       headers: {"Content-Type": "application/json"},
@@ -258,7 +258,7 @@ class _ChatPageState extends State<ChatPage> {
   }
 
   Future<String?> sendWavToWhisper(String path) async {
-    final uri = Uri.parse("https://8359-34-59-147-193.ngrok-free.app/stt");
+    final uri = Uri.parse("https://ce51-34-75-75-111.ngrok-free.app/stt");
     final file = File(path);
 
     var request = http.MultipartRequest('POST', uri)
@@ -280,30 +280,6 @@ class _ChatPageState extends State<ChatPage> {
       return null;
     }
   }
-
-  // Future<void> saveChatToServer(
-  //     String uuId, String userMsg, String botMsg) async {
-  //   final saveUrl = Uri.parse("http://192.168.0.12:3000/chat");
-
-  //   try {
-  //     final response = await http.post(
-  //       saveUrl,
-  //       headers: {'Content-Type': 'application/json'},
-  //       body: jsonEncode({
-  //         'user_uuid': uuId,
-  //         'chat_date': DateFormat("yyyy-MM-dd HH:mm:ss")
-  //             .format(DateTime.now().toLocal()),
-  //         'messages': [
-  //           {'role': 'user', 'content': userMsg},
-  //           {'role': 'assistant', 'content': botMsg}
-  //         ],
-  //       }),
-  //     );
-  //     print("💾 Chat 저장 응답: ${response.body}");
-  //   } catch (e) {
-  //     print("❌ Chat 저장 오류: $e");
-  //   }
-  // }
 
   Future<void> _startListening() async {
     final microphoneStatus = await Permission.microphone.request();
@@ -422,10 +398,11 @@ class _ChatPageState extends State<ChatPage> {
 
   @override
   Widget build(BuildContext context) {
+    final String formattedDate = DateFormat("M월 d일").format(DateTime.now());
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        title: const Text("5월 2일의 기록"),
+        title: Text("$formattedDate의 기록"),
         backgroundColor: Colors.white,
         elevation: 0,
         centerTitle: true,
@@ -436,12 +413,28 @@ class _ChatPageState extends State<ChatPage> {
               onPressed: () async {
                 if (_deviceId == null) return;
 
-                final url = Uri.parse("http://192.168.0.12:3000/dairy");
+                showDialog(
+                  context: context,
+                  barrierDismissible: false,
+                  builder: (context) => const AlertDialog(
+                    content: Row(
+                      children: [
+                        CircularProgressIndicator(),
+                        SizedBox(width: 16),
+                        Expanded(child: Text("일기를 저장 중입니다...")),
+                      ],
+                    ),
+                  ),
+                );
+
+                final url = Uri.parse("http://10.20.26.125:3000/dairy");
                 final response = await http.post(
                   url,
                   headers: {'Content-Type': 'application/json'},
                   body: jsonEncode({'user_uuid': _deviceId}),
                 );
+
+                Navigator.of(context).pop();
 
                 final decoded = jsonDecode(utf8.decode(response.bodyBytes));
                 if (decoded['alreadyExists'] == true) {
