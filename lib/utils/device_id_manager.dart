@@ -79,13 +79,13 @@ class DeviceIdManager {
     // 서버에 전송할 데이터
     final Map<String, dynamic> data = {
       'user_uuid': deviceId,
-      'user_family_email': 'family@example.com', // 예시 이메일
+      'user_family_email': 'family22@example.com', // 예시 이메일
       'user_date':
           DateFormat("yyyy-MM-dd HH:mm:ss").format(DateTime.now().toLocal()),
     };
 
     // 서버 URL
-    const String url = 'http://10.20.22.219:3000/users'; // 실제 사용 시 IP로 변경 필요
+    const String url = 'http://10.20.22.45:3000/users'; // 실제 사용 시 IP로 변경 필요
     // const String url = 'http://localhost:3000/users'; // 실제 사용 시 IP로 변경 필요
 
     try {

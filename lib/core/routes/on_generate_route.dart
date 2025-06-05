@@ -221,7 +221,7 @@ class RouteGenerator {
 
       // 우리가 따로 작성한거 여기 밑에 쓰셈
       case AppRoutes.chat_page:
-        // return CupertinoPageRoute(builder: (_) => const ChatPage());
+      // return CupertinoPageRoute(builder: (_) => const ChatPage());
 
       case AppRoutes.test_page:
         return CupertinoPageRoute(builder: (_) => const TestPage());
@@ -234,6 +234,9 @@ class RouteGenerator {
 
       case AppRoutes.colab_chat:
         return CupertinoPageRoute(builder: (_) => const chat2());
+
+      // case AppRoutes.pi_test:
+      //   return CupertinoPageRoute(builder: (_) => const pi());
 
       default:
         return errorRoute();

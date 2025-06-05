@@ -90,5 +90,6 @@ class AppRoutes {
   static const colab_test2 = '/colab_test2';
   static const colab_chat = '/colab_chat';
 
-
+  /* <---- pi_test -----> */
+  static const pi_test = '/pi_test';
 }

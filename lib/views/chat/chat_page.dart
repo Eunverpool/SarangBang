@@ -16,6 +16,9 @@ import 'dart:convert';
 import '/utils/device_id_manager.dart';
 import 'package:intl/intl.dart';
 
+// Timer 사용을 위한 import
+import 'dart:async';
+
 class ChatPage extends StatefulWidget {
   const ChatPage({super.key});
 
@@ -55,6 +58,47 @@ class _ChatPageState extends State<ChatPage> {
   void initState() {
     super.initState();
     _loadDeviceId();
+    startPollingButton(); // 버튼 상태 폴링 시작
+    // _startHttpServer(); // 라즈베리파이 서버와 통신 시작
+  }
+
+  bool _wasPressed = false; // 이전 버튼 상태 저장
+
+  void startPollingButton() {
+    Timer.periodic(Duration(seconds: 1), (timer) async {
+      final response =
+          await http.get(Uri.parse('http://10.20.22.45:3000/button-status'));
+      if (response.statusCode == 200) {
+        final status = jsonDecode(response.body)['status'];
+
+        if (status == 'pressed' && !_wasPressed) {
+          _wasPressed = true;
+
+          if (_isCognitiveMode && !_isRecording) {
+            // 녹음 시작
+            setState(() => _isRecording = true);
+            await _startRecording();
+          } else if (!_isCognitiveMode && !_isListening) {
+            // STT 시작
+            await _startListening();
+          }
+        } else if (status == 'released' && _wasPressed) {
+          _wasPressed = false;
+
+          if (_isCognitiveMode && _isRecording) {
+            // 녹음 종료
+            await _stopRecording();
+            setState(() {
+              _isRecording = false;
+              _isCognitiveMode = false;
+            });
+          } else if (!_isCognitiveMode && _isListening) {
+            // STT 종료
+            _stopListening();
+          }
+        }
+      }
+    });
   }
 
   Future<void> _loadDeviceId() async {
@@ -66,7 +110,7 @@ class _ChatPageState extends State<ChatPage> {
 
 // GPT
   Future<String> _getGptResponse(String prompt) async {
-    final url = Uri.parse('http://10.20.22.219:3000/gpt');
+    final url = Uri.parse('http://10.20.22.45:3000/gpt');
     try {
       print("GPT API 요청 전송 시작");
       final response = await http.post(
@@ -84,7 +128,8 @@ class _ChatPageState extends State<ChatPage> {
         return decoded['response'] ?? '응답 없음';
       } else {
         print("❌ GPT 서버 응답 에러: ${response.statusCode}");
-        return '서버 오류';
+        return '다시 말씀해주시겠어요?';
+        // return '서버오류';S
       }
     } catch (e) {
       print("❌ GPT 호출 실패: $e");
@@ -210,7 +255,7 @@ class _ChatPageState extends State<ChatPage> {
 
   Future<void> saveChatToServer(
       String uuId, String userMsg, String botMsg) async {
-    final saveUrl = Uri.parse("http://10.20.22.219:3000/chat");
+    final saveUrl = Uri.parse("http://10.20.22.45:3000/chat");
 
     try {
       final response = await http.post(
@@ -244,7 +289,32 @@ class _ChatPageState extends State<ChatPage> {
     }
 
     bool available = await _speechToText.initialize(
-      onError: (error) => print('❌ STT 오류: ${error.errorMsg}'),
+      onError: (error) async {
+        print('❌ STT 오류: ${error.errorMsg}');
+
+        const errorMessage = '죄송해요, 잘 들리지 않았어요. 다시 말씀해주시겠어요?';
+
+        // 상태 초기화
+        _speechToText.stop(); // STT 강제 종료
+        setState(() {
+          _isListening = false;
+          _interimText = "";
+        });
+
+        // 사용자에게 직접 안내
+        setState(() {
+          _messages.add({
+            'message': errorMessage,
+            'time': _currentTime(),
+            'isMe': 'false',
+          });
+        });
+
+        await _flutterTts.setLanguage('ko-KR');
+        await _flutterTts.setPitch(1.0);
+        await _flutterTts.setSpeechRate(0.5);
+        await _flutterTts.speak(errorMessage);
+      },
       onStatus: (status) => print('🎤 상태: $status'),
     );
 
@@ -363,7 +433,7 @@ class _ChatPageState extends State<ChatPage> {
               onPressed: () async {
                 if (_deviceId == null) return;
 
-                final url = Uri.parse("http://10.20.22.219:3000/dairy");
+                final url = Uri.parse("http://10.20.22.45:3000/dairy");
                 final response = await http.post(
                   url,
                   headers: {'Content-Type': 'application/json'},
