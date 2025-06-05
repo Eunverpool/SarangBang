@@ -48,6 +48,9 @@ class _ChatPageState extends State<ChatPage> {
   bool _isCognitiveMode = false; //인지 질문 여부
   bool _isRecording = false; // 녹음 진행 여부
 
+  // 저장여부 변수
+  bool _isAwaitingDiarySave = false;
+
   // UUID 변수
   String? _deviceId;
 
@@ -330,6 +333,16 @@ class _ChatPageState extends State<ChatPage> {
 
             _speechToText.stop();
 
+            // 사용자의 저장 요구 감지
+            if (_isAwaitingDiarySave &&
+                (userText.contains("응") ||
+                    userText.contains("저장해") ||
+                    userText.contains("그래"))) {
+              _isAwaitingDiarySave = false;
+              await saveDiary();
+              return; // GPT 응답은 생략
+            }
+
             // ✅ GPT API 연동
             final gptResponse = await _getGptResponse(userText);
 
@@ -352,6 +365,11 @@ class _ChatPageState extends State<ChatPage> {
                 _isCognitiveMode = true;
               });
               print("🧠 인지 질문 탐지됨. 다음 입력은 녹음 모드.");
+            } else if (gptResponse.contains("[저장]")) {
+              setState(() {
+                _isAwaitingDiarySave = true;
+              });
+              print("💾 저장 유도 탐지됨. 다음 입력이 저장 여부 판단에 사용됩니다.");
             }
           }
         },
@@ -397,6 +415,54 @@ class _ChatPageState extends State<ChatPage> {
     }
   }
 
+  Future<void> saveDiary() async {
+    if (_deviceId == null) return;
+
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) => const AlertDialog(
+        content: Row(
+          children: [
+            CircularProgressIndicator(),
+            SizedBox(width: 16),
+            Expanded(child: Text("일기를 저장 중입니다...")),
+          ],
+        ),
+      ),
+    );
+
+    final url = Uri.parse("http://10.20.34.250:3000/dairy");
+    final response = await http.post(
+      url,
+      headers: {'Content-Type': 'application/json'},
+      body: jsonEncode({'user_uuid': _deviceId}),
+    );
+
+    Navigator.of(context).pop();
+
+    final decoded = jsonDecode(utf8.decode(response.bodyBytes));
+    if (decoded['alreadyExists'] == true) {
+      showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: const Text("알림"),
+          content: const Text("오늘의 일기는 이미 작성되었습니다.\n이후 대화는 일기에 반영되지 않습니다."),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(),
+              child: const Text("확인"),
+            ),
+          ],
+        ),
+      );
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text("✅ 오늘의 일기가 저장되었습니다.")),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final String formattedDate = DateFormat("M월 d일").format(DateTime.now());
@@ -412,52 +478,7 @@ class _ChatPageState extends State<ChatPage> {
           IconButton(
               icon: const Icon(Icons.check),
               onPressed: () async {
-                if (_deviceId == null) return;
-
-                showDialog(
-                  context: context,
-                  barrierDismissible: false,
-                  builder: (context) => const AlertDialog(
-                    content: Row(
-                      children: [
-                        CircularProgressIndicator(),
-                        SizedBox(width: 16),
-                        Expanded(child: Text("일기를 저장 중입니다...")),
-                      ],
-                    ),
-                  ),
-                );
-
-                final url = Uri.parse("http://10.20.34.250:3000/dairy");
-                final response = await http.post(
-                  url,
-                  headers: {'Content-Type': 'application/json'},
-                  body: jsonEncode({'user_uuid': _deviceId}),
-                );
-
-                Navigator.of(context).pop();
-
-                final decoded = jsonDecode(utf8.decode(response.bodyBytes));
-                if (decoded['alreadyExists'] == true) {
-                  showDialog(
-                    context: context,
-                    builder: (context) => AlertDialog(
-                      title: const Text("알림"),
-                      content: const Text(
-                          "오늘의 일기는 이미 작성되었습니다.\n이후 대화는 일기에 반영되지 않습니다."),
-                      actions: [
-                        TextButton(
-                          onPressed: () => Navigator.of(context).pop(),
-                          child: const Text("확인"),
-                        ),
-                      ],
-                    ),
-                  );
-                } else {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text("✅ 오늘의 일기가 저장되었습니다.")),
-                  );
-                }
+                await saveDiary();
               }),
         ],
       ),
