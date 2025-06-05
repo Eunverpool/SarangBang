@@ -66,7 +66,7 @@ class _ChatPageState extends State<ChatPage> {
 
 // GPT
   Future<String> _getGptResponse(String prompt) async {
-    final url = Uri.parse('http://10.20.26.125:3000/gpt');
+    final url = Uri.parse('http://10.20.34.250:3000/gpt');
     try {
       print("GPT API 요청 전송 시작");
       final response = await http.post(
@@ -131,7 +131,7 @@ class _ChatPageState extends State<ChatPage> {
         print('🎧 데시벨: ${amp.current}');
         if (amp.current <= -20) {
           silenceCount++;
-          if (silenceCount * 300 >= 3000) {
+          if (silenceCount * 300 >= 2000) {
             print('🤫 3초 이상 무음 감지 → 녹음 종료');
             await _stopRecording();
             setState(() {
@@ -195,7 +195,7 @@ class _ChatPageState extends State<ChatPage> {
   }
 
   Future<void> sendWavFile(String filePath) async {
-    final uri = Uri.parse('https://27fc-34-16-168-127.ngrok-free.app/predict');
+    final uri = Uri.parse('https://730b-34-125-22-95.ngrok-free.app/predict');
     final file = File(filePath);
 
     var request = http.MultipartRequest('POST', uri)
@@ -239,7 +239,7 @@ class _ChatPageState extends State<ChatPage> {
   Future<void> sendAnalysisToServer(
       String uuid, String dementia, String depression) async {
     print("📡 서버에 분석 결과 전송 중...");
-    final uri = Uri.parse('http://10.20.26.125:3000/dairy/analysis');
+    final uri = Uri.parse('http://10.20.34.250:3000/dairy/analysis');
     final response = await http.post(
       uri,
       headers: {"Content-Type": "application/json"},
@@ -258,7 +258,7 @@ class _ChatPageState extends State<ChatPage> {
   }
 
   Future<String?> sendWavToWhisper(String path) async {
-    final uri = Uri.parse("https://ce51-34-75-75-111.ngrok-free.app/stt");
+    final uri = Uri.parse("https://a96c-34-86-7-159.ngrok-free.app/stt");
     final file = File(path);
 
     var request = http.MultipartRequest('POST', uri)
@@ -306,6 +306,7 @@ class _ChatPageState extends State<ChatPage> {
 
       _speechToText.listen(
         localeId: 'ko_KR',
+        pauseFor: const Duration(seconds: 2),
         onResult: (result) async {
           print(
               "📝 인식 중: ${result.recognizedWords} (final: ${result.finalResult})");
@@ -427,7 +428,7 @@ class _ChatPageState extends State<ChatPage> {
                   ),
                 );
 
-                final url = Uri.parse("http://10.20.26.125:3000/dairy");
+                final url = Uri.parse("http://10.20.34.250:3000/dairy");
                 final response = await http.post(
                   url,
                   headers: {'Content-Type': 'application/json'},
