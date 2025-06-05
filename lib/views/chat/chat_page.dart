@@ -87,7 +87,8 @@ class _ChatPageState extends State<ChatPage> {
         return decoded['response'] ?? '응답 없음';
       } else {
         print("❌ GPT 서버 응답 에러: ${response.statusCode}");
-        return '서버 오류';
+        // return '서버 오류';
+        return '다시 말씀해주시겠어요?';
       }
     } catch (e) {
       print("❌ GPT 호출 실패: $e");
@@ -307,7 +308,32 @@ class _ChatPageState extends State<ChatPage> {
     }
 
     bool available = await _speechToText.initialize(
-      onError: (error) => print('❌ STT 오류: ${error.errorMsg}'),
+      onError: (error) async {
+        print('❌ STT 오류: ${error.errorMsg}');
+
+        const errorMessage = '죄송해요, 잘 들리지 않았어요. 다시 말씀해주시겠어요?';
+
+        // 상태 초기화
+        _speechToText.stop(); // STT 강제 종료
+        setState(() {
+          _isListening = false;
+          _interimText = "";
+        });
+
+        // 사용자에게 직접 안내
+        setState(() {
+          _messages.add({
+            'message': errorMessage,
+            'time': _currentTime(),
+            'isMe': 'false',
+          });
+        });
+
+        await _flutterTts.setLanguage('ko-KR');
+        await _flutterTts.setPitch(1.0);
+        await _flutterTts.setSpeechRate(0.5);
+        await _flutterTts.speak(errorMessage);
+      },
       onStatus: (status) => print('🎤 상태: $status'),
     );
 
