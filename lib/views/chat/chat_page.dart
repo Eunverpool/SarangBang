@@ -69,7 +69,7 @@ class _ChatPageState extends State<ChatPage> {
 
 // GPT
   Future<String> _getGptResponse(String prompt) async {
-    final url = Uri.parse('http://10.20.34.250:3000/gpt');
+    final url = Uri.parse('http://10.20.27.96:3000/gpt');
     try {
       print("GPT API 요청 전송 시작");
       final response = await http.post(
@@ -183,6 +183,17 @@ class _ChatPageState extends State<ChatPage> {
         _flutterTts.setPitch(1.0);
         _flutterTts.setSpeechRate(0.5);
         await _flutterTts.speak(gptResponse);
+
+        // ✅ [저장] 태그 탐지 추가'
+        if (gptResponse.contains("[저장]")) {
+          _flutterTts.setCompletionHandler(() {
+            setState(() {
+              _isAwaitingDiarySave = true;
+            });
+            print("💾 [녹음 후] 저장 유도 탐지됨");
+            _startListening(); // TTS 끝나고 STT 재시작
+          });
+        }
       } else {
         print("❗ Whisper로부터 텍스트를 받지 못함");
       }
@@ -198,7 +209,7 @@ class _ChatPageState extends State<ChatPage> {
   }
 
   Future<void> sendWavFile(String filePath) async {
-    final uri = Uri.parse('https://730b-34-125-22-95.ngrok-free.app/predict');
+    final uri = Uri.parse('https://bd9e-35-204-222-22.ngrok-free.app/predict');
     final file = File(filePath);
 
     var request = http.MultipartRequest('POST', uri)
@@ -242,7 +253,7 @@ class _ChatPageState extends State<ChatPage> {
   Future<void> sendAnalysisToServer(
       String uuid, String dementia, String depression) async {
     print("📡 서버에 분석 결과 전송 중...");
-    final uri = Uri.parse('http://10.20.34.250:3000/dairy/analysis');
+    final uri = Uri.parse('http://10.20.27.96:3000/dairy/analysis');
     final response = await http.post(
       uri,
       headers: {"Content-Type": "application/json"},
@@ -261,7 +272,7 @@ class _ChatPageState extends State<ChatPage> {
   }
 
   Future<String?> sendWavToWhisper(String path) async {
-    final uri = Uri.parse("https://a96c-34-86-7-159.ngrok-free.app/stt");
+    final uri = Uri.parse("https://181b-34-125-236-97.ngrok-free.app/stt");
     final file = File(path);
 
     var request = http.MultipartRequest('POST', uri)
@@ -365,7 +376,8 @@ class _ChatPageState extends State<ChatPage> {
                 _isCognitiveMode = true;
               });
               print("🧠 인지 질문 탐지됨. 다음 입력은 녹음 모드.");
-            } else if (gptResponse.contains("[저장]")) {
+            }
+            if (gptResponse.contains("[저장]")) {
               setState(() {
                 _isAwaitingDiarySave = true;
               });
@@ -432,7 +444,7 @@ class _ChatPageState extends State<ChatPage> {
       ),
     );
 
-    final url = Uri.parse("http://10.20.34.250:3000/dairy");
+    final url = Uri.parse("http://10.20.27.96:3000/dairy");
     final response = await http.post(
       url,
       headers: {'Content-Type': 'application/json'},
