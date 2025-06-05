@@ -16,6 +16,9 @@ import 'dart:convert';
 import '/utils/device_id_manager.dart';
 import 'package:intl/intl.dart';
 
+// 타이머를 사용하기위함
+import 'dart:async';
+
 class ChatPage extends StatefulWidget {
   const ChatPage({super.key});
 
@@ -58,12 +61,52 @@ class _ChatPageState extends State<ChatPage> {
   void initState() {
     super.initState();
     _loadDeviceId();
+    startPollingButton();
   }
 
   Future<void> _loadDeviceId() async {
     final id = await DeviceIdManager.getOrCreateDeviceId();
     setState(() {
       _deviceId = id;
+    });
+  }
+
+  bool _wasPressed = false; // 이전 버튼 상태 저장
+
+  void startPollingButton() {
+    Timer.periodic(Duration(seconds: 1), (timer) async {
+      final response =
+          await http.get(Uri.parse('http://<서버IP>:3000/button-status'));
+      if (response.statusCode == 200) {
+        final status = jsonDecode(response.body)['status'];
+
+        if (status == 'pressed' && !_wasPressed) {
+          _wasPressed = true;
+
+          if (_isCognitiveMode && !_isRecording) {
+            // 녹음 시작
+            setState(() => _isRecording = true);
+            await _startRecording();
+          } else if (!_isCognitiveMode && !_isListening) {
+            // STT 시작
+            await _startListening();
+          }
+        } else if (status == 'released' && _wasPressed) {
+          _wasPressed = false;
+
+          if (_isCognitiveMode && _isRecording) {
+            // 녹음 종료
+            await _stopRecording();
+            setState(() {
+              _isRecording = false;
+              _isCognitiveMode = false;
+            });
+          } else if (!_isCognitiveMode && _isListening) {
+            // STT 종료
+            _stopListening();
+          }
+        }
+      }
     });
   }
 
