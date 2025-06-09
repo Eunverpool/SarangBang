@@ -1,4 +1,4 @@
-# 사랑방
+# 사랑방 🏠
 #### 팀명 : 건어물
 ##### 팀원 : 박찬희, 김호식, 이창민, 이은우
 기간 : 25.03.03 ~ 24.06.10
@@ -39,23 +39,15 @@
 # 2. 프로젝트 개요
 ## 🛠 기술 스택
 
-### 개발 언어
-> - Flutter 3.29.2
-
-### ~~Frontend~~  
-> - ~~JavaScript~~  
-> - ~~HTML5 / CSS3~~  
-> - ~~Bootstrap~~  
-> - ~~AJAX~~  
-> - ~~jQuery 3.7.1~~
+### Frontend (Mobile App)  
+> - **Flutter 3.29.2**  
+> - **Dart SDK version: 3.7.2 (stable)**
 
 ### ~~Backend~~  
-> - ~~Spring Boot 3.2.11~~  
-> - ~~Gradle~~  
-> - ~~Spring Security~~  
-> - ~~WebSocket~~  
-> - ~~HTTP~~
-**이거 수정해야 함**
+> - **Node.js**  
+> - **Express.js**  
+
+**이거 맞냐**
 
 ### Database
 > - mongodb 6.16.0
@@ -184,88 +176,6 @@
   >   - 전력 사용량을 highcharts 라이브러를 사용하여 시각화
 >   - AJAX 요청을 통해 데이터를 주기적으로 가져와 차트에 실시간 추가
 ---
-
-# 관리자 페이지
-## 핵심 기능
-### 1) 웹소켓 통신 💬
-<img src="user/src/main/resources/static/img/adminchat.gif"></img><br/>
-
-- STOMP를 활용하여 메시지 브로커 방식으로 데이터 전송
-- SockJS 및 STOMP 클라이언트를 사용해 서버에 연결
-
->**메시지 플로우**
-> 1. 클라이언트 연결
->    1. 페이지 로드시 SockJS 연결 자동 생성
- >    2. STOMP 경로 /send/user 및 /send/admin 구독
-> 2. 메시지 송신
->   1. 발신자가 메시지 입력 후 Enter 또는 send 버튼 클릭 → JSON 형식으로 메시지를 STOMP 경로로 전송
->3. 메시지 수신
->   1. 서버는 구독된 경로로 메시지를 수신
->   2. 수신된 메시지는 HTML DOM에 추가되어 채팅 UI에 표시.
-
-
-### 2) 에너지 관리
-
-<img src="user/src/main/resources/static/img/admin_energy.gif"></img><br/>
-
-> ### 에너지 관리 플로우
-> 1. 센서에서 올라오는 데이터들을 층별로 분류해 층별 전력량을 출력한다.
-> 2. 설정한 범위값에 따라 층별 이미지를 filter값 변환을 주어 색상을 변경한다.
-> 3. 건물전체의 전력 사용량은 하단 게이지 차트에 ajax로 실시간으로 확인 할 수 있다.
-> 4. 우측 하단 막대 차트에는 로그에 찍힌 시간값을 월별 기준으로 분류해 월별 사용량을 확인 할 수있다.
-***
-
-### 3) 차량감지 시스템
-<img src="user/src/main/resources/static/img/park_ocr.gif"></img><br/>
-
-> ### 차량감지 플로우
-> 1. 감지 버튼을 누르는순간 웹캠의 화면을 캡쳐해서 이미지를 생성한다.
-> 2. 해당 이미지를 NCP Clova OCR key값,url값과 함께 OCR을 작동한다.
-> 3. 글자는 정규식을 활용해 차량번호로 인식한 글자만 추출한다.
-> 4. 인식된 차량번호와 DB 내부값을 비교해 확인되면 해당 차량의 입출차 기록을 출력한다.
-***
-## 4)📅 관리자 통합 일정 관리 시스템
-<img src="user/src/main/resources/static/img/calander.gif"></img><br/>
-> FullCalendar와 Google Calendar API를 연동하여 직관적이고 효율적인 일정 관리 시스템을 구현했습니다.
-> FullCalendar의 세련된 UI를 활용하여 시각적 완성도를 높이고,
-> Google Calendar의 강력한 기능을 통해 관리자들의 일정을 실시간으로 통합 관리할 수 있습니다.
-## 🔧 주요 기능   
-### 실시간 IoT 장애 모니터링
-- IoT 기기 장애 발생 시 자동으로 일정에 등록    
-- 장애 발생 시간 및 위치 정보 실시간 동기화   
-- 신속한 대응을 위한 즉각적인 알림 시스템
-
-
-### 통합 일정 관리
-
-- Google Calendar 연동을 통한 일정 등록 및 관리   
-- 모든 관리자 계정과 실시간 일정 공유   
-- 직관적인 인터페이스로 손쉬운 일정 조회 및 관리   
-
-
-### 사용자 편의성
-
-- 원클릭으로 Google Calendar 연동   
-- 통합된 대시보드에서 모든 일정 한눈에 확인   
-- 부서간 효율적인 일정 공유 및 협업 가능
-
-***
-## 기본 기능
-### 회원관리, 공지사항
-~~이미지~~
-
-> - Mybatis
->   - SQL과 Java Dto 객체를 매핑해 데이터베이스 연동
->   - Mapper XML에서 작성된 SQL을 Repository 인터페이스 메서드에 매핑.
->   - Mapper 파일을 통해 CRUD 및 동적 쿼리 실행
-> - highcharts
-  >   - 전력 사용량을 highcharts 라이브러를 사용하여 시각화
->   - AJAX 요청을 통해 데이터를 주기적으로 가져와 차트에 실시간 추가
-
----
-
-
-
 
 
 
