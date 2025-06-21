@@ -61,7 +61,7 @@ class _ChatPageState extends State<ChatPage> {
   void initState() {
     super.initState();
     _loadDeviceId();
-    startPollingButton();
+    // startPollingButton(); => 라즈베리 파이 버튼인식감지 (과부화를 고려해 주석처리)
   }
 
   Future<void> _loadDeviceId() async {
