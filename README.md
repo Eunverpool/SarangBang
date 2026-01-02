@@ -1,189 +1,60 @@
-# 사랑방 🏠
-#### 팀명 : 건어물
-##### 팀원 : 박찬희, 김호식, 이창민, 이은우
-기간 : 25.03.03 ~ 24.06.10
-[Notion](https://scratch-helium-985.notion.site/131282d9286180f2b89ac82111e2d57d?pvs=4)
+# 사랑방 - 인지기능향상과 우울증 완화를 돕는 대화형 AI 앱
+<img src="https://i.imgur.com/IHqAdm0.png" width="800" alt="사랑방 메인 화면">
 
-# 종합 프로젝트: 인지기능향상과 우울증 완화를 돕는 대화형 AI 앱
+## 프로젝트 개요
 
-# 1. 프로젝트 주제 및 기획의도
+**사랑방**은 AI와 일상적으로 대화를 나누는 동안, **자연스럽게 인지 기능 테스트 질문**을 던져 **인지 능력**과 **우울 지수**를 파악합니다. 또 대화 내용을 바탕으로 자동으로 **일기를 작성해 캘린더에 정리**합니다.
 
-#### 주제 ❗️
-> 스마트 건물 관리 시스템은 최신 IoT와 데이터 분석 기술을 활용하여 건물 내 다양한 시설과 자원의 효율적인 운영과 관리를 목표로 합니다.   
-> 주차, 에너지, 보안, 엘리베이터, 유지보수 등 건물 내 다양한 관리 요소를 통합하여 한 플랫폼에서 관리할 수 있도록 설계됩니다.   
-> 이를 통해 입주자와 관리자 모두에게 편리하고 안전한 환경을 제공하며, 효율적인 자원 운영을 가능하게 합니다.
+### 핵심 가치
+- **시간과 공간의 제약 없는 서비스 제공**  
+- **사용자 친화적인 대화형 인터페이스 제공**  
+- **인지 기능 활성화 및 정서 지원 효과**  
+- **감정 분석 기반 정신 건강 조기 대응** 
 
-## 기획의도❗️
+## 개발팀
 
-**1. 시간과 공간의 제약 없는 서비스 제공**  
-본 서비스는 **비대면 기반의 시스템**으로, 시간과 장소에 구애받지 않고 언제 어디서나 접근이 가능합니다.  
-이는 특히 거동이 불편한 노인이나 도서 산간 지역 거주자에게 큰 혜택을 줄 수 있으며, 서비스의 **접근성과 편의성**을 극대화합니다.   
+**개발 기간**: 2025년 3월 4일 ~ 6월 12일 (총 14주)
 
-**2. 사용자 친화적인 대화형 인터페이스 제공**  
-**자연어 처리 기반의 대화형 인터페이스**를 통해 노년층에게 익숙하지 않은 디지털 환경에 대한 **진입 장벽을 낮춥니다**.  
-단순 정보 제공을 넘어, 개인 맞춤형 피드백과 **상호작용 기반의 응답**을 제공함으로써 사용자에게 지속적인 동기 부여와 정서적 안정감을 전달합니다.  
-이를 통해 **사용자와의 신뢰 형성** 및 서비스 지속 이용률 증가를 도모할 수 있습니다.  
-
-**3. 인지 기능 활성화 및 정서 지원 효과**  
-**일상 대화 기반의 상호작용**은 노인의 **기억력**, **주의력**, **언어 능력** 등을 자연스럽게 자극하여 **인지 훈련 효과**를 기대할 수 있습니다.  
-또한 감정과 생각을 표현하는 과정을 통해 정서적 지지를 받을 수 있어 **정신 건강 유지**에 긍정적인 영향을 줍니다.  
-
-**4. 감정 분석 기반 정신 건강 조기 대응**  
-정신 건강을 세심하게 살필 수 있도록, 노인 우울증과 치매의 특징데이터를 학습한 AI 모델을 활용합니다.  
-사용자의 음성 데이터를 **.wav 파일 형식**으로 전송하면, 모델이 이를 분석하여 **우울 및 인지 저하 가능성에 대한 결과**를 제공합니다.  
-이를 통해 **감정 변화나 인지 기능 변화의 징후**를 조기에 파악하고, 필요 시 전문가 상담을 위한 참고 자료로 활용할 수 있습니다.  
-
-
+| 역할 | 이름 | 담당 분야 | 
+|------|------|-----------|
+| 팀장 | 박찬희 | 시스템 설계/통합, 우울 판단 모델 연동 |
+| 백엔드 | 김호식 | OpenAI API 연동, whisperAPI 연동, 대화 흐름 구현| 
+| 백엔드 | 이은우 | MongoDB 데이터 모델링, 보호자 이메일 연동 및 전송 | 
+| 프론트엔드 | 이창민 | Flutter 기반 모바일 개발, UI/UX디자인 | 
 
 ---
-# 2. 프로젝트 개요
-## 🛠 기술 스택
 
-### Frontend (Mobile App)  
-> - **Flutter 3.29.2**  
-> - **Dart SDK version: 3.7.2 (stable)**
+|  | 썸네일 및 링크 |
+|----------|----------------|
+| 시연 영상 | [![시연 영상](https://img.youtube.com/vi/u9iYT0dtONE/0.jpg)](https://youtu.be/u9iYT0dtONE) |
 
-### ~~Backend~~  
-> - **Node.js**  
-> - **Express.js**  
+---
 
-**이거 맞냐**
+## 서비스 구성도
+<img src="https://i.imgur.com/ieeZs8g.png" width="800" alt="사랑방 서비스구성도">
+
+## 주요 기능
+<img src="https://i.imgur.com/W46XF3q.png" width="800" alt="사랑방 주요기능1">
+<img src="https://i.imgur.com/ZD0WDgq.png" width="800" alt="사랑방 주요기능2">
+
+## 기술 스택
+
+### Frontend (Mobile App)
+- **Flutter 3.29.2**
+- **Dart SDK 3.7.2 (stable)**
+
+### Backend
+- **Node.js**
+- **Express.js**
 
 ### Database
-> - mongodb 6.16.0
+- **MongoDB**
 
 ### Development Tools
-> - Visual Studio Code
-> - Git/Github
-> - Notion
-
-
-📌 프로젝트 시나리오   
-<img src="user/src/main/resources/static/img/senario_image.png"></img><br/>
-
-📌 프로젝트 계획도   
-<img src="user/src/main/resources/static/img/Project_Planning.png"></img><br/>
-
-📌 시스템 아키텍처
-<img src="user/src/main/resources/static/img/system_architecture.png">
-
-📌 WBS  
-<img src="user/src/main/resources/static/img/system_wbs.png">
-
+- **Visual Studio Code**
+- **Git / GitHub**
+- **Notion**
 
 ---
-
-# 사용자 페이지
-## 핵심 기능
-### 1) 챗봇 및 웹소켓 📫
-<img src="user/src/main/resources/static/img/chatbot.gif"></img><br/>
-<img src="user/src/main/resources/static/img/adminchat.gif"></img><br/>
-
-- Naver Clova ChatBot API를 활용하여 사용자와 1:1 대화를 할 수 있는 챗봇 시스템 구현   
-
-
-- 웹소켓(WebSocket) 기반의 양방향 실시간 통신을 통해 빠르고 안정적인 메시지 전송 환경을 제공 
-
-
-- 사용자가 보낸 메시지는 웹소켓을 통해 서버로 전송되며, 서버는 NCP CLOVA ChatBot과 통신하여 적절한 응답을 리턴받음
-
-### 2) 소셜 로그인 (카카오) 👀
-<img src="user/src/main/resources/static/img/social_login.gif"></img><br/>
-
-- Kakao Rest API를 활용하여 소셜 로그인 구현
-  - 기존 사용자와 신규 사용자를 구분하여 처리
-
-> 로그인 플로우
-> 1. Authorization Code를 기반으로 Access Token 요청
-> 2. Access Token으로 사용자 고유 ID와 이름, 이메일 등을 수신
-> 3. 사용자가 소셜로그인을 처음 시도한 경우 추가정보를 입력받고 db에 추가
-
-***
-# 결제 시스템 (Payment Integration)
-
-**포트원 API**를 활용하여 안정적이고 효율적인 결제 시스템을 구현했습니다. 직관적인 결제 플로우를 통해 사용자와 관리자의 편의성을 극대화하였습니다.
-<img src="user/src/main/resources/static/img/park_payment.gif"></img><br/>
-
-## 결제 플로우
-
-1. 📝 **사용자 입력**
-    - 사용자가 차량 번호를 입력.
-
-2. 💰 **요금 계산**
-    - 내부 로직에 따라 차량 정보와 이용 시간 등을 기반으로 요금을 자동 계산.
-
-3. 📤 **결제 요청**
-    - 포트원 API를 통해 PG사, 결제수단, 주문번호, 결제금액 등의 정보를 전달.
-
-4. ✅ **결제 처리 및 검증**
-    - PG사에서 결제를 처리.
-    - 포트원 API가 처리 결과를 반환하면 서버에서 해당 결과를 검증하여 최종 결제 상태를 업데이트.
-***
-
-### 4) 에너지 관리
-<img src="user/src/main/resources/static/img/energy_control.gif"></img><br/>
-
-- HTTP 통신을 통한 센서 관리 시스템 구현
-
-> ### 센서 데이터 모니터링 플로우
-> 1. 센서가 값을 JSON 형식으로 서버로 보낸다.
-> 2. 서버는 받아서 String,double등의 변수형으로 파싱해서 DB에 저장한다.
-> 3. AJAX를 이용한 비동기 통신으로 DB의 값을 실시간으로 감지한다.
-> ### 기기 제어 플로우
-> 1. 사용자가 제어버튼 클릭이벤트를 통해 DB의 기기 status값을 변경한다.
-> 2. AJAX로 DB status 값을 체크해서 화면 변경한다. 
-
-### 5) 주차 관리
-
-- AJAX를 이용한 비동기 통신으로 주차장 현황 실시간 모니터링
-
-> ### 주차관리 플로우
-> 1. DB의 각 주차칸 상태가 status로 저장되어있다.
-> 2. AJXA 비동기 통신으로 주차장 DB를 주기적으로 감지한다.
-> 3. 주차칸 status에 따른 이미지를 변경한다.
-
-## 기본 기능 ⚡
-
-### 메인 페이지
-<img src="user/src/main/resources/static/img/Honeycam 2024-12-22 16-10-24.gif"></img><br/>
-
-
-> - 지도
->   - 카카오맵 api를 사용하여 지도를 페이지에 통합 및 표시
-> - Ajax
->   - 전력 사용량을 실시간 비동기통신으로 가져와 업데이트
->   - 주차 데이터를 실시간으로 가져와 업데이트
-> - highcharts
->   - 전력 사용량을 highcharts 라이브러를 사용하여 시각화
->   - AJAX 요청을 통해 데이터를 주기적으로 가져와 차트에 실시간 추가
-> - 웹캠
->   - WebRTC 기술을 사용하여 로컬 장치의 웹캠에 접근
->   - HTML5 <vidio> 태그를 활용해 실시간 스트림 출력
-> - 날씨
->   - OpenWeather api를 사용하여 날씨 데이터를 비동기적으로 가져와 UI에 업데이트
-> - Mybatis 
->   - SQL과 Java Dto 객체를 매핑해 데이터베이스 연동
->   - Mapper XML에서 작성된 SQL을 Repository 인터페이스 메서드에 매핑.
->   - Mapper 파일을 통해 CRUD 및 동적 쿼리 실행
-
-### 분석, 공지사항 페이지, 마이페이지
-
-> - Mybatis
->   - SQL과 Java Dto 객체를 매핑해 데이터베이스 연동
->   - Mapper XML에서 작성된 SQL을 Repository 인터페이스 메서드에 매핑.
->   - Mapper 파일을 통해 CRUD 및 동적 쿼리 실행
-> - highcharts
-  >   - 전력 사용량을 highcharts 라이브러를 사용하여 시각화
->   - AJAX 요청을 통해 데이터를 주기적으로 가져와 차트에 실시간 추가
----
-
-
-
-# 5. Troubleshooting
-
-
-
-# 6. 에필로그
-
 
 
